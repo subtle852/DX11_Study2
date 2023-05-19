@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{75e637f6-8e03-4459-b01b-0edc06f8761f}</ProjectGuid>
+    <ProjectGuid>{FCA72B3B-42E3-41A5-9431-E31EDE34B1EB}</ProjectGuid>
     <RootNamespace>YamYamEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>YEngine</ProjectName>
