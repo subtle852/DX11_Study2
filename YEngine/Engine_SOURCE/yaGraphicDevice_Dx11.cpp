@@ -267,9 +267,36 @@ namespace ya::graphics
 		UINT vertexsize = sizeof(renderer::Vertex);
 		UINT offset = 0;
 
-		mContext->IASetVertexBuffers(0, 1, &renderer::triangleBuffer, &vertexsize, &offset);
+		mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
 		mContext->IASetInputLayout(renderer::triangleLayout);
 		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+		offset = 3;
+		mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
+		mContext->IASetInputLayout(renderer::triangleLayout);
+		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		offset = 6;
+		mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
+		mContext->IASetInputLayout(renderer::triangleLayout);
+		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		offset = 9;
+		mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
+		mContext->IASetInputLayout(renderer::triangleLayout);
+		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		offset = 12;
+		mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
+		mContext->IASetInputLayout(renderer::triangleLayout);
+		mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		for (int i = 0; i < 5; i++)
+		{
+			offset = 15 + i * 3;
+			mContext->IASetVertexBuffers(offset, 2, &renderer::triangleBuffer, &vertexsize, &offset);
+			mContext->IASetInputLayout(renderer::triangleLayout);
+			mContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		}
 
 		//Bind VS, PS 
 
@@ -277,7 +304,7 @@ namespace ya::graphics
 		mContext->PSSetShader(renderer::trianglePSShader, 0, 0);
 
 		// Draw Render Target
-		mContext->Draw(3, 0);
+		mContext->Draw(33, 0);
 
 		// 렌더타겟에 있는 이미지를 화면에 그려준다
 		mSwapChain->Present(0, 0);
