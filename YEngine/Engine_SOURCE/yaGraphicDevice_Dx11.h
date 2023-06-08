@@ -31,8 +31,9 @@ namespace ya::graphics
 
 		void BindViewPort(D3D11_VIEWPORT* viewPort);
 
-
+		void DrawIndexed(UINT IndexCount, UINT StartIndexLocation, INT BaseVertexLocation);
 		void Draw();
+		void Present();
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Device> mDevice; // 실제 그래픽카드 하드웨어 객체

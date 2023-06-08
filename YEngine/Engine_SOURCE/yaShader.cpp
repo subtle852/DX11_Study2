@@ -46,6 +46,9 @@ namespace ya
 	}
 	void Shader::Binds()
 	{
+		GetDevice()->BindPrimitiveTopology(mTopology);
+		GetDevice()->BindInputLayout(mInputLayout);
+
 		GetDevice()->BindVertexShader(mVS.Get());
 		GetDevice()->BindPixelShader(mPS.Get());
 	}

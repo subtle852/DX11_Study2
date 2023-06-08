@@ -28,6 +28,21 @@
     <Filter Include="Resource\Resources">
       <UniqueIdentifier>{62ccc597-e793-4dc8-bb94-8bebe3a31dcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{c48dca96-96cd-4c82-8846-4439c9be349a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Layer">
+      <UniqueIdentifier>{5976d922-9f97-4b3a-a892-3b488ca20ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{3fbe308a-8cb8-4ff4-8795-c9e10159d1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component">
+      <UniqueIdentifier>{d5f7dde4-d6cc-44cb-b688-857bd4568c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component\Script">
+      <UniqueIdentifier>{637199c3-15aa-4b6e-b21c-4fa3c51ebadb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -78,6 +93,24 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaMesh.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaSceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaLayer.h">
+      <Filter>Scene\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaGameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaComponent.h">
+      <Filter>GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaScript.h">
+      <Filter>GameObject\Component\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMath.cpp">
@@ -115,6 +148,24 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMesh.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaSceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaLayer.cpp">
+      <Filter>Scene\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaGameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaComponent.cpp">
+      <Filter>GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaScript.cpp">
+      <Filter>GameObject\Component\Script</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
