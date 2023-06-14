@@ -315,10 +315,10 @@ namespace ya::graphics
 		BindViewPort(&mViewPort);
 		mContext->OMSetRenderTargets(1, mRenderTargetView.GetAddressOf(), mDepthStencilView.Get());
 
-		//renderer::mesh->BindBuffer();
+		renderer::mesh->BindBuffer();
 		//mContext->IASetInputLayout(renderer::shader->GetInputLayout());
-		//renderer::shader->Binds();// Bind VS, PS 
-		//mContext->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
+		renderer::shader->Binds();// Bind VS, PS 
+		mContext->DrawIndexed(renderer::mesh->GetIndexCount(), 0, 0);
 
 		//renderer::mesh->BindBuffer();
 		//renderer::shader->Binds();

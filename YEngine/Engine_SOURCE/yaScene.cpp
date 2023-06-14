@@ -17,9 +17,9 @@ namespace ya
 
 	void Scene::Update()
 	{
-		for (GameObject* gameObj : mGameObjects)
+		for (Layer* layer : mLayers)
 		{
-			gameObj->Update();
+			layer->Update();
 		}
 	}
 
@@ -28,9 +28,9 @@ namespace ya
 	}
 	void Scene::Render()
 	{
-		for (GameObject* gameObj : mGameObjects)
+		for (Layer* layer : mLayers)
 		{
-			gameObj->Render();
+			layer->Render();
 		}
 	}
 }
