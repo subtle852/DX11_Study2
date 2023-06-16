@@ -1,9 +1,10 @@
 #include "yaComponent.h"
 
+
 namespace ya
 {
-	Component::Component()
-		: mType(eComponentType::End)
+	Component::Component(eComponentType type)
+		: mType(type)
 	{
 
 	}

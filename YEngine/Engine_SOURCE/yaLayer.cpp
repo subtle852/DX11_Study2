@@ -1,5 +1,6 @@
 #include "yaLayer.h"
 
+
 namespace ya
 {
 	Layer::Layer()
@@ -29,7 +30,12 @@ namespace ya
 	{
 		for (GameObject* gameObj : mGameObjects)
 		{
+			//gameObj->LateUpdate();
 			gameObj->Render();
 		}
+	}
+	void Layer::AddGameObject(GameObject* gameObj)
+	{
+		mGameObjects.push_back(gameObj);
 	}
 }

@@ -21,12 +21,12 @@ namespace ya
 		virtual void Update();
 		virtual void LateUpdate();
 		virtual void Render();
-		
+
 		template <typename T>
 		T* GetComponent()
 		{
 			T* component;
-			for (T* comp : mComponents)
+			for (Component* comp : mComponents)
 			{
 				component = dynamic_cast<T*>(comp);
 				if (component != nullptr)
@@ -48,6 +48,7 @@ namespace ya
 				return nullptr;
 
 			mComponents.push_back(buff);
+			comp->SetOwner(this);
 
 			return comp;
 		}
@@ -55,7 +56,5 @@ namespace ya
 	private:
 		eState mState;
 		std::vector<Component*> mComponents;
-		//int y;
-		//int x;
 	};
 }
