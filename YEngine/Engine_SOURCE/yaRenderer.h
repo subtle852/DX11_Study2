@@ -6,6 +6,8 @@
 #include "yaConstantBuffer.h"
 
 using namespace ya::math;
+using namespace ya::graphics;
+
 namespace renderer
 {
 	struct Vertex
@@ -16,9 +18,7 @@ namespace renderer
 	};
 
 	extern Vertex vertexes[];
-	extern ya::Mesh* mesh;
-	extern ya::Shader* shader;
-	extern ya::graphics::ConstantBuffer* constantBuffer;
+	extern ya::graphics::ConstantBuffer* constantBuffer[(UINT)eCBType::End];
 
 	void Initialize();
 	void Release();
