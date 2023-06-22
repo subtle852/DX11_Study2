@@ -6,6 +6,13 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
+#define CB_GETBINDSLOT(name) __CBUFFERBINDSLOT__##name##__
+#define CBUFFER(name, slot) static const int CB_GETBINDSLOT(name) = slot; struct alignas(16) name 
+
+#define CBSLOT_TRANSFORM		0
+//#define CBSLOT_PARTICLE			1
+// 위처럼 상수버퍼 추가
+
 namespace ya::graphics
 {
 	enum class eShaderStage
