@@ -1,6 +1,7 @@
 #include "yaTransform.h"
 #include "yaRenderer.h"
 #include "yaConstantBuffer.h"
+#include "yaCamera.h"
 
 namespace ya
 {
@@ -57,6 +58,8 @@ namespace ya
 	{
 		renderer::TransformCB trCB = {};
 		trCB.mWorld = mWorld;
+		trCB.mView = Camera::GetViewMatrix();
+		trCB.mProjection = Camera::GetProjectionMatrix();
 
 		//trCB.mView = mWorld;
 		//trCB.mProjection = mWorld;
