@@ -4,11 +4,11 @@
 
 namespace ya
 {
-	class PlayScene : public Scene
+	class MainScene : public Scene
 	{
 	public:
-		PlayScene();
-		virtual ~PlayScene();
+		MainScene();
+		virtual ~MainScene();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
@@ -20,5 +20,6 @@ namespace ya
 
 	private:
 		GameObject* mBG_01;
+		GameObject* mBG_02;
 	};
 }

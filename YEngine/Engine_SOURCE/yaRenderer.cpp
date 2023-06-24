@@ -100,41 +100,104 @@ namespace renderer
 		spriteShader->Create(eShaderStage::PS, L"SpritePS.hlsl", "main");
 		ya::Resources::Insert(L"SpriteShader", spriteShader);
 
+		// TITLE
 		{
 			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"Link", L"..\\Resources\\Texture\\Link.png");
-
+				= Resources::Load<Texture>(L"TITLE_01", L"..\\Resources\\BG\\01_TITLE\\TITLE_01.jpg");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
-			Resources::Insert(L"SpriteMaterial", spriteMaterial);
+			Resources::Insert(L"SpriteMaterial_TITLE01", spriteMaterial);
+		}
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"TITLE_02", L"..\\Resources\\BG\\01_TITLE\\TITLE_02.jpg");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_TITLE02", spriteMaterial);
 		}
 
+		// MAIN
 		{
 			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"Smile", L"..\\Resources\\Texture\\Smile.png");
+				= Resources::Load<Texture>(L"MAIN_01", L"..\\Resources\\BG\\02_MAIN\\MAIN_01.jpg");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
-			Resources::Insert(L"SpriteMaterial02", spriteMaterial);
+			Resources::Insert(L"SpriteMaterial_MAIN_01", spriteMaterial);
+		}
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"MAIN_02", L"..\\Resources\\BG\\02_MAIN\\MAIN_02.jpg");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_MAIN_02", spriteMaterial);
+		}
+		
+		// SELECT
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"SELECT", L"..\\Resources\\BG\\03_SELECT\\CURTAIN.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_SELECT", spriteMaterial);
+		}
+
+		// TOWN
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"TOWN", L"..\\Resources\\BG\\04_TOWN\\TOWN.jpg");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_TOWN", spriteMaterial);
+		}
+
+		// STAGE 01 - BG
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"STAGE01_BG", L"..\\Resources\\BG\\STAGE01\\STAGE01_BG.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_STAGE01_BG", spriteMaterial);
 		}
 	}
 
 	void Initialize()
 	{
-		vertexes[0].pos = Vector3(-0.5f, 0.5f, 0.0f);
+		//vertexes[0].pos = Vector3(-0.5f, 0.5f, 0.0f);
+		//vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		//vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		//vertexes[1].pos = Vector3(0.5f, 0.5f, 0.0f);
+		//vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		//vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		//vertexes[2].pos = Vector3(0.5f, -0.5f, 0.0f);
+		//vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		//vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		//vertexes[3].pos = Vector3(-0.5f, -0.5f, 0.0f);
+		//vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		//vertexes[3].uv = Vector2(0.0f, 1.0f);
+
+		vertexes[0].pos = Vector3(-3.2f, 1.75f, 0.0f);
 		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 		vertexes[0].uv = Vector2(0.0f, 0.0f);
 
-		vertexes[1].pos = Vector3(0.5f, 0.5f, 0.0f);
+		vertexes[1].pos = Vector3(3.2f, 1.75f, 0.0f);
 		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
 		vertexes[1].uv = Vector2(1.0f, 0.0f);
 
-		vertexes[2].pos = Vector3(0.5f, -0.5f, 0.0f);
+		vertexes[2].pos = Vector3(3.2f, -1.75f, 0.0f);
 		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
 		vertexes[2].uv = Vector2(1.0f, 1.0f);
 
-		vertexes[3].pos = Vector3(-0.5f, -0.5f, 0.0f);
+		vertexes[3].pos = Vector3(-3.2f, -1.75f, 0.0f);
 		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 		vertexes[3].uv = Vector2(0.0f, 1.0f);
 
@@ -144,8 +207,22 @@ namespace renderer
 
 		std::shared_ptr<Texture> texture
 			= Resources::Load<Texture>(L"Smile", L"..\\Resources\\Texture\\Smile.png");
+
 		texture
-			= Resources::Load<Texture>(L"Link", L"..\\Resources\\Texture\\Link.png");
+			= Resources::Load<Texture>(L"TITLE_01", L"..\\Resources\\BG\\01_TITLE\\TITLE_01.jpg");
+		texture
+			= Resources::Load<Texture>(L"TITLE_02", L"..\\Resources\\BG\\01_TITLE\\TITLE_02.jpg");
+		texture
+			= Resources::Load<Texture>(L"MAIN_01", L"..\\Resources\\BG\\02_MAIN\\MAIN_01.jpg");
+		texture
+			= Resources::Load<Texture>(L"MAIN_02", L"..\\Resources\\BG\\02_MAIN\\MAIN_02.jpg");
+		texture
+			= Resources::Load<Texture>(L"SELECT", L"..\\Resources\\BG\\03_SELECT\\CURTAIN.jpg");
+		texture
+			= Resources::Load<Texture>(L"TOWN", L"..\\Resources\\BG\\04_TOWN\\TOWN.jpg");
+		texture
+			= Resources::Load<Texture>(L"STAGE01_BG", L"..\\Resources\\BG\\STAGE01\\STAGE01_BG.jpg");
+
 
 		texture->BindShader(eShaderStage::PS, 0);
 	}

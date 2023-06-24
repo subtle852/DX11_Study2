@@ -1,4 +1,9 @@
 #include "yaSceneManager.h"
+
+#include "yaTitleScene.h"
+#include "yaMainScene.h"
+#include "yaSelectScene.h"
+#include "yaTownScene.h"
 #include "yaPlayScene.h"
 
 namespace ya
@@ -8,10 +13,27 @@ namespace ya
 
 	void SceneManager::Initialize()
 	{
+		mActiveScene = new TitleScene();
+		mScenes.insert(std::make_pair(L"TitleScene", mActiveScene));
+		mActiveScene = new MainScene();
+		mScenes.insert(std::make_pair(L"MainScene", mActiveScene));
+		mActiveScene = new SelectScene();
+		mScenes.insert(std::make_pair(L"SelectScene", mActiveScene));
+		mActiveScene = new TownScene();
+		mScenes.insert(std::make_pair(L"TownScene", mActiveScene));
 		mActiveScene = new PlayScene();
 		mScenes.insert(std::make_pair(L"PlayScene", mActiveScene));
 
-		mActiveScene->Initialize();
+
+		auto itr = mScenes.find(L"TitleScene");
+		mActiveScene = itr->second;
+		
+		for (auto itr = mScenes.begin(); itr != mScenes.end(); itr++)
+		{
+			itr->second->Initialize();
+		}
+
+		//mActiveScene->Initialize();
 	}
 
 	void SceneManager::Update()

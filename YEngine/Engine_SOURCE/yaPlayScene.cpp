@@ -1,12 +1,12 @@
 #include "yaPlayScene.h"
-#include "yaPlayScene.h"
-#include "yaPlayScene.h"
 #include "yaTransform.h"
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
 #include "yaMesh.h"
 #include "yaCameraScript.h"
 #include "yaCamera.h"
+#include "yaInput.h"
+#include "yaSceneManager.h"
 
 namespace ya
 {
@@ -18,23 +18,36 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		{
-			GameObject* player = new GameObject();
-			AddGameObject(eLayerType::Player, player);
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial"));
-			player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			//player->AddComponent<CameraScript>();
-		}
+		//{
+		//	GameObject* player = new GameObject();
+		//	AddGameObject(eLayerType::Player, player);
+		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial"));
+		//	player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//	//player->AddComponent<CameraScript>();
+		//}
 
+		//{
+		//	GameObject* player = new GameObject();
+		//	AddGameObject(eLayerType::Player, player);
+		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial02"));
+		//	player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+		//	//player->AddComponent<CameraScript>();
+		//}
+
+
+		///////////////////////////////////////////////////////////////////////////////////
+		// STAGE 01 - BG
 		{
-			GameObject* player = new GameObject();
-			AddGameObject(eLayerType::Player, player);
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			GameObject* mBG_01 = new GameObject();
+			AddGameObject(eLayerType::Player, mBG_01);
+			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial02"));
-			player->GetComponent<Transform>()->SetPosition(Vector3(2.0f, 0.0f, 0.0f));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));
+			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 			//player->AddComponent<CameraScript>();
 		}
 
@@ -51,6 +64,7 @@ namespace ya
 
 		//Transform* tr = player->GetComponent<Transform>();
 		//tr->SetPosition(Vector3(0.5f, 0.5f, 0.0f));
+
 	}
 
 	void PlayScene::Update()
@@ -66,5 +80,15 @@ namespace ya
 	void PlayScene::Render()
 	{
 		Scene::Render();
+	}
+
+	void PlayScene::OnEnter()
+	{
+
+	}
+
+	void PlayScene::OnExit()
+	{
+
 	}
 }

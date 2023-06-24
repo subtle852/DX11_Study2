@@ -49,6 +49,9 @@
     <Filter Include="Scene\Manager">
       <UniqueIdentifier>{3072ab2c-8547-49f8-8cb8-c5d4ead1ea9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Scenes">
+      <UniqueIdentifier>{008ee873-0931-45d0-a027-11b2cdfad19c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -111,7 +114,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaScript.h">
       <Filter>GameObject\Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)yaPlayScene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)yaScene.h">
       <Filter>Scene\Base</Filter>
     </ClInclude>
@@ -128,6 +130,24 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)yaCameraScript.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)yaCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)STAGE01Scene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaMainScene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaPlayScene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaSelectScene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaTitleScene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaTownScene.h">
+      <Filter>Scene\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMath.cpp">
@@ -178,7 +198,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)yaScript.cpp">
       <Filter>GameObject\Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)yaPlayScene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)yaScene.cpp">
       <Filter>Scene\Base</Filter>
     </ClCompile>
@@ -195,6 +214,24 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMaterial.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)yaCameraScript.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)yaCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)STAGE01Scene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaMainScene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaPlayScene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaSelectScene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaTitleScene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaTownScene.cpp">
+      <Filter>Scene\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)yaMath.inl">

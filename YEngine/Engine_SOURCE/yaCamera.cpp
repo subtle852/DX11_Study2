@@ -12,7 +12,7 @@ namespace ya
 
 	Camera::Camera()
 		: Component(eComponentType::Camera)
-		, mType(eProjectionType::Perpective)
+		, mType(eProjectionType::OrthoGraphic)
 		, mAspectRatio(1.0f)
 		, mNear(1.0f)
 		, mFar(1000.0f)

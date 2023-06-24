@@ -4,11 +4,11 @@
 
 namespace ya
 {
-	class PlayScene : public Scene
+	class TownScene : public Scene
 	{
 	public:
-		PlayScene();
-		virtual ~PlayScene();
+		TownScene();
+		virtual ~TownScene();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
