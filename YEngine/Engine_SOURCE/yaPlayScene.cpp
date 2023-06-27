@@ -43,7 +43,7 @@ namespace ya
 		// STAGE 01 - BG
 		{
 			GameObject* mBG_01 = new GameObject();
-			AddGameObject(eLayerType::Player, mBG_01);
+			AddGameObject(eLayerType::BG, mBG_01);
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));

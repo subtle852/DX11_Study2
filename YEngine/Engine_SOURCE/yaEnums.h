@@ -16,6 +16,7 @@ namespace ya::enums
 
 	enum class eLayerType
 	{
+		BG,
 		Player,
 		Moster,
 		Effect,

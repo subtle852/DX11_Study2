@@ -20,7 +20,7 @@ namespace ya
 	{
 		{
 			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::Player, mBG_01);
+			AddGameObject(eLayerType::BG, mBG_01);
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TOWN"));
@@ -30,7 +30,7 @@ namespace ya
 
 		//Main Camera
 		GameObject* camera = new GameObject();
-		AddGameObject(eLayerType::Player, camera);
+		AddGameObject(eLayerType::BG, camera);
 		camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 		Camera* cameraComp = camera->AddComponent<Camera>();
 		camera->AddComponent<CameraScript>();

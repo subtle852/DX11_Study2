@@ -14,7 +14,7 @@ struct VSOut
 
 
 // UV 좌표
-Texture2D smileTexture : register(t0);
+Texture2D albedoTexture : register(t0);
 
 // 화면 해상도와 텍스쳐 해상도가 다르니 이미지를 보간하기위한 샘플링
 //SamplerState samplerState : register(s0);
@@ -26,7 +26,7 @@ float4 main(VSOut In) : SV_TARGET
     //return In.Color;
     
     float4 color = (float) 0.0f;
-    color = smileTexture.Sample(anisotropicSampler, In.UV);
+    color = albedoTexture.Sample(anisotropicSampler, In.UV);
     
     return color;
 }

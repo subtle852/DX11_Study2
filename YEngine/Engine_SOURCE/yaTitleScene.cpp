@@ -19,14 +19,20 @@ namespace ya
 	}
 	void TitleScene::Initialize()
 	{
+		// DepthStencil
+		// 들어갈수록 z값이 증가
+		 
+		// Layer의 타입에 따라 SetPosition의 z 값이 정해지도록
+		// ex. BG 50 Player 40 Monster 30 Effect 20 UI 10
+
 		// TITLE
 		{
 			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::Player, mBG_01);
+			AddGameObject(eLayerType::BG, mBG_01);
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TITLE01"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
 			//player->AddComponent<CameraScript>();
 		}
 
@@ -42,23 +48,23 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::ENTER))
 		{
-			//if (mTitleEnterCount > 1)
+			if (mTitleEnterCount > 0)
 			{
 				SceneManager::LoadScene(L"MainScene");
 			}
 
-			//else
-			//{
-			//	GameObject* mBG_02 = new GameObject();
-			//	AddGameObject(eLayerType::Player, mBG_02);
-			//	MeshRenderer* mr = mBG_02->AddComponent<MeshRenderer>();
-			//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TITLE02"));
-			//	mBG_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-			//	//player->AddComponent<CameraScript>();
+			else
+			{
+				GameObject* mBG_02 = new GameObject();
+				AddGameObject(eLayerType::BG, mBG_02);
+				MeshRenderer* mr = mBG_02->AddComponent<MeshRenderer>();
+				mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TITLE02"));
+				mBG_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
+				//player->AddComponent<CameraScript>();
 
-			//	mTitleEnterCount = 1;
-			//}
+				mTitleEnterCount = 1;
+			}
 		}
 
 		Scene::Update();

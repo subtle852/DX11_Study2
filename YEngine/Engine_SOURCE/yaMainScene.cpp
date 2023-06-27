@@ -20,11 +20,11 @@ namespace ya
 	{
 		{
 			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::Player, mBG_01);
+			AddGameObject(eLayerType::BG, mBG_01);
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_MAIN_01"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
 			//player->AddComponent<CameraScript>();
 		}
 
@@ -40,18 +40,26 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::ENTER))
 		{
-			SceneManager::LoadScene(L"SelectScene");
+			if (mMainEnterCount > 0) 
+			{
+				SceneManager::LoadScene(L"SelectScene");
+			}
+
+			else
+			{
+				GameObject* BG_MAIN_02 = new GameObject();
+				AddGameObject(eLayerType::BG, BG_MAIN_02);
+				MeshRenderer* mr = BG_MAIN_02->AddComponent<MeshRenderer>();
+				mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_MAIN_02"));
+				BG_MAIN_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
+				//player->AddComponent<CameraScript>();
+
+				mMainEnterCount = 1;
+			}
 		}
 
-		//{
-		//	GameObject* BG_MAIN_02 = new GameObject();
-		//	AddGameObject(eLayerType::Player, BG_MAIN_02);
-		//	MeshRenderer* mr = BG_MAIN_02->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_MAIN_02"));
-		//	BG_MAIN_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-		//	//player->AddComponent<CameraScript>();
-		//}
+		
 
 		Scene::Update();
 	}

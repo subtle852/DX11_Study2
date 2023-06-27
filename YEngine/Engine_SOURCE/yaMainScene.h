@@ -19,6 +19,8 @@ namespace ya
 		virtual void OnExit() override;
 
 	private:
+		int mMainEnterCount = 0;
+
 		GameObject* mBG_01;
 		GameObject* mBG_02;
 	};
