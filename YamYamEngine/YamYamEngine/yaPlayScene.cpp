@@ -18,52 +18,45 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		//{
-		//	GameObject* player = new GameObject();
-		//	AddGameObject(eLayerType::Player, player);
-		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial"));
-		//	player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-		//	//player->AddComponent<CameraScript>();
-		//}
-
-		//{
-		//	GameObject* player = new GameObject();
-		//	AddGameObject(eLayerType::Player, player);
-		//	MeshRenderer* mr = player->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial02"));
-		//	player->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
-		//	//player->AddComponent<CameraScript>();
-		//}
-
-
-		///////////////////////////////////////////////////////////////////////////////////
-		// STAGE 01 - BG
+		// STAGE 01 - BG 
 		{
 			GameObject* mBG_01 = new GameObject();
-			AddGameObject(eLayerType::BG, mBG_01);
+			AddGameObject(eLayerType::Player, mBG_01);// Player로 설정
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));
 			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
 			//player->AddComponent<CameraScript>();
 		}
+		{
+			GameObject* mUI = new GameObject();
+			AddGameObject(eLayerType::UI, mUI);// UI로 설정
+			MeshRenderer* mr = mUI->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));
+			mUI->GetComponent<Transform>()->SetPosition(Vector3(3.0f, 0.0f, 0.0f));
+			//player->AddComponent<CameraScript>();
+		}
 
 		//Main Camera
-		GameObject* camera = new GameObject();
-		AddGameObject(eLayerType::Player, camera);
-		camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-		Camera* cameraComp = camera->AddComponent<Camera>();
-		camera->AddComponent<CameraScript>();
+		{
+			GameObject* camera = new GameObject();
+			AddGameObject(eLayerType::Player, camera);
+			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+			Camera* cameraComp = camera->AddComponent<Camera>();
+			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
+			camera->AddComponent<CameraScript>();
+		}
 
-		//GameObject* player2 = new GameObject();
-		//AddGameObject(eLayerType::Player, player2);
-		//player2->AddComponent<MeshRenderer>();
-
-		//Transform* tr = player->GetComponent<Transform>();
-		//tr->SetPosition(Vector3(0.5f, 0.5f, 0.0f));
+		//UI Camera
+		{
+			GameObject* camera = new GameObject();
+			AddGameObject(eLayerType::Player, camera);
+			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
+			Camera* cameraComp = camera->AddComponent<Camera>();
+			cameraComp->TurnLayerMask(eLayerType::Player, false);// Player를 안보이게 설정
+			//camera->AddComponent<CameraScript>();
+		}
 
 	}
 

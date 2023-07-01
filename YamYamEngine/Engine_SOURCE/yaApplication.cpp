@@ -56,8 +56,8 @@ namespace ya
 		graphicDevice->ClearTarget();
 		graphicDevice->UpdateViewPort();
 		
-		SceneManager::Render();
-		//renderer::Render();
+		//SceneManager::Render();// 이 방식이 아닌 Renderer를 통해 Camera를 Render
+		renderer::Render();// 위 방식이 아닌 Renderer를 통해 Camera를 Render
 		//graphicDevice->Draw();
 
 		graphicDevice->Present();
