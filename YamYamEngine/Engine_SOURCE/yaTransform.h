@@ -17,7 +17,15 @@ namespace ya
 		void BindConstantBuffer();
 
 		void SetPosition(Vector3 position) { mPosition = position; }
-		void SetRotation(Vector3 rotation) { mRotation = rotation; }
+		void SetRotation(Vector3 rotation)
+		{
+			const float pi = 3.141592f;
+			rotation.x = rotation.x * pi / 180.f;
+			rotation.y = rotation.y * pi / 180.f;
+			rotation.z = rotation.z * pi / 180.f;
+
+			mRotation = rotation;
+		}
 		void SetScale(Vector3 scale) { mScale = scale; }
 
 		void SetPosition(float x, float y, float z) { mPosition = Vector3(x, y, z); }

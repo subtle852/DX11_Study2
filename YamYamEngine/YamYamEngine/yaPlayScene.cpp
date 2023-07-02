@@ -41,11 +41,8 @@ namespace ya
 
 			mBG_02->GetComponent<Transform>()->SetParent(mBG_01->GetComponent<Transform>());
 
-			const float pi = 3.141592f;
-			float degree = pi / 2.0f;
-
 			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(-3.0f, 0.0f, 1.0001f));
-			mBG_01->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, degree));
+			mBG_01->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 45.f));
 		}
 
 		{
