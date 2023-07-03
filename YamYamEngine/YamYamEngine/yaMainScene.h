@@ -5,6 +5,18 @@ namespace ya
 {
 	class MainScene : public Scene
 	{
+		enum class SelectNumber
+		{
+			StoryMode,
+			NetworkGame,
+			ExtraGameModex,
+			UbisoftConnect,
+			Achievements,
+			Leaderboards,
+			HelpNOptions,
+			ExitGame,
+		};
+
 	public:
 		MainScene();
 		virtual ~MainScene();
@@ -20,7 +32,18 @@ namespace ya
 	private:
 		int mMainEnterCount = 0;
 
-		GameObject* mBG_01;
-		GameObject* mBG_02;
+		GameObject* mBG_01 = nullptr;
+		GameObject* mBG_02 = nullptr;
+
+		GameObject* mUI_ENTER = nullptr;
+		bool mUI_ENTER_SizeState = true;// false 감소, true 증가
+
+		GameObject* mUI_SELECT_BAR = nullptr;
+		GameObject* mUI_SELECT = nullptr;
+
+		GameObject* mUI_CHAR = nullptr;
+		bool mUI_CHAR_SizeState = true;// false 감소, true 증가
+
+		int mSelectNumber = 0;
 	};
 }

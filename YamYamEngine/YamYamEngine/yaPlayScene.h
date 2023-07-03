@@ -19,5 +19,6 @@ namespace ya
 
 	private:
 		GameObject* mBG_01;
+		GameObject* mUI_State;
 	};
 }

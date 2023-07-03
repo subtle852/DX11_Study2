@@ -23,10 +23,16 @@ namespace ya::graphics
 		void BindShader(eShaderStage stage, UINT startSlot);
 		void Clear();
 
+		float GetImageSizeWidth() { return mImageSizeWidth; }
+		float GetImageSizeHeight() { return mImageSizeHeight; }
+
 	private:
 		ScratchImage mImage;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> mTexture;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mSRV;
 		D3D11_TEXTURE2D_DESC mDesc;
+
+		float mImageSizeWidth;
+		float mImageSizeHeight;
 	};
 }

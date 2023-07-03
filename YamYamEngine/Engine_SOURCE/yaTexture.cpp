@@ -46,6 +46,10 @@ namespace ya::graphics
 			, mImage.GetMetadata()
 			, mSRV.GetAddressOf()
 		);
+
+		mImageSizeWidth = mImage.GetImages()->width;
+		mImageSizeHeight = mImage.GetImages()->height;
+
 		mSRV->GetResource((ID3D11Resource**)mTexture.GetAddressOf());
 
 		return S_OK;

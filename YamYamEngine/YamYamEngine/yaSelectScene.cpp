@@ -22,9 +22,10 @@ namespace ya
 			mBG_01 = new GameObject();
 			AddGameObject(eLayerType::BG, mBG_01);
 			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMesh(Resources::Find<Mesh>(L"BGBasicMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_SELECT"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 0.0f));
+			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
+			mBG_01->GetComponent<Transform>()->SetScale(Vector3(6.4f, 6.4f, 6.4f));;
 			//player->AddComponent<CameraScript>();
 		}
 

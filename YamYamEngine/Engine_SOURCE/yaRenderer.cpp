@@ -174,7 +174,7 @@ namespace renderer
 
 	void LoadBuffer()
 	{
-		// Vertex Buffer
+		// Vertex Buffer - 1:1 ratio
 		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
 		Resources::Insert(L"RectMesh", mesh);
 
@@ -189,6 +189,159 @@ namespace renderer
 		indexes.push_back(2);
 		indexes.push_back(3);
 		mesh->CreateIndexBuffer(indexes.data(), indexes.size());
+
+		// Vertex Buffer - 해당 Texture 가져와서 ratio에 맞춘 Vertex Buffer 생성 - BG Basic
+		std::shared_ptr<Texture> texture
+			= Resources::Load<Texture>(L"TITLE_01", L"..\\Resources\\BG\\01_TITLE\\TITLE_01.jpg");
+
+		float width = texture.get()->GetImageSizeWidth();
+		float height = texture.get()->GetImageSizeHeight();
+		float ratioOfwidth = 0.5f;
+		float ratioOfheight = height / width * ratioOfwidth;
+		std::shared_ptr<Mesh> mesh2 = std::make_shared<Mesh>();
+		Resources::Insert(L"BGBasicMesh", mesh2);
+
+		vertexes[0].pos = Vector3(-ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		vertexes[1].pos = Vector3(ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		vertexes[2].pos = Vector3(ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		vertexes[3].pos = Vector3(-ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertexes[3].uv = Vector2(0.0f, 1.0f);
+
+		mesh2->CreateVertexBuffer(vertexes, 4);
+
+		std::vector<UINT> indexes2 = {};
+		indexes2.push_back(0);
+		indexes2.push_back(1);
+		indexes2.push_back(2);
+
+		indexes2.push_back(0);
+		indexes2.push_back(2);
+		indexes2.push_back(3);
+		mesh2->CreateIndexBuffer(indexes2.data(), indexes2.size());
+
+		// Vertex Buffer - BG Town
+		texture = Resources::Load<Texture>(L"TOWN", L"..\\Resources\\BG\\04_TOWN\\TOWN.jpg");
+
+		width = texture.get()->GetImageSizeWidth();
+		height = texture.get()->GetImageSizeHeight();
+		ratioOfwidth = 0.5f;
+		ratioOfheight = height / width * ratioOfwidth;
+		std::shared_ptr<Mesh> mesh3 = std::make_shared<Mesh>();
+		Resources::Insert(L"BGTownMesh", mesh3);
+
+		vertexes[0].pos = Vector3(-ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		vertexes[1].pos = Vector3(ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		vertexes[2].pos = Vector3(ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		vertexes[3].pos = Vector3(-ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertexes[3].uv = Vector2(0.0f, 1.0f);
+
+		mesh3->CreateVertexBuffer(vertexes, 4);
+
+		std::vector<UINT> indexes3 = {};
+		indexes3.push_back(0);
+		indexes3.push_back(1);
+		indexes3.push_back(2);
+
+		indexes3.push_back(0);
+		indexes3.push_back(2);
+		indexes3.push_back(3);
+		mesh3->CreateIndexBuffer(indexes3.data(), indexes3.size());
+
+		// Vertex Buffer - BG Stage01
+		texture = Resources::Load<Texture>(L"STAGE01_BG", L"..\\Resources\\BG\\STAGE01\\STAGE01_BG.png");
+
+		width = texture.get()->GetImageSizeWidth();
+		height = texture.get()->GetImageSizeHeight();
+		ratioOfwidth = 0.5f;
+		ratioOfheight = height / width * ratioOfwidth;
+		std::shared_ptr<Mesh> mesh4 = std::make_shared<Mesh>();
+		Resources::Insert(L"BGStage01Mesh", mesh4);
+
+		vertexes[0].pos = Vector3(-ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		vertexes[1].pos = Vector3(ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		vertexes[2].pos = Vector3(ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		vertexes[3].pos = Vector3(-ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertexes[3].uv = Vector2(0.0f, 1.0f);
+
+		mesh4->CreateVertexBuffer(vertexes, 4);
+
+		std::vector<UINT> indexes4 = {};
+		indexes4.push_back(0);
+		indexes4.push_back(1);
+		indexes4.push_back(2);
+
+		indexes4.push_back(0);
+		indexes4.push_back(2);
+		indexes4.push_back(3);
+		mesh4->CreateIndexBuffer(indexes4.data(), indexes4.size());
+
+		// Vertex Buffer - UI State
+		texture = Resources::Load<Texture>(L"UI_STATE", L"..\\Resources\\UI\\UI_STATE.png");
+
+		width = texture.get()->GetImageSizeWidth();
+		height = texture.get()->GetImageSizeHeight();
+		ratioOfwidth = 0.5f;
+		ratioOfheight = height / width * ratioOfwidth;
+		std::shared_ptr<Mesh> mesh5 = std::make_shared<Mesh>();
+		Resources::Insert(L"Mesh_UI_STATE", mesh5);
+
+		vertexes[0].pos = Vector3(-ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		vertexes[1].pos = Vector3(ratioOfwidth, ratioOfheight, 0.0f);
+		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		vertexes[2].pos = Vector3(ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		vertexes[3].pos = Vector3(-ratioOfwidth, -ratioOfheight, 0.0f);
+		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertexes[3].uv = Vector2(0.0f, 1.0f);
+
+		mesh5->CreateVertexBuffer(vertexes, 4);
+
+		std::vector<UINT> indexes5 = {};
+		indexes5.push_back(0);
+		indexes5.push_back(1);
+		indexes5.push_back(2);
+
+		indexes5.push_back(0);
+		indexes5.push_back(2);
+		indexes5.push_back(3);
+		mesh5->CreateIndexBuffer(indexes5.data(), indexes5.size());
 
 		// Constant Buffer
 		constantBuffer[(UINT)eCBType::Transform] = new ConstantBuffer(eCBType::Transform);
@@ -208,7 +361,7 @@ namespace renderer
 		ya::Resources::Insert(L"SpriteShader", spriteShader);
 
 		#pragma region SET TEXTURE
-		// TITLE
+		// BG -TITLE
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"TITLE_01", L"..\\Resources\\BG\\01_TITLE\\TITLE_01.jpg");
@@ -227,7 +380,7 @@ namespace renderer
 			Resources::Insert(L"SpriteMaterial_TITLE02", spriteMaterial);
 		}
 
-		// MAIN
+		// BG -MAIN
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"MAIN_01", L"..\\Resources\\BG\\02_MAIN\\MAIN_01.jpg");
@@ -245,7 +398,7 @@ namespace renderer
 			Resources::Insert(L"SpriteMaterial_MAIN_02", spriteMaterial);
 		}
 
-		// SELECT
+		// BG -SELECT
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"SELECT", L"..\\Resources\\BG\\03_SELECT\\CURTAIN.png");
@@ -255,7 +408,7 @@ namespace renderer
 			Resources::Insert(L"SpriteMaterial_SELECT", spriteMaterial);
 		}
 
-		// TOWN
+		// BG - TOWN
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"TOWN", L"..\\Resources\\BG\\04_TOWN\\TOWN.jpg");
@@ -265,7 +418,7 @@ namespace renderer
 			Resources::Insert(L"SpriteMaterial_TOWN", spriteMaterial);
 		}
 
-		// STAGE 01 - BG
+		// BG -STAGE 01
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"STAGE01_BG", L"..\\Resources\\BG\\STAGE01\\STAGE01_BG.png");
@@ -274,6 +427,59 @@ namespace renderer
 			spriteMaterial->SetTexture(texture);
 			Resources::Insert(L"SpriteMaterial_STAGE01_BG", spriteMaterial);
 		}
+
+		// UI - STATE
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_STATE", L"..\\Resources\\UI\\UI_STATE.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_UI_STATE", spriteMaterial);
+		}
+
+		// UI - MAIN_ENTER
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_MAIN_ENTER", L"..\\Resources\\UI\\UI_MAIN_ENTER.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_UI_MAIN_ENTER", spriteMaterial);
+		}
+
+		// UI - MAIN_SELECT_BAR
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_MAIN_SELECT_BAR", L"..\\Resources\\UI\\UI_MAIN_SELECT_BAR.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			//spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			Resources::Insert(L"SpriteMaterial_UI_MAIN_SELECT_BAR", spriteMaterial);
+		}
+
+		// UI - MAIN_SELECT
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_MAIN_SELECT", L"..\\Resources\\UI\\UI_MAIN_SELECT.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			//spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			Resources::Insert(L"SpriteMaterial_UI_MAIN_SELECT", spriteMaterial);
+		}
+
+		// UI - MAIN_CHARACTER
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_MAIN_CHAR", L"..\\Resources\\UI\\UI_MAIN_CHAR.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_UI_MAIN_CHAR", spriteMaterial);
+		}
+
 		#pragma endregion
 	}
 
@@ -332,7 +538,17 @@ namespace renderer
 			= Resources::Load<Texture>(L"TOWN", L"..\\Resources\\BG\\04_TOWN\\TOWN.jpg");
 		texture
 			= Resources::Load<Texture>(L"STAGE01_BG", L"..\\Resources\\BG\\STAGE01\\STAGE01_BG.jpg");
-
+		
+		texture
+			= Resources::Load<Texture>(L"UI_STATE", L"..\\Resources\\UI\\UI_STATE.png");
+		texture
+			= Resources::Load<Texture>(L"UI_MAIN_ENTER", L"..\\Resources\\UI\\UI_MAIN_ENTER.png");
+		texture
+			= Resources::Load<Texture>(L"UI_MAIN_SELECT_BAR", L"..\\Resources\\UI\\UI_MAIN_SELECT_BAR.png");
+		texture
+			= Resources::Load<Texture>(L"UI_MAIN_SELECT", L"..\\Resources\\UI\\UI_MAIN_SELECT.jpg");
+		texture
+			= Resources::Load<Texture>(L"UI_MAIN_CHAR", L"..\\Resources\\UI\\UI_MAIN_CHAR.png");
 
 
 		texture->BindShader(eShaderStage::PS, 0);
