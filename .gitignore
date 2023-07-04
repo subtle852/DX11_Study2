@@ -3,11 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-!YamYamEngine/External/DirectxTex/Include/DirectXTex.h
-!YamYamEngine/External/DirectxTex/Include/DirectXTex.inl
-!YamYamEngine/External/DirectxTex/Lib/Debug/DirectXTex.lib
-!YamYamEngine/External/DirectxTex/Lib/Release/DirectXTex.lib
-
 # User-specific files
 *.rsuser
 *.suo
@@ -403,3 +398,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+!YamYamEngine/External/DirectxTex/Include/DirectXTex.h
+!YamYamEngine/External/DirectxTex/Include/DirectXTex.inl
+!YamYamEngine/External/DirectxTex/Lib/Debug/DirectXTex.lib
+!YamYamEngine/External/DirectxTex/Lib/Release/DirectXTex.lib
