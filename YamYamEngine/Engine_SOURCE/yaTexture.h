@@ -23,8 +23,8 @@ namespace ya::graphics
 		void BindShader(eShaderStage stage, UINT startSlot);
 		void Clear();
 
-		float GetImageSizeWidth() { return mImageSizeWidth; }
-		float GetImageSizeHeight() { return mImageSizeHeight; }
+		float GetImageRatioOfWidth() { return mImageRatioOfWidth; }
+		float GetImageRatioOfHeight() { return mImageRatioOfHeight; }
 
 	private:
 		ScratchImage mImage;
@@ -32,7 +32,9 @@ namespace ya::graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> mSRV;
 		D3D11_TEXTURE2D_DESC mDesc;
 
-		float mImageSizeWidth;
-		float mImageSizeHeight;
+		float mImageWidth;
+		float mImageHeight;
+		float mImageRatioOfWidth = 0.5f;
+		float mImageRatioOfHeight;
 	};
 }

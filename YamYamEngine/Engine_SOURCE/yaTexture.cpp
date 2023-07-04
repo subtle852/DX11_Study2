@@ -47,8 +47,10 @@ namespace ya::graphics
 			, mSRV.GetAddressOf()
 		);
 
-		mImageSizeWidth = mImage.GetImages()->width;
-		mImageSizeHeight = mImage.GetImages()->height;
+		mImageWidth = mImage.GetImages()->width;
+		mImageHeight = mImage.GetImages()->height;
+
+		mImageRatioOfHeight = mImageHeight / mImageWidth * mImageRatioOfWidth;
 
 		mSRV->GetResource((ID3D11Resource**)mTexture.GetAddressOf());
 

@@ -18,7 +18,7 @@ namespace ya
 		virtual void OnExit() override;
 
 	private:
-		GameObject* mBG_01;
-		GameObject* mUI_State;
+		GameObject* mBG_STAGE01_01;
+		GameObject* mUI_STAGE01_STATE;
 	};
 }

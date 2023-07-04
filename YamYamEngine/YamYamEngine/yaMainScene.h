@@ -5,7 +5,7 @@ namespace ya
 {
 	class MainScene : public Scene
 	{
-		enum class SelectNumber
+		enum class MenuNumber
 		{
 			StoryMode,
 			NetworkGame,
@@ -32,18 +32,18 @@ namespace ya
 	private:
 		int mMainEnterCount = 0;
 
-		GameObject* mBG_01 = nullptr;
-		GameObject* mBG_02 = nullptr;
+		int mMenuNumber = 0;
 
-		GameObject* mUI_ENTER = nullptr;
-		bool mUI_ENTER_SizeState = true;// false 감소, true 증가
+		GameObject* mBG_MAIN_01 = nullptr;
+		GameObject* mBG_MAIN_02 = nullptr;
 
-		GameObject* mUI_SELECT_BAR = nullptr;
-		GameObject* mUI_SELECT = nullptr;
+		GameObject* mUI_MAIN_ENTER = nullptr;
+		bool mUI_MAIN_ENTER_SizeState = true;// false 감소, true 증가
 
-		GameObject* mUI_CHAR = nullptr;
-		bool mUI_CHAR_SizeState = true;// false 감소, true 증가
+		GameObject* mUI_MAIN_MENU = nullptr;
+		GameObject* mUI_MAIN_MENU_BAR = nullptr;
 
-		int mSelectNumber = 0;
+		GameObject* mUI_MAIN_CHAR = nullptr;
+		bool mUI_MAIN_CHAR_SizeState = true;// false 감소, true 증가
 	};
 }

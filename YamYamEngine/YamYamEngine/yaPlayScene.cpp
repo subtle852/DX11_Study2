@@ -21,14 +21,18 @@ namespace ya
 	{
 		// STAGE 01 - BG 
 		{
-			mBG_01 = new GameObject();
-			mBG_01->SetName(L"BG_01");
-			AddGameObject(eLayerType::Player, mBG_01);// Player로 설정
-			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"BGStage01Mesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(65.4f, -0.2f, 50.0f));
-			mBG_01->GetComponent<Transform>()->SetScale(Vector3(137.5f, 137.5f, 137.5f));
+			mBG_STAGE01_01 = new GameObject();
+			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
+			AddGameObject(eLayerType::Player, mBG_STAGE01_01);// Player로 설정
+			MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
+			mBG_STAGE01_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, -0.38f, 50.0f));
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
+			mBG_STAGE01_01->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+				texture.get()->GetImageRatioOfHeight(), 0.0f))
+				* 265.0f);
 			//player->AddComponent<CameraScript>();
 
 
@@ -48,14 +52,18 @@ namespace ya
 		}
 
 		{
-			mUI_State = new GameObject();
-			mUI_State->SetName(L"UI");
-			AddGameObject(eLayerType::UI, mUI_State);// UI로 설정
-			MeshRenderer* mr3 = mUI_State->AddComponent<MeshRenderer>();
-			mr3->SetMesh(Resources::Find<Mesh>(L"Mesh_UI_STATE"));
-			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STATE"));
-			mUI_State->GetComponent<Transform>()->SetPosition(Vector3(-2.3f, 1.4f, 49.f));
-			mUI_State->GetComponent<Transform>()->SetScale(Vector3(1.7f, 1.7f, 1.7f));
+			mUI_STAGE01_STATE = new GameObject();
+			mUI_STAGE01_STATE->SetName(L"UI_STAGE01_STATE");
+			AddGameObject(eLayerType::UI, mUI_STAGE01_STATE);// UI로 설정
+			MeshRenderer* mr3 = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
+			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+			mUI_STAGE01_STATE->GetComponent<Transform>()->SetPosition(Vector3(-2.1f, 1.4f, 49.f));
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
+			mUI_STAGE01_STATE->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+				texture.get()->GetImageRatioOfHeight(), 0.0f))
+				* 4.0f);
 			//player->AddComponent<CameraScript>();
 		}
 
@@ -85,12 +93,12 @@ namespace ya
 
 	void PlayScene::Update()
 	{
-		Transform* tr = mBG_01->GetComponent<Transform>();
-		Vector3 pos = tr->GetPosition();
+		//Transform* tr = mBG_PLAY_01->GetComponent<Transform>();
+		//Vector3 pos = tr->GetPosition();
 
-		pos.x -= 1.0f * Time::DeltaTime();
+		//pos.x -= 1.0f * Time::DeltaTime();
 
-		tr->SetPosition(pos);
+		//tr->SetPosition(pos);
 
 		Scene::Update();
 	}

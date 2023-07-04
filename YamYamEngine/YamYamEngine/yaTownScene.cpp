@@ -19,13 +19,17 @@ namespace ya
 	void TownScene::Initialize()
 	{
 		{
-			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::BG, mBG_01);
-			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"BGTownMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TOWN"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
-			mBG_01->GetComponent<Transform>()->SetScale(Vector3(6.4f, 6.4f, 6.4f));
+			mBG_TOWN_MAP = new GameObject();
+			AddGameObject(eLayerType::BG, mBG_TOWN_MAP);
+			MeshRenderer* mr = mBG_TOWN_MAP->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TOWN_MAP"));
+			mBG_TOWN_MAP->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_TOWN_MAP", L"..\\Resources\\SCENE\\04_TOWN\\BG_TOWN_MAP.png");
+			mBG_TOWN_MAP->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+				texture.get()->GetImageRatioOfHeight(), 0.0f))
+				* 13.0f);
 			//player->AddComponent<CameraScript>();
 		}
 

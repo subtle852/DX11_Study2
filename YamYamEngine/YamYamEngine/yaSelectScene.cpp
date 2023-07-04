@@ -19,13 +19,17 @@ namespace ya
 	void SelectScene::Initialize()
 	{
 		{
-			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::BG, mBG_01);
-			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"BGBasicMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_SELECT"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
-			mBG_01->GetComponent<Transform>()->SetScale(Vector3(6.4f, 6.4f, 6.4f));;
+			mBG_SELECT_CURTAIN = new GameObject();
+			AddGameObject(eLayerType::BG, mBG_SELECT_CURTAIN);
+			MeshRenderer* mr = mBG_SELECT_CURTAIN->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_SELECT_CURTAIN"));
+			mBG_SELECT_CURTAIN->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_SELECT_CURTAIN", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
+			mBG_SELECT_CURTAIN->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+				texture.get()->GetImageRatioOfHeight(), 0.0f))
+				* 13.0f);
 			//player->AddComponent<CameraScript>();
 		}
 

@@ -18,6 +18,6 @@ namespace ya
 		virtual void OnExit() override;
 
 	private:
-		GameObject* mBG_01;
+		GameObject* mBG_SELECT_CURTAIN;
 	};
 }

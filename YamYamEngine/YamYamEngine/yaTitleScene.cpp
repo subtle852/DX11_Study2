@@ -11,7 +11,6 @@
 namespace ya
 {
 	TitleScene::TitleScene()
-		: mTitleEnterCount(0)
 	{
 	}
 	TitleScene::~TitleScene()
@@ -27,13 +26,17 @@ namespace ya
 
 		// TITLE
 		{
-			mBG_01 = new GameObject();
-			AddGameObject(eLayerType::BG, mBG_01);
-			MeshRenderer* mr = mBG_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"BGBasicMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TITLE01"));
-			mBG_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
-			mBG_01->GetComponent<Transform>()->SetScale(Vector3(6.4f, 6.4f, 6.4f));
+			mBG_TITLE_01 = new GameObject();
+			AddGameObject(eLayerType::BG, mBG_TITLE_01);
+			MeshRenderer* mr = mBG_TITLE_01->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TITLE_01"));
+			mBG_TITLE_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
+			mBG_TITLE_01->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+				texture.get()->GetImageRatioOfHeight(), 0.0f))
+				* 13.0f);
 			//player->AddComponent<CameraScript>();
 		}
 
@@ -56,13 +59,17 @@ namespace ya
 
 			else
 			{
-				GameObject* mBG_02 = new GameObject();
-				AddGameObject(eLayerType::BG, mBG_02);
-				MeshRenderer* mr = mBG_02->AddComponent<MeshRenderer>();
-				mr->SetMesh(Resources::Find<Mesh>(L"BGBasicMesh"));
-				mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_TITLE02"));
-				mBG_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
-				mBG_02->GetComponent<Transform>()->SetScale(Vector3(6.4f, 6.4f, 6.4f));
+				mBG_TITLE_02 = new GameObject();
+				AddGameObject(eLayerType::BG, mBG_TITLE_02);
+				MeshRenderer* mr = mBG_TITLE_02->AddComponent<MeshRenderer>();
+				mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+				mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TITLE_02"));
+				mBG_TITLE_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
+				std::shared_ptr<Texture> texture
+					= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
+				mBG_TITLE_02->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+					texture.get()->GetImageRatioOfHeight(), 0.0f))
+					* 13.0f);
 				//player->AddComponent<CameraScript>();
 
 				mTitleEnterCount = 1;
