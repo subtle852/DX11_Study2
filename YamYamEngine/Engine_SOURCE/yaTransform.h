@@ -33,7 +33,17 @@ namespace ya
 		void SetScale(float x, float y, float z) { mScale = Vector3(x, y, z); }
 
 		Vector3 GetPosition() { return mPosition; }
-		Vector3 GetRotation() { return mRotation; }
+		Vector3 GetRotation() 
+		{
+			Vector3 Temp;
+
+			const float pi = 3.141592f;
+			Temp.x = mRotation.x / pi * 180.f;
+			Temp.y = mRotation.y / pi * 180.f;
+			Temp.z = mRotation.z / pi * 180.f;
+
+			return Temp;
+		}
 		Vector3 GetScale() { return mScale; }
 
 		Vector3 Foward() { return mFoward; }

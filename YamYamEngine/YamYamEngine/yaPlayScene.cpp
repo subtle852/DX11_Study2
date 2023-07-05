@@ -8,6 +8,7 @@
 #include "yaInput.h"
 #include "yaSceneManager.h"
 #include "yaTime.h"
+#include "yaGridScript.h"
 
 namespace ya
 {
@@ -34,21 +35,6 @@ namespace ya
 				texture.get()->GetImageRatioOfHeight(), 0.0f))
 				* 265.0f);
 			//player->AddComponent<CameraScript>();
-
-
-			//GameObject* mBG_02 = new GameObject();
-			//mBG_02->SetName(L"BG_02");
-			//AddGameObject(eLayerType::Player, mBG_02);// Player로 설정
-			//MeshRenderer* mr2 = mBG_02->AddComponent<MeshRenderer>();
-			//mr2->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			//mr2->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_STAGE01_BG"));
-			//mBG_02->GetComponent<Transform>()->SetPosition(Vector3(1.0f, 0.0f, 0.0f));
-			////player->AddComponent<CameraScript>();
-
-			//mBG_02->GetComponent<Transform>()->SetParent(mBG_01->GetComponent<Transform>());
-
-			//mBG_01->GetComponent<Transform>()->SetPosition(Vector3(-3.0f, 0.0f, 1.0001f));
-			//mBG_01->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 45.f));
 		}
 
 		{
@@ -65,30 +51,62 @@ namespace ya
 				texture.get()->GetImageRatioOfHeight(), 0.0f))
 				* 4.0f);
 			//player->AddComponent<CameraScript>();
+
+			//// 부모 자식 Transform
+			//{
+			//	GameObject* mTemp = new GameObject();
+			//	mTemp->SetName(L"Temp");
+			//	AddGameObject(eLayerType::UI, mTemp);
+			//	MeshRenderer* mr2 = mTemp->AddComponent<MeshRenderer>();
+			//	mr2->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			//	mr2->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+			//	mTemp->GetComponent<Transform>()->SetPosition(Vector3(1.0f, 0.0f, 0.0f));
+			//	//player->AddComponent<CameraScript>();
+
+			//	mTemp->GetComponent<Transform>()->SetParent(mUI_STAGE01_STATE->GetComponent<Transform>());
+
+			//	mUI_STAGE01_STATE->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 1.0001f));
+			//	mUI_STAGE01_STATE->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 45.f));
+
+			//	Vector3 pos = mUI_STAGE01_STATE->GetComponent<Transform>()->GetRotation();
+			//}
 		}
 
-		//Main Camera
+		// Main Camera
+		Camera* cameraComp = nullptr;
+
 		{
 			GameObject* camera = new GameObject();
 			camera->SetName(L"MainCamera");
 			AddGameObject(eLayerType::Player, camera);
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-			Camera* cameraComp = camera->AddComponent<Camera>();
+			cameraComp = camera->AddComponent<Camera>();
 			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
 			camera->AddComponent<CameraScript>();
 		}
 
-		//UI Camera
+		// UI Camera
 		{
 			GameObject* camera = new GameObject();
 			camera->SetName(L"UICamera");
 			AddGameObject(eLayerType::Player, camera);
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-			Camera* cameraComp = camera->AddComponent<Camera>();
+			cameraComp = camera->AddComponent<Camera>();
 			cameraComp->TurnLayerMask(eLayerType::Player, false);// Player를 안보이게 설정
 			//camera->AddComponent<CameraScript>();
 		}
 
+		// Grid
+		//{
+		//	GameObject* grid = new GameObject();
+		//	grid->SetName(L"Grid");
+		//	AddGameObject(eLayerType::Grid, grid);
+		//	MeshRenderer* mr = grid->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"GridMaterial"));
+		//	GridScript* gridSc = grid->AddComponent<GridScript>();
+		//	gridSc->SetCamera(cameraComp);
+		//}
 	}
 
 	void PlayScene::Update()
@@ -105,6 +123,19 @@ namespace ya
 
 	void PlayScene::LateUpdate()
 	{
+		//Vector3 pos(600, 450, 0.0f);
+		//Vector3 pos2(600, 450, 1000.0f);
+		//Viewport viewport;
+		//viewport.width = 1600.0f;
+		//viewport.height = 900.0f;
+		//viewport.x = 0;
+		//viewport.y = 0;
+		//viewport.minDepth = 0.0f;
+		//viewport.maxDepth = 1.0f;
+
+		//pos = viewport.Unproject(pos, Camera::GetProjectionMatrix(), Camera::GetViewMatrix(), Matrix::Identity);
+		//pos2 = viewport.Unproject(pos2, Camera::GetProjectionMatrix(), Camera::GetViewMatrix(), Matrix::Identity);
+
 		Scene::LateUpdate();
 	}
 

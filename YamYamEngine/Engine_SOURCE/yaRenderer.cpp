@@ -58,6 +58,12 @@ namespace renderer
 		ya::graphics::GetDevice()->CreateInputLayout(arrLayout, 3
 			, shader->GetVSCode()
 			, shader->GetInputLayoutAddressOf());
+
+		//shader = ya::Resources::Find<Shader>(L"GridShader");
+		//ya::graphics::GetDevice()->CreateInputLayout(arrLayout, 3
+		//	, shader->GetVSCode()
+		//	, shader->GetInputLayoutAddressOf());
+
 #pragma endregion
 #pragma region Sampler State
 		//Sampler State
@@ -172,9 +178,29 @@ namespace renderer
 
 	}
 
+	void LoadMesh()
+	{
+		//RECT
+		vertexes[0].pos = Vector3(-0.5f, 0.5f, 0.0f);
+		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
+		vertexes[0].uv = Vector2(0.0f, 0.0f);
+
+		vertexes[1].pos = Vector3(0.5f, 0.5f, 0.0f);
+		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
+		vertexes[1].uv = Vector2(1.0f, 0.0f);
+
+		vertexes[2].pos = Vector3(0.5f, -0.5f, 0.0f);
+		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
+		vertexes[2].uv = Vector2(1.0f, 1.0f);
+
+		vertexes[3].pos = Vector3(-0.5f, -0.5f, 0.0f);
+		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+		vertexes[3].uv = Vector2(0.0f, 1.0f);
+	}
+
 	void LoadBuffer()
 	{
-		// Vertex Buffer - 1:1 ratio
+		// Vertex Buffer
 		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>();
 		Resources::Insert(L"RectMesh", mesh);
 
@@ -193,6 +219,10 @@ namespace renderer
 		// Constant Buffer
 		constantBuffer[(UINT)eCBType::Transform] = new ConstantBuffer(eCBType::Transform);
 		constantBuffer[(UINT)eCBType::Transform]->Create(sizeof(TransformCB));
+
+		//// Grid Buffer
+		//constantBuffer[(UINT)eCBType::Grid] = new ConstantBuffer(eCBType::Grid);
+		//constantBuffer[(UINT)eCBType::Grid]->Create(sizeof(TransformCB));
 	}
 
 	void LoadShader()
@@ -206,6 +236,42 @@ namespace renderer
 		spriteShader->Create(eShaderStage::VS, L"SpriteVS.hlsl", "main");
 		spriteShader->Create(eShaderStage::PS, L"SpritePS.hlsl", "main");
 		ya::Resources::Insert(L"SpriteShader", spriteShader);
+
+		//std::shared_ptr<Shader> girdShader = std::make_shared<Shader>();
+		//girdShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
+		//girdShader->Create(eShaderStage::PS, L"GridPS.hlsl", "main");
+		//ya::Resources::Insert(L"GridShader", girdShader);
+	}
+
+	void LoadMaterial()
+	{
+		std::shared_ptr<Shader> spriteShader
+			= Resources::Find<Shader>(L"SpriteShader");
+
+
+		std::shared_ptr<Texture> texture
+			= Resources::Load<Texture>(L"Link", L"..\\Resources\\Texture\\Link.png");
+		std::shared_ptr<Material> material = std::make_shared<Material>();
+		material->SetShader(spriteShader);
+		material->SetTexture(texture);
+		Resources::Insert(L"SpriteMaterial", material);
+
+		texture = Resources::Load<Texture>(L"Smile", L"..\\Resources\\Texture\\Smile.png");
+		material = std::make_shared<Material>();
+		material->SetShader(spriteShader);
+		material->SetTexture(texture);
+		material->SetRenderingMode(eRenderingMode::Transparent);
+		Resources::Insert(L"SpriteMaterial02", material);
+
+
+		//std::shared_ptr<Shader> gridShader
+		//	= Resources::Find<Shader>(L"GridShader");
+
+		//material = std::make_shared<Material>();
+		//material->SetShader(gridShader);
+		//Resources::Insert(L"GridMaterial", material);
+
+		///////////////////////////////////////////////////////////////////////////////////
 
 		#pragma region SET TEXTURE
 		//////////////////////////////////////////////////////////// TITLE
@@ -319,73 +385,17 @@ namespace renderer
 			Resources::Insert(L"SpriteMaterial_UI_STAGE01_STATE", spriteMaterial);
 		}
 
-		
-
 		#pragma endregion
+
 	}
 
 	void Initialize()
 	{
-		vertexes[0].pos = Vector3(-0.5f, 0.5f, 0.0f);
-		vertexes[0].color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
-		vertexes[0].uv = Vector2(0.0f, 0.0f);
-
-		vertexes[1].pos = Vector3(0.5f, 0.5f, 0.0f);
-		vertexes[1].color = Vector4(0.0f, 1.0f, 0.0f, 1.0f);
-		vertexes[1].uv = Vector2(1.0f, 0.0f);
-
-		vertexes[2].pos = Vector3(0.5f, -0.5f, 0.0f);
-		vertexes[2].color = Vector4(0.0f, 0.0f, 1.0f, 1.0f);
-		vertexes[2].uv = Vector2(1.0f, 1.0f);
-
-		vertexes[3].pos = Vector3(-0.5f, -0.5f, 0.0f);
-		vertexes[3].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-		vertexes[3].uv = Vector2(0.0f, 1.0f);
-
+		LoadMesh();
 		LoadBuffer();
 		LoadShader();
 		SetupState();
-
-		std::shared_ptr<Texture> texture
-			= Resources::Load<Texture>(L"Smile", L"..\\Resources\\Texture\\Smile.png");
-
-		// TITLE
-		texture
-			= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
-		texture
-			= Resources::Load<Texture>(L"BG_TITLE_02", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_02.png");
-		
-		// MAIN
-		texture
-			= Resources::Load<Texture>(L"BG_MAIN_01", L"..\\Resources\\SCENE\\02_MAIN\\BG_MAIN_01.png");
-		texture
-			= Resources::Load<Texture>(L"BG_MAIN_02", L"..\\Resources\\SCENE\\02_MAIN\\BG_MAIN_02.png");
-		
-		texture
-			= Resources::Load<Texture>(L"UI_MAIN_CHAR", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_CHAR.png");
-		texture
-			= Resources::Load<Texture>(L"UI_MAIN_ENTER", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_ENTER.png");
-		texture
-			= Resources::Load<Texture>(L"UI_MAIN_MENU", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_MENU.png");
-		texture
-			= Resources::Load<Texture>(L"UI_MAIN_MENU_BAR", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_MENU_BAR.png");
-		
-		// SELECT
-		texture
-			= Resources::Load<Texture>(L"BG_SELECT_CURTAIN", L"..\\Resources\\SCENE\\03_SELECT\\BG_SELECT_CURTAIN.png");
-		
-		// TOWN
-		texture
-			= Resources::Load<Texture>(L"BG_TOWN_MAP", L"..\\Resources\\SCENE\\04_TOWN\\BG_TOWN_MAP.png");
-		
-		// STAGE 01
-		texture
-			= Resources::Load<Texture>(L"BG_STAGE01_BG", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_BG.png");
-		texture
-			= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
-
-
-		texture->BindShader(eShaderStage::PS, 0);
+		LoadMaterial();
 	}
 
 	void Render()
