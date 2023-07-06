@@ -59,10 +59,10 @@ namespace renderer
 			, shader->GetVSCode()
 			, shader->GetInputLayoutAddressOf());
 
-		//shader = ya::Resources::Find<Shader>(L"GridShader");
-		//ya::graphics::GetDevice()->CreateInputLayout(arrLayout, 3
-		//	, shader->GetVSCode()
-		//	, shader->GetInputLayoutAddressOf());
+		shader = ya::Resources::Find<Shader>(L"GridShader");
+		ya::graphics::GetDevice()->CreateInputLayout(arrLayout, 3
+			, shader->GetVSCode()
+			, shader->GetInputLayoutAddressOf());
 
 #pragma endregion
 #pragma region Sampler State
@@ -220,9 +220,9 @@ namespace renderer
 		constantBuffer[(UINT)eCBType::Transform] = new ConstantBuffer(eCBType::Transform);
 		constantBuffer[(UINT)eCBType::Transform]->Create(sizeof(TransformCB));
 
-		//// Grid Buffer
-		//constantBuffer[(UINT)eCBType::Grid] = new ConstantBuffer(eCBType::Grid);
-		//constantBuffer[(UINT)eCBType::Grid]->Create(sizeof(TransformCB));
+		// Grid Buffer
+		constantBuffer[(UINT)eCBType::Grid] = new ConstantBuffer(eCBType::Grid);
+		constantBuffer[(UINT)eCBType::Grid]->Create(sizeof(TransformCB));
 	}
 
 	void LoadShader()
@@ -237,10 +237,10 @@ namespace renderer
 		spriteShader->Create(eShaderStage::PS, L"SpritePS.hlsl", "main");
 		ya::Resources::Insert(L"SpriteShader", spriteShader);
 
-		//std::shared_ptr<Shader> girdShader = std::make_shared<Shader>();
-		//girdShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
-		//girdShader->Create(eShaderStage::PS, L"GridPS.hlsl", "main");
-		//ya::Resources::Insert(L"GridShader", girdShader);
+		std::shared_ptr<Shader> girdShader = std::make_shared<Shader>();
+		girdShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
+		girdShader->Create(eShaderStage::PS, L"GridPS.hlsl", "main");
+		ya::Resources::Insert(L"GridShader", girdShader);
 	}
 
 	void LoadMaterial()
@@ -263,13 +263,12 @@ namespace renderer
 		material->SetRenderingMode(eRenderingMode::Transparent);
 		Resources::Insert(L"SpriteMaterial02", material);
 
+		std::shared_ptr<Shader> gridShader
+			= Resources::Find<Shader>(L"GridShader");
 
-		//std::shared_ptr<Shader> gridShader
-		//	= Resources::Find<Shader>(L"GridShader");
-
-		//material = std::make_shared<Material>();
-		//material->SetShader(gridShader);
-		//Resources::Insert(L"GridMaterial", material);
+		material = std::make_shared<Material>();
+		material->SetShader(gridShader);
+		Resources::Insert(L"GridMaterial", material);
 
 		///////////////////////////////////////////////////////////////////////////////////
 

@@ -43,17 +43,17 @@ namespace ya
 		Vector2 resolution(width, height);
 
 		///cs buffer
-		//graphics::ConstantBuffer* cb
-		//	= renderer::constantBuffer[(int)eCBType::Grid];
+		graphics::ConstantBuffer* cb
+			= renderer::constantBuffer[(int)eCBType::Grid];
 
-		//renderer::GridCB data;
-		//data.CameraPosition = Vector4(pos.x, pos.y, pos.z, 1.0f);
-		//data.Resolution = resolution;
-		//data.CameraScale = Vector2(scale, scale);
+		renderer::GridCB data;
+		data.CameraPosition = Vector4(pos.x, pos.y, pos.z, 1.0f);
+		data.Resolution = resolution;
+		data.CameraScale = Vector2(scale, scale);
 
-		//cb->SetData(&data);
-		//cb->Bind(eShaderStage::VS);
-		//cb->Bind(eShaderStage::PS);
+		cb->SetData(&data);
+		cb->Bind(eShaderStage::VS);
+		cb->Bind(eShaderStage::PS);
 	}
 
 
