@@ -9,6 +9,7 @@
 #include "yaSceneManager.h"
 #include "yaTime.h"
 #include "yaGridScript.h"
+#include "yaObject.h"
 
 namespace ya
 {
@@ -22,34 +23,32 @@ namespace ya
 	{
 		// STAGE 01 - BG 
 		{
-			mBG_STAGE01_01 = new GameObject();
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
+
+			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
+				, eLayerType::Player);// Player로 설정
 			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
-			AddGameObject(eLayerType::Player, mBG_STAGE01_01);// Player로 설정
+
 			MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
-			mBG_STAGE01_01->GetComponent<Transform>()->SetPosition(Vector3(0.0f, -0.38f, 50.0f));
-			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
-			mBG_STAGE01_01->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
-				texture.get()->GetImageRatioOfHeight(), 0.0f))
-				* 265.0f);
 			//player->AddComponent<CameraScript>();
 		}
 
 		{
-			mUI_STAGE01_STATE = new GameObject();
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
+
+			mUI_STAGE01_STATE = object::Instantiate<GameObject>(Vector3(-2.1f, 1.4f, 49.f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 4.0f
+				, eLayerType::UI);// UI로 설정
 			mUI_STAGE01_STATE->SetName(L"UI_STAGE01_STATE");
-			AddGameObject(eLayerType::UI, mUI_STAGE01_STATE);// UI로 설정
+
 			MeshRenderer* mr3 = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
 			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
-			mUI_STAGE01_STATE->GetComponent<Transform>()->SetPosition(Vector3(-2.1f, 1.4f, 49.f));
-			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
-			mUI_STAGE01_STATE->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
-				texture.get()->GetImageRatioOfHeight(), 0.0f))
-				* 4.0f);
 			//player->AddComponent<CameraScript>();
 
 			//// 부모 자식 Transform

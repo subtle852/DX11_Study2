@@ -31,6 +31,7 @@ namespace ya
 			layer.LateUpdate();
 		}
 	}
+	
 	void Scene::Render()
 	{
 		for (Layer& layer : mLayers)
@@ -38,12 +39,23 @@ namespace ya
 			layer.Render();
 		}
 	}
+
+	void Scene::Destroy()
+	{
+		for (Layer& layer : mLayers)
+		{
+			layer.Destroy();
+		}
+	}
+
 	void Scene::OnEnter()
 	{
 	}
+	
 	void Scene::OnExit()
 	{
 	}
+	
 	void Scene::AddGameObject(eLayerType type, GameObject* gameObj)
 	{
 		mLayers[(int)type].AddGameObject(gameObj);
