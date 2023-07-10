@@ -46,7 +46,7 @@ namespace ya
 
 	void Camera::Initialize()
 	{
-		//EnableLayerMasks();
+
 	}
 
 	void Camera::Update()
@@ -118,7 +118,6 @@ namespace ya
 		{
 			mProjection = Matrix::CreatePerspectiveFieldOfViewLH(XM_2PI / 6.0f, mAspectRatio, mNear, mFar);
 		}
-
 
 		return true;
 	}
@@ -200,6 +199,10 @@ namespace ya
 		{
 			if (gameObj == nullptr)
 				continue;
+			if (gameObj->GetState()
+				!= GameObject::eState::Active)
+				continue;
+
 
 			gameObj->Render();
 		}
@@ -211,6 +214,9 @@ namespace ya
 		{
 			if (gameObj == nullptr)
 				continue;
+			if (gameObj->GetState()
+				!= GameObject::eState::Active)
+				continue;
 
 			gameObj->Render();
 		}
@@ -221,6 +227,9 @@ namespace ya
 		for (GameObject* gameObj : mTransparentGameObjects)
 		{
 			if (gameObj == nullptr)
+				continue;
+			if (gameObj->GetState()
+				!= GameObject::eState::Active)
 				continue;
 
 			gameObj->Render();

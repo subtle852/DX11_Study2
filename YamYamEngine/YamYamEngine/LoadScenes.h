@@ -28,6 +28,6 @@ namespace ya
 		SceneManager::CreateScene<TownScene>(L"TownScene");
 		SceneManager::CreateScene<PlayScene>(L"PlayScene");
 
-		SceneManager::SetActiveScene(L"TitleScene");
+		SceneManager::SetActiveScene(L"PlayScene");
 	}
 }

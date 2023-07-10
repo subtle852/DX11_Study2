@@ -10,6 +10,7 @@
 #include "yaTime.h"
 #include "yaGridScript.h"
 #include "yaObject.h"
+#include "yaRenderer.h"
 
 namespace ya
 {
@@ -22,20 +23,20 @@ namespace ya
 	void PlayScene::Initialize()
 	{
 		// STAGE 01 - BG 
-		{
-			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
+		//{
+		//	std::shared_ptr<Texture> texture
+		//		= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
 
-			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
-				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
-				, eLayerType::Player);// Player로 설정
-			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
+		//	mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
+		//		, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
+		//		, eLayerType::Player);// Player로 설정
+		//	mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
 
-			MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
-			//player->AddComponent<CameraScript>();
-		}
+		//	MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
+		//	//player->AddComponent<CameraScript>();
+		//}
 
 		{
 			std::shared_ptr<Texture> texture
@@ -82,6 +83,7 @@ namespace ya
 			cameraComp = camera->AddComponent<Camera>();
 			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
 			camera->AddComponent<CameraScript>();
+			renderer::cameras.push_back(cameraComp);// Main Camera 렌더러에 추가
 		}
 
 		// UI Camera
@@ -95,17 +97,17 @@ namespace ya
 			//camera->AddComponent<CameraScript>();
 		}
 
-		// Grid
-		{
-			GameObject* grid = new GameObject();
-			grid->SetName(L"Grid");
-			AddGameObject(eLayerType::Grid, grid);
-			MeshRenderer* mr = grid->AddComponent<MeshRenderer>();
-			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr->SetMaterial(Resources::Find<Material>(L"GridMaterial"));
-			GridScript* gridSc = grid->AddComponent<GridScript>();
-			gridSc->SetCamera(cameraComp);
-		}
+		//// Grid
+		//{
+		//	GameObject* grid = new GameObject();
+		//	grid->SetName(L"Grid");
+		//	AddGameObject(eLayerType::Grid, grid);
+		//	MeshRenderer* mr = grid->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"GridMaterial"));
+		//	GridScript* gridSc = grid->AddComponent<GridScript>();
+		//	gridSc->SetCamera(cameraComp);
+		//}
 	}
 
 	void PlayScene::Update()

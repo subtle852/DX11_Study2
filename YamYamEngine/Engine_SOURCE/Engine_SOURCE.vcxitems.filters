@@ -85,6 +85,9 @@
     <Filter Include="Common\Object">
       <UniqueIdentifier>{0125fcf6-7e82-455c-b4d5-c10deafa49c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Component\Collider">
+      <UniqueIdentifier>{f7ba0e5f-0f99-4510-8e05-f10dfce6ff8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -171,6 +174,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaObject.h">
       <Filter>Common\Object</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaCollider2D.h">
+      <Filter>GameObject\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaCollisionManager.h">
+      <Filter>Scene\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMath.cpp">
@@ -241,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaCamera.cpp">
       <Filter>GameObject\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaCollider2D.cpp">
+      <Filter>GameObject\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaCollisionManager.cpp">
+      <Filter>Scene\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,8 @@
 
 #include "LoadScenes.h"
 
+#include "guiEditor.h"
+
 #ifdef _DEBUG
 #pragma comment(lib, "..\\x64\\Debug\\YamYamEngine.lib")
 #else
@@ -76,11 +78,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         {
             // 여기서 게임 로직이 돌아가야한다.
             application.Run();
+            gui::Editor::Run();
+            application.Present();
         }
     }
 
     renderer::Release();
     ya::SceneManager::Release();
+    gui::Editor::Release();
 
     return (int) msg.wParam;
 }
@@ -141,6 +146,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    application.Initialize();
    ya::InitializeScenes();
+   gui::Editor::Initialize();
 
    return TRUE;
 }

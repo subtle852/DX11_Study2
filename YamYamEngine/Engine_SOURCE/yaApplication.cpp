@@ -60,13 +60,16 @@ namespace ya
 		//SceneManager::Render();// 이 방식이 아닌 Renderer를 통해 Camera를 Render
 		renderer::Render();// 위 방식이 아닌 Renderer를 통해 Camera를 Render
 		//graphicDevice->Draw();
-
-		graphicDevice->Present();
 	}
 
 	void Application::Destroy()
 	{
 		SceneManager::Destroy();
+	}
+
+	void Application::Present()
+	{
+		graphicDevice->Present();
 	}
 
 	void Application::SetWindow(HWND hwnd, UINT width, UINT height)
