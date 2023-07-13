@@ -11,6 +11,7 @@
 #include "yaGridScript.h"
 #include "yaObject.h"
 #include "yaRenderer.h"
+#include "yaCollider2D.h"
 
 namespace ya
 {
@@ -23,20 +24,20 @@ namespace ya
 	void PlayScene::Initialize()
 	{
 		// STAGE 01 - BG 
-		//{
-		//	std::shared_ptr<Texture> texture
-		//		= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
 
-		//	mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
-		//		, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
-		//		, eLayerType::Player);// Player로 설정
-		//	mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
+			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
+				, eLayerType::Player);// Player로 설정
+			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
 
-		//	MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
-		//	//player->AddComponent<CameraScript>();
-		//}
+			MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_01"));
+			//player->AddComponent<CameraScript>();
+		}
 
 		{
 			std::shared_ptr<Texture> texture
@@ -50,6 +51,17 @@ namespace ya
 			MeshRenderer* mr3 = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
 			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+
+			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
+			Collider2D* cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
+			cd->SetCenter(Vector2(0.5f, 0.0f));
+
+			cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
+			//cd->SetCenter(Vector2(0.f, 0.0f));
+
+			std::vector<Collider2D*> comps 
+				= mUI_STAGE01_STATE->GetComponents<Collider2D>();
+
 			//player->AddComponent<CameraScript>();
 
 			//// 부모 자식 Transform
@@ -84,6 +96,7 @@ namespace ya
 			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
 			camera->AddComponent<CameraScript>();
 			renderer::cameras.push_back(cameraComp);// Main Camera 렌더러에 추가
+			renderer::mainCamera = cameraComp;
 		}
 
 		// UI Camera
@@ -134,8 +147,8 @@ namespace ya
 		//viewport.minDepth = 0.0f;
 		//viewport.maxDepth = 1.0f;
 
-		//pos = viewport.Unproject(pos, Camera::GetProjectionMatrix(), Camera::GetViewMatrix(), Matrix::Identity);
-		//pos2 = viewport.Unproject(pos2, Camera::GetProjectionMatrix(), Camera::GetViewMatrix(), Matrix::Identity);
+		//pos = viewport.Unproject(pos, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
+		//pos2 = viewport.Unproject(pos2, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
 
 		Scene::LateUpdate();
 	}
