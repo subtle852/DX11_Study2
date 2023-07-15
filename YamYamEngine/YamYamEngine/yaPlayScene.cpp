@@ -137,18 +137,18 @@ namespace ya
 
 	void PlayScene::LateUpdate()
 	{
-		//Vector3 pos(600, 450, 0.0f);
-		//Vector3 pos2(600, 450, 1000.0f);
-		//Viewport viewport;
-		//viewport.width = 1600.0f;
-		//viewport.height = 900.0f;
-		//viewport.x = 0;
-		//viewport.y = 0;
-		//viewport.minDepth = 0.0f;
-		//viewport.maxDepth = 1.0f;
+		Vector3 pos(640, 360, 0.0f);
+		Vector3 pos2(640, 360, 1000.0f);
+		Viewport viewport;
+		viewport.width = 1280.0f;
+		viewport.height = 720.0f;
+		viewport.x = 0;
+		viewport.y = 0;
+		viewport.minDepth = 0.0f;
+		viewport.maxDepth = 1.0f;
 
-		//pos = viewport.Unproject(pos, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
-		//pos2 = viewport.Unproject(pos2, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
+		pos = viewport.Unproject(pos, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
+		pos2 = viewport.Unproject(pos2, Camera::GetGpuProjectionMatrix(), Camera::GetGpuViewMatrix(), Matrix::Identity);
 
 		Scene::LateUpdate();
 	}
