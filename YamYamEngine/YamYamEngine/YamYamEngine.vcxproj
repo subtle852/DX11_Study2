@@ -154,6 +154,7 @@
     <ClInclude Include="yaCameraScript.h" />
     <ClInclude Include="yaGridScript.h" />
     <ClInclude Include="yaMainScene.h" />
+    <ClInclude Include="yaPlayerScript.h" />
     <ClInclude Include="yaPlayScene.h" />
     <ClInclude Include="yaSelectScene.h" />
     <ClInclude Include="yaTitleScene.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="yaGridScript.cpp" />
     <ClCompile Include="yaMainScene.cpp" />
     <ClCompile Include="YamYamEngine.cpp" />
+    <ClCompile Include="yaPlayerScript.cpp" />
     <ClCompile Include="yaPlayScene.cpp" />
     <ClCompile Include="yaSelectScene.cpp" />
     <ClCompile Include="yaTitleScene.cpp" />

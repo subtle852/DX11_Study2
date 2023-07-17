@@ -23,6 +23,9 @@
     <ClCompile Include="yaGridScript.cpp">
       <Filter>Contents\Script</Filter>
     </ClCompile>
+    <ClCompile Include="yaPlayerScript.cpp">
+      <Filter>Contents\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -48,6 +51,9 @@
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaGridScript.h">
+      <Filter>Contents\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="yaPlayerScript.h">
       <Filter>Contents\Script</Filter>
     </ClInclude>
   </ItemGroup>

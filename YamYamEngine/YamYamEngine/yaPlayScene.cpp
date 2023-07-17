@@ -12,6 +12,8 @@
 #include "yaObject.h"
 #include "yaRenderer.h"
 #include "yaCollider2D.h"
+#include "yaCollisionManager.h"
+#include "yaPlayerScript.h"
 
 namespace ya
 {
@@ -23,6 +25,8 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
+		CollisionManager::SetLayer(eLayerType::Player, eLayerType::Monster, true);
+
 		// STAGE 01 - BG 
 		{
 			std::shared_ptr<Texture> texture
@@ -45,7 +49,7 @@ namespace ya
 
 			mUI_STAGE01_STATE = object::Instantiate<GameObject>(Vector3(-2.1f, 1.4f, 49.f)
 				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 4.0f
-				, eLayerType::UI);// UI로 설정
+				, eLayerType::Player);// UI로 설정해야하는데 충돌 확인을 위해 Player로 설정해둔 상태
 			mUI_STAGE01_STATE->SetName(L"UI_STAGE01_STATE");
 
 			MeshRenderer* mr3 = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
@@ -54,13 +58,13 @@ namespace ya
 
 			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
 			Collider2D* cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
-			cd->SetCenter(Vector2(0.5f, 0.0f));
+			cd->SetCenter(Vector2(0.0f, 0.0f));
 
-			cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
-			//cd->SetCenter(Vector2(0.f, 0.0f));
-
-			std::vector<Collider2D*> comps 
-				= mUI_STAGE01_STATE->GetComponents<Collider2D>();
+			//{// 콜라이더 추가하고 comps를 불러오는 GetComponents 활용법
+			//	cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
+			//	std::vector<Collider2D*> comps
+			//		= mUI_STAGE01_STATE->GetComponents<Collider2D>();
+			//}
 
 			//player->AddComponent<CameraScript>();
 
@@ -82,6 +86,27 @@ namespace ya
 
 			//	Vector3 pos = mUI_STAGE01_STATE->GetComponent<Transform>()->GetRotation();
 			//}
+		}
+
+		{// 충돌을 위한 오브젝트
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
+
+			GameObject* monster = object::Instantiate<GameObject>(Vector3(-2.1f, -1.4f, 49.f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 4.0f
+				, eLayerType::Monster);
+			monster->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 45.0f));
+			monster->SetName(L"monster");
+
+			MeshRenderer* mr3 = monster->AddComponent<MeshRenderer>();
+			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+
+			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
+			Collider2D* cd = monster->AddComponent<Collider2D>();
+			cd->SetCenter(Vector2(0.0f, 0.0f));
+
+			monster->AddComponent<PlayerScript>();
 		}
 
 		// Main Camera
