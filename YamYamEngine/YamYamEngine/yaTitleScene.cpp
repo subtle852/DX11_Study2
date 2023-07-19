@@ -45,7 +45,6 @@ namespace ya
 		AddGameObject(eLayerType::Player, camera);
 		camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 		Camera* cameraComp = camera->AddComponent<Camera>();
-		camera->AddComponent<CameraScript>();
 	}
 
 	void TitleScene::Update()

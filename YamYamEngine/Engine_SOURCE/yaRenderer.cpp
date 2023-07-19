@@ -351,15 +351,15 @@ namespace renderer
 		Resources::Insert(L"DebugMaterial", material);
 
 		//////////////////////////////////////////////////////////////////
-#pragma region SET TEXTURE
-//////////////////////////////////////////////////////////// TITLE
+		#pragma region SET TEXTURE
+		//////////////////////////////////////////////////////////// TITLE
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
-			spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);// eRenderingMode 설정
+			//spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);// eRenderingMode 설정
 			Resources::Insert(L"SpriteMaterial_BG_TITLE_01", spriteMaterial);
 		}
 		{
@@ -463,6 +463,57 @@ namespace renderer
 			spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
 			Resources::Insert(L"SpriteMaterial_UI_STAGE01_STATE", spriteMaterial);
 		}
+
+		//////////////////////////////////////////////////////////// SUBSPACE 01
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_SUBSPACE01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_SUBSPACE01.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_BG_STAGE01_SUBSPACE01", spriteMaterial);
+		}
+
+		//////////////////////////////////////////////////////////// SUBSPACE 02
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_SUBSPACE02", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_SUBSPACE02.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_BG_STAGE01_SUBSPACE02", spriteMaterial);
+		}
+
+		//////////////////////////////////////////////////////////// SHOP
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_SHOP", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_SHOP.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_BG_STAGE01_SHOP", spriteMaterial);
+		}
+
+		//////////////////////////////////////////////////////////// BOSS 01
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_STAGE01_BOSS01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_BOSS01.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_BG_STAGE01_BOSS01", spriteMaterial);
+		}
+
+		//////////////////////////////////////////////////////////// ENDING
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_ENDING", L"..\\Resources\\SCENE\\ENDING\\BG_ENDING.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_BG_ENDING", spriteMaterial);
+		}
+
 
 #pragma endregion
 	}

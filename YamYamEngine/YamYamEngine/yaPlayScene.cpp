@@ -32,8 +32,8 @@ namespace ya
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"BG_STAGE01_01", L"..\\Resources\\SCENE\\STAGE01\\BG_STAGE01_01.png");
 
-			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.38f, 50.0f)
-				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 265.0f
+			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.34f, 50.0f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 272.0f
 				, eLayerType::Player);// Player·Î ¼³Á¤
 			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
 
@@ -156,6 +156,12 @@ namespace ya
 		//pos.x -= 1.0f * Time::DeltaTime();
 
 		//tr->SetPosition(pos);
+
+		if (Input::GetKeyDown(eKeyCode::ENTER))
+		{
+			SceneManager::LoadScene(L"ShopScene");
+		}
+
 
 		Scene::Update();
 	}
