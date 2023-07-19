@@ -88,6 +88,12 @@
     <Filter Include="GameObject\Component\Collider">
       <UniqueIdentifier>{f7ba0e5f-0f99-4510-8e05-f10dfce6ff8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Animation">
+      <UniqueIdentifier>{77da860c-7a4a-41ce-9b0f-b282ac815b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Component\Animator">
+      <UniqueIdentifier>{ef391835-0a81-4239-b136-ff2042c36a29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -180,6 +186,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaCollisionManager.h">
       <Filter>Scene\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaAnimation.h">
+      <Filter>Resource\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaAnimator.h">
+      <Filter>GameObject\Component\Animator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMath.cpp">
@@ -256,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaCollisionManager.cpp">
       <Filter>Scene\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaAnimation.cpp">
+      <Filter>Resource\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaAnimator.cpp">
+      <Filter>GameObject\Component\Animator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

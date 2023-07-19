@@ -26,6 +26,9 @@ namespace ya::graphics
 		float GetImageRatioOfWidth() { return mImageRatioOfWidth; }
 		float GetImageRatioOfHeight() { return mImageRatioOfHeight; }
 
+		size_t GetWidth() { return mImage.GetMetadata().width; }
+		size_t GetHeight() { return mImage.GetMetadata().height; }
+
 	private:
 		ScratchImage mImage;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> mTexture;

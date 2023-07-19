@@ -11,6 +11,7 @@ namespace ya::enums
 		Collider2D,
 		Particle,
 		MeshRenderer,
+		Animator,
 		Script,
 		Camera,
 		End,
@@ -32,6 +33,7 @@ namespace ya::enums
 		Shader,
 		Material,
 		Mesh,
+		Animation,
 		End,
 	};
 
