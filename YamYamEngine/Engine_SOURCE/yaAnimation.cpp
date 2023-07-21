@@ -1,7 +1,8 @@
 #include "yaAnimation.h"
 #include "yaTime.h"
 #include "yaAnimator.h"
-
+#include "yaRenderer.h"
+#include "yaConstantBuffer.h"
 
 namespace ya
 {
@@ -64,8 +65,10 @@ namespace ya
 			Sprite sprite = {};
 			sprite.leftTop.x = leftTop.x + (i * size.x) / width;
 			sprite.leftTop.y = leftTop.y / height;
-			sprite.size = size;
+			sprite.size.x = size.x / width;
+			sprite.size.y = size.y / height;
 			sprite.offset = offset;
+			sprite.atlasSize = Vector2(200.0f / width, 200.0f / height);// 200 200 사이즈로 설정해둔 것 SetScale로도 바뀌긴 함
 			sprite.duration = duration;
 
 			mSprites.push_back(sprite);
@@ -79,7 +82,19 @@ namespace ya
 		mAtlas->BindShader(graphics::eShaderStage::PS, 12);
 
 		// AnimationCB
+		renderer::AnimatorCB data = {};
 
+		data.spriteLeftTop = mSprites[mIndex].leftTop;
+		data.spriteSize = mSprites[mIndex].size;
+		data.spriteOffset = mSprites[mIndex].offset;
+		data.atlasSize = mSprites[mIndex].atlasSize;
+		data.animationType = 1;
+
+		ConstantBuffer* cb = renderer::constantBuffer[(UINT)eCBType::Animator];
+		cb->SetData(&data);
+
+		cb->Bind(eShaderStage::VS);
+		cb->Bind(eShaderStage::PS);
 
 	}
 	void Animation::Reset()

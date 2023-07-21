@@ -14,6 +14,7 @@
 #include "yaCollider2D.h"
 #include "yaCollisionManager.h"
 #include "yaPlayerScript.h"
+#include "yaAnimator.h"
 
 namespace ya
 {
@@ -105,6 +106,14 @@ namespace ya
 			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
 			Collider2D* cd = monster->AddComponent<Collider2D>();
 			cd->SetCenter(Vector2(0.0f, 0.0f));
+
+			std::shared_ptr<Texture> atlas
+				= Resources::Load<Texture>(L"LinkSprite", L"..\\Resources\\Texture\\linkSprites.png");
+
+			Animator* at = monster->AddComponent<Animator>();
+			at->Create(L"Idle", atlas, Vector2(0.0f, 0.0f), Vector2(120.0f, 130.0f), 3);
+
+			at->PlayAnimation(L"Idle", true);
 
 			monster->AddComponent<PlayerScript>();
 		}
