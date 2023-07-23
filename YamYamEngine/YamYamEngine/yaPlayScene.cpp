@@ -50,14 +50,13 @@ namespace ya
 
 			mUI_STAGE01_STATE = object::Instantiate<GameObject>(Vector3(-2.1f, 1.4f, 49.f)
 				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 4.0f
-				, eLayerType::Player);// UI로 설정해야하는데 충돌 확인을 위해 Player로 설정해둔 상태
+				, eLayerType::UI);
 			mUI_STAGE01_STATE->SetName(L"UI_STAGE01_STATE");
 
-			MeshRenderer* mr3 = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
-			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+			MeshRenderer* mr = mUI_STAGE01_STATE->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
 
-			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
 			Collider2D* cd = mUI_STAGE01_STATE->AddComponent<Collider2D>();
 			cd->SetCenter(Vector2(0.0f, 0.0f));
 
@@ -66,8 +65,6 @@ namespace ya
 			//	std::vector<Collider2D*> comps
 			//		= mUI_STAGE01_STATE->GetComponents<Collider2D>();
 			//}
-
-			//player->AddComponent<CameraScript>();
 
 			//// 부모 자식 Transform
 			//{
@@ -89,33 +86,31 @@ namespace ya
 			//}
 		}
 
-		{// 충돌을 위한 오브젝트
-			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"UI_STAGE01_STATE", L"..\\Resources\\SCENE\\STAGE01\\UI_STAGE01_STATE.png");
-
-			GameObject* monster = object::Instantiate<GameObject>(Vector3(-2.1f, -1.4f, 49.f)
-				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 4.0f
+		// 애니메이션
+		{
+			GameObject* player 
+				= object::Instantiate<GameObject>(Vector3(-2.0f, 0.0f, 40.f)
+				, Vector3::One
 				, eLayerType::Monster);
-			monster->GetComponent<Transform>()->SetRotation(Vector3(0.0f, 0.0f, 45.0f));
-			monster->SetName(L"monster");
+			player->SetName(L"Zelda");
 
-			MeshRenderer* mr3 = monster->AddComponent<MeshRenderer>();
-			mr3->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-			mr3->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_UI_STAGE01_STATE"));
+			Collider2D* cd = player->AddComponent<Collider2D>();
+			cd->SetSize(Vector2(1.2f, 1.2f));
 
-			//mUI_STAGE01_STATE->AddComponent<Collider2D>();
-			Collider2D* cd = monster->AddComponent<Collider2D>();
-			cd->SetCenter(Vector2(0.0f, 0.0f));
+			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
 
 			std::shared_ptr<Texture> atlas
 				= Resources::Load<Texture>(L"LinkSprite", L"..\\Resources\\Texture\\linkSprites.png");
 
-			Animator* at = monster->AddComponent<Animator>();
+			Animator* at = player->AddComponent<Animator>();
 			at->Create(L"Idle", atlas, Vector2(0.0f, 0.0f), Vector2(120.0f, 130.0f), 3);
 
-			at->PlayAnimation(L"Idle", true);
+			//at->CompleteEvent(L"Idle") = std::bind();
 
-			monster->AddComponent<PlayerScript>();
+			at->PlayAnimation(L"Idle", true);
+			player->AddComponent<PlayerScript>();
 		}
 
 		// Main Camera
@@ -141,6 +136,7 @@ namespace ya
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 			Camera* cameraComp = camera->AddComponent<Camera>();
 			cameraComp->TurnLayerMask(eLayerType::Player, false);// Player를 안보이게 설정
+			cameraComp->TurnLayerMask(eLayerType::Monster, false);
 			//camera->AddComponent<CameraScript>();
 		}
 

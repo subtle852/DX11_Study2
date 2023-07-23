@@ -9,11 +9,25 @@ namespace ya
 	}
 	Animator::~Animator()
 	{
+		for (auto& iter : mAnimations)
+		{
+			delete iter.second;
+			iter.second = nullptr;
+		}
+
+
+		for (auto& iter : mEvents)
+		{
+			delete iter.second;
+			iter.second = nullptr;
+		}
 	}
+
 	void Animator::Initialize()
 	{
 
 	}
+
 	void Animator::Update()
 	{
 		if (mActiveAnimation == nullptr)
@@ -21,20 +35,28 @@ namespace ya
 
 		if (mActiveAnimation->IsComplete() && mbLoop)
 		{
+			Events* events
+				= FindEvents(mActiveAnimation->GetKey());
+			if (events)
+				events->completeEvent();
+
 			mActiveAnimation->Reset();
 		}
 
 		mActiveAnimation->LateUpdate();
 	}
+
 	void Animator::LateUpdate()
 	{
 
 	}
+
 	void Animator::Render()
 	{
 
 	}
-	Animation* Animator::Create(const std::wstring& name
+
+	void Animator::Create(const std::wstring& name
 		, std::shared_ptr<graphics::Texture> atlas
 		, Vector2 leftTop
 		, Vector2 size
@@ -44,7 +66,7 @@ namespace ya
 	{
 		Animation* animation = FindAnimation(name);
 		if (nullptr != animation)
-			return animation;
+			return;
 
 		animation = new Animation();
 		animation->SetKey(name);
@@ -58,6 +80,13 @@ namespace ya
 			, duration);
 
 		mAnimations.insert(std::make_pair(name, animation));
+
+		Events* events = FindEvents(name);
+		if (events != nullptr)
+			return;
+
+		events = new Events();
+		mEvents.insert(std::make_pair(name, events));
 	}
 
 	Animation* Animator::FindAnimation(const std::wstring& name)
@@ -71,13 +100,39 @@ namespace ya
 		return iter->second;
 	}
 
+	Animator::Events* Animator::FindEvents(const std::wstring& name)
+	{
+		std::map<std::wstring, Events*>::iterator iter
+			= mEvents.find(name);
+
+		if (iter == mEvents.end())
+			return nullptr;
+
+		return iter->second;
+	}
+
 	void Animator::PlayAnimation(const std::wstring& name, bool loop)
 	{
+		Animation* prevAnimation = mActiveAnimation;
+
+		Events* events;
+		if (prevAnimation != nullptr)
+		{
+
+			events = FindEvents(prevAnimation->GetKey());
+			if (events)
+				events->endEvent();
+		}
+
 		Animation* animation = FindAnimation(name);
 		if (animation)
 		{
 			mActiveAnimation = animation;
 		}
+
+		events = FindEvents(mActiveAnimation->GetKey());
+		if (events)
+			events->startEvent();
 
 		mbLoop = loop;
 		mActiveAnimation->Reset();
@@ -89,5 +144,26 @@ namespace ya
 			return;
 
 		mActiveAnimation->Binds();
+	}
+
+	std::function<void()>& Animator::StartEvent(const std::wstring key)
+	{
+		Events* events = FindEvents(key);
+
+		return events->startEvent.mEvent;
+	}
+
+	std::function<void()>& Animator::CompleteEvent(const std::wstring key)
+	{
+		Events* events = FindEvents(key);
+
+		return events->completeEvent.mEvent;
+	}
+
+	std::function<void()>& Animator::EndEvent(const std::wstring key)
+	{
+		Events* events = FindEvents(key);
+
+		return events->endEvent.mEvent;
 	}
 }

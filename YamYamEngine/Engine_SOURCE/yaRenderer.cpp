@@ -70,6 +70,11 @@ namespace renderer
 			, shader->GetVSCode()
 			, shader->GetInputLayoutAddressOf());
 
+		shader = ya::Resources::Find<Shader>(L"SpriteAnimationShader");
+		ya::graphics::GetDevice()->CreateInputLayout(arrLayout, 3
+			, shader->GetVSCode()
+			, shader->GetInputLayoutAddressOf());
+
 
 #pragma endregion
 #pragma region Sampler State
@@ -306,10 +311,15 @@ namespace renderer
 		spriteShader->Create(eShaderStage::PS, L"SpritePS.hlsl", "main");
 		ya::Resources::Insert(L"SpriteShader", spriteShader);
 
-		std::shared_ptr<Shader> girdShader = std::make_shared<Shader>();
-		girdShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
-		girdShader->Create(eShaderStage::PS, L"GridPS.hlsl", "main");
-		ya::Resources::Insert(L"GridShader", girdShader);
+		std::shared_ptr<Shader> spriteAniShader = std::make_shared<Shader>();
+		spriteAniShader->Create(eShaderStage::VS, L"SpriteAnimationVS.hlsl", "main");
+		spriteAniShader->Create(eShaderStage::PS, L"SpriteAnimationPS.hlsl", "main");
+		ya::Resources::Insert(L"SpriteAnimationShader", spriteAniShader);
+
+		std::shared_ptr<Shader> gridShader = std::make_shared<Shader>();
+		gridShader->Create(eShaderStage::VS, L"GridVS.hlsl", "main");
+		gridShader->Create(eShaderStage::PS, L"GridPS.hlsl", "main");
+		ya::Resources::Insert(L"GridShader", gridShader);
 
 		std::shared_ptr<Shader> debugShader = std::make_shared<Shader>();
 		debugShader->Create(eShaderStage::VS, L"DebugVS.hlsl", "main");
@@ -340,6 +350,13 @@ namespace renderer
 		material->SetRenderingMode(eRenderingMode::Transparent);
 		Resources::Insert(L"SpriteMaterial02", material);
 
+		spriteShader
+			= Resources::Find<Shader>(L"SpriteAnimationShader");
+		material = std::make_shared<Material>();
+		material->SetShader(spriteShader);
+		material->SetRenderingMode(eRenderingMode::Transparent);
+		Resources::Insert(L"SpriteAnimationMaterial", material);
+
 		std::shared_ptr<Shader> gridShader
 			= Resources::Find<Shader>(L"GridShader");
 
@@ -357,6 +374,9 @@ namespace renderer
 		//////////////////////////////////////////////////////////////////
 		#pragma region SET TEXTURE
 		//////////////////////////////////////////////////////////// TITLE
+		spriteShader
+			= Resources::Find<Shader>(L"SpriteShader");
+
 		{
 			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
