@@ -28,7 +28,7 @@ namespace ya
 
 	void Collider2D::Update()
 	{
-
+		// Collider가 붙은 오브젝트의 eLayerType이 UI인 경우 같이 이동하도록 만드는 것에대하여
 	}
 
 	void Collider2D::LateUpdate()
