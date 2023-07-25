@@ -89,10 +89,10 @@ namespace ya
 
 		// 애니메이션
 		{
-			GameObject* player 
+			GameObject* player
 				= object::Instantiate<GameObject>(Vector3(-2.0f, 0.0f, 40.f)
-				, Vector3::One * 5
-				, eLayerType::Monster);
+					, Vector3::One * 5
+					, eLayerType::Monster);
 			player->SetName(L"Ramona");
 
 			Collider2D* cd = player->AddComponent<Collider2D>();
@@ -107,7 +107,7 @@ namespace ya
 			Animator* at = player->AddComponent<Animator>();
 			at->Create(L"Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
 			at->PlayAnimation(L"Idle", true);
-				
+
 			//at->CompleteEvent(L"Idle") = std::bind();
 			player->AddComponent<PlayerScript>();
 		}

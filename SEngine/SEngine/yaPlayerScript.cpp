@@ -23,58 +23,58 @@ namespace ya
 	{
 		std::shared_ptr<Texture> atlas
 			= Resources::Load<Texture>(L"Walk", L"..\\Resources\\Texture\\Walk.png");
-		Animator*at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"WalkRight", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"WalkRight", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6, Vector2::Zero, 0.05f);
 
 		atlas
 			= Resources::Load<Texture>(L"Walk", L"..\\Resources\\Texture\\Walk.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"WalkLeft", atlas, enums::eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
+		at->Create(L"WalkLeft", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
 
 		atlas
 			= Resources::Load<Texture>(L"Run", L"..\\Resources\\Texture\\Run.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Run", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(424.0f / 8.0f, 67.0f), 8);
+		at->Create(L"Run", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(424.0f / 8.0f, 67.0f), 8);
 
 		atlas
 			= Resources::Load<Texture>(L"Jump", L"..\\Resources\\Texture\\Jump.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Jump", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(432.0f / 9.0f, 78.0f), 9);
+		at->Create(L"Jump", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(432.0f / 9.0f, 78.0f), 9);
 
 		//
 
 		atlas
 			= Resources::Load<Texture>(L"NormalAttack", L"..\\Resources\\Texture\\NormalAttack.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"NormalAttack", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3);
+		at->Create(L"NormalAttack", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3);
 
 		atlas
 			= Resources::Load<Texture>(L"Kick", L"..\\Resources\\Texture\\Kick.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Kick", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
+		at->Create(L"Kick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
 
 		atlas
 			= Resources::Load<Texture>(L"RoundKick", L"..\\Resources\\Texture\\RoundKick.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"RoundKick", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13);
+		at->Create(L"RoundKick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13);
 
 		atlas
 			= Resources::Load<Texture>(L"Guard", L"..\\Resources\\Texture\\Guard.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Guard", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(219.0f / 5.0f, 70.0f), 5);
+		at->Create(L"Guard", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(219.0f / 5.0f, 70.0f), 5);
 
 		atlas
 			= Resources::Load<Texture>(L"Evade", L"..\\Resources\\Texture\\Evade.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Evade", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
+		at->Create(L"Evade", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
 
 		atlas
 			= Resources::Load<Texture>(L"Super", L"..\\Resources\\Texture\\Super.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Super", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
+		at->Create(L"Super", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
 
 
-		#pragma region Animation Path, Size
+#pragma region Animation Path, Size
 		//std::shared_ptr<Texture> atlas
 			//	= Resources::Load<Texture>(L"Walk", L"..\\Resources\\Texture\\Walk.png");
 			//Animator* at = player->AddComponent<Animator>();
@@ -315,11 +315,11 @@ namespace ya
 			//Animator* at = player->AddComponent<Animator>();
 			//at->Create(L"Super", atlas, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
 			//at->PlayAnimation(L"Super", true);
-			#pragma endregion
+#pragma endregion
 
-		/// <summary>
-		///
-		/// </summary>
+/// <summary>
+///
+/// </summary>
 		at = GetOwner()->GetComponent<Animator>();
 		at->CompleteEvent(L"Jump") = std::bind(&PlayerScript::Complete, this);
 		at->CompleteEvent(L"Super") = std::bind(&PlayerScript::SuperComplete, this);
