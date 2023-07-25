@@ -13,6 +13,7 @@ namespace ya::enums
 		MeshRenderer,
 		Animator,
 		Script,
+		Light,
 		Camera,
 		End,
 	};
@@ -23,6 +24,7 @@ namespace ya::enums
 		BG,
 		Player,
 		Monster,
+		Light,
 		UI,
 		End = 16,
 	};
@@ -51,5 +53,13 @@ namespace ya::enums
 		None,
 		Front,
 		Back,
+	};
+
+	enum class eLightType
+	{
+		Directional,
+		Point,
+		Spot,
+		End,
 	};
 }

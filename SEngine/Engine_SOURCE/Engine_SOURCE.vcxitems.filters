@@ -94,6 +94,9 @@
     <Filter Include="GameObject\Component\Animator">
       <UniqueIdentifier>{ef391835-0a81-4239-b136-ff2042c36a29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics\StructedBuffer">
+      <UniqueIdentifier>{42a29a74-7b19-47b7-9e06-a2da48927b5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -192,6 +195,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)yaAnimator.h">
       <Filter>GameObject\Component\Animator</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)yaStructedBuffer.h">
+      <Filter>Graphics\StructedBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaMath.cpp">
@@ -274,6 +281,10 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)yaAnimator.cpp">
       <Filter>GameObject\Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)yaStructedBuffer.cpp">
+      <Filter>Graphics\StructedBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

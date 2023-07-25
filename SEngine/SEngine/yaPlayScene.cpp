@@ -15,6 +15,7 @@
 #include "yaCollisionManager.h"
 #include "yaPlayerScript.h"
 #include "yaAnimator.h"
+#include "yaLight.h"
 
 namespace ya
 {
@@ -109,6 +110,16 @@ namespace ya
 				
 			//at->CompleteEvent(L"Idle") = std::bind();
 			player->AddComponent<PlayerScript>();
+		}
+
+		// Light
+		{
+			GameObject* light = new GameObject();
+			light->SetName(L"Smile");
+			AddGameObject(eLayerType::Light, light);
+			Light* lightComp = light->AddComponent<Light>();
+			lightComp->SetType(eLightType::Directional);
+			lightComp->SetColor(Vector4(1.0f, 0.0f, 1.0f, 1.0f));
 		}
 
 		// Main Camera
