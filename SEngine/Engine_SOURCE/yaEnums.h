@@ -45,4 +45,11 @@ namespace ya::enums
 		Cube,
 		End,
 	};
+
+	enum class eAnimationType : UINT
+	{
+		None,
+		Front,
+		Back,
+	};
 }

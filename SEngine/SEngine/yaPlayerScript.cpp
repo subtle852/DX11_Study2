@@ -24,49 +24,54 @@ namespace ya
 		std::shared_ptr<Texture> atlas
 			= Resources::Load<Texture>(L"Walk", L"..\\Resources\\Texture\\Walk.png");
 		Animator*at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Walk", atlas, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
+		at->Create(L"WalkRight", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
+
+		atlas
+			= Resources::Load<Texture>(L"Walk", L"..\\Resources\\Texture\\Walk.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"WalkLeft", atlas, enums::eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(210.0f / 6.0f, 68.0f), 6);
 
 		atlas
 			= Resources::Load<Texture>(L"Run", L"..\\Resources\\Texture\\Run.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Run", atlas, Vector2(0.0f, 0.0f), Vector2(424.0f / 8.0f, 67.0f), 8);
+		at->Create(L"Run", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(424.0f / 8.0f, 67.0f), 8);
 
 		atlas
 			= Resources::Load<Texture>(L"Jump", L"..\\Resources\\Texture\\Jump.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Jump", atlas, Vector2(0.0f, 0.0f), Vector2(432.0f / 9.0f, 78.0f), 9);
+		at->Create(L"Jump", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(432.0f / 9.0f, 78.0f), 9);
 
 		//
 
 		atlas
 			= Resources::Load<Texture>(L"NormalAttack", L"..\\Resources\\Texture\\NormalAttack.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"NormalAttack", atlas, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3);
+		at->Create(L"NormalAttack", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3);
 
 		atlas
 			= Resources::Load<Texture>(L"Kick", L"..\\Resources\\Texture\\Kick.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Kick", atlas, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
+		at->Create(L"Kick", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
 
 		atlas
 			= Resources::Load<Texture>(L"RoundKick", L"..\\Resources\\Texture\\RoundKick.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"RoundKick", atlas, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13);
+		at->Create(L"RoundKick", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13);
 
 		atlas
 			= Resources::Load<Texture>(L"Guard", L"..\\Resources\\Texture\\Guard.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Guard", atlas, Vector2(0.0f, 0.0f), Vector2(219.0f / 5.0f, 70.0f), 5);
+		at->Create(L"Guard", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(219.0f / 5.0f, 70.0f), 5);
 
 		atlas
 			= Resources::Load<Texture>(L"Evade", L"..\\Resources\\Texture\\Evade.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Evade", atlas, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
+		at->Create(L"Evade", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
 
 		atlas
 			= Resources::Load<Texture>(L"Super", L"..\\Resources\\Texture\\Super.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Super", atlas, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
+		at->Create(L"Super", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
 
 
 		#pragma region Animation Path, Size
@@ -331,7 +336,19 @@ namespace ya
 			tr->SetPosition(pos);
 		}
 
-		else if (Input::GetKey(eKeyCode::RIGHT))
+		if (Input::GetKeyDown(eKeyCode::LEFT))
+		{
+			Animator* at = this->GetOwner()->GetComponent<Animator>();
+			at->PlayAnimation(L"WalkLeft", true);
+		}
+
+		if (Input::GetKeyUp(eKeyCode::LEFT))
+		{
+			Animator* at = this->GetOwner()->GetComponent<Animator>();
+			at->PlayAnimation(L"Idle", true);
+		}
+
+		if (Input::GetKey(eKeyCode::RIGHT))
 		{
 			pos.x += 1.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
@@ -340,7 +357,7 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::RIGHT))
 		{
 			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Walk", true);
+			at->PlayAnimation(L"WalkRight", true);
 		}
 
 		if (Input::GetKeyUp(eKeyCode::RIGHT))
@@ -355,7 +372,7 @@ namespace ya
 			tr->SetPosition(pos);
 
 			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Walk", true);
+			at->PlayAnimation(L"WalkRight", true);
 		}
 
 		else if (Input::GetKey(eKeyCode::UP))
@@ -364,7 +381,7 @@ namespace ya
 			tr->SetPosition(pos);
 
 			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Walk", true);
+			at->PlayAnimation(L"WalkRight", true);
 		}
 
 		if (Input::GetKeyDown(eKeyCode::LSHIFT))
@@ -417,8 +434,8 @@ namespace ya
 		if (Input::GetKeyDown(eKeyCode::N))
 		{
 			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			//at->PlayAnimation(L"Evade", false);
-			at->PlayAnimation(L"Super", true);
+			at->PlayAnimation(L"Evade", false);
+			//at->PlayAnimation(L"Super", true);
 
 			//Transform* tr = this->GetOwner()->GetComponent<Transform>();
 			//Vector3 pos = tr->GetPosition();

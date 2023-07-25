@@ -58,6 +58,7 @@ namespace ya
 
 	void Animator::Create(const std::wstring& name
 		, std::shared_ptr<graphics::Texture> atlas
+		, enums::eAnimationType type
 		, Vector2 leftTop
 		, Vector2 size
 		, UINT columnLength
@@ -73,6 +74,7 @@ namespace ya
 
 		animation->Create(name
 			, atlas
+			, type
 			, leftTop
 			, size
 			, columnLength

@@ -48,6 +48,7 @@ namespace ya
 	}
 	void Animation::Create(std::wstring name
 		, std::shared_ptr<graphics::Texture> atlas
+		, enums::eAnimationType type
 		, Vector2 leftTop
 		, Vector2 size
 		, UINT columnLength
@@ -63,8 +64,11 @@ namespace ya
 		for (size_t i = 0; i < columnLength; i++)
 		{
 			Sprite sprite = {};
+			sprite.type = type;
 			sprite.leftTop.x = leftTop.x + (i * size.x) / width;
 			sprite.leftTop.y = leftTop.y / height;
+			sprite.rightTop.x = width - ((i * size.x) / width);
+			sprite.rightTop.y = leftTop.y / height;
 			sprite.size.x = size.x / width;
 			sprite.size.y = size.y / height;
 			sprite.offset = offset;
@@ -88,7 +92,11 @@ namespace ya
 		data.spriteSize = mSprites[mIndex].size;
 		data.spriteOffset = mSprites[mIndex].offset;
 		data.atlasSize = mSprites[mIndex].atlasSize;
-		data.animationType = 1;
+		//data.animationType = 1;
+		data.animationType = (UINT)mSprites[mIndex].type;
+
+		if (data.animationType == (UINT)enums::eAnimationType::Back)
+			data.spriteLeftTop = mSprites[mIndex].rightTop;
 
 		ConstantBuffer* cb = renderer::constantBuffer[(UINT)eCBType::Animator];
 		cb->SetData(&data);

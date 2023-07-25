@@ -13,14 +13,18 @@ namespace ya
 	public:
 		struct Sprite
 		{
+			enums::eAnimationType type;
 			Vector2 leftTop;
+			Vector2 rightTop;
 			Vector2 size;
 			Vector2 offset;
 			Vector2 atlasSize;
 			float duration;
 
 			Sprite()
-				: leftTop(Vector2::Zero)
+				: type(enums::eAnimationType::Front)
+				, leftTop(Vector2::Zero)
+				, rightTop(Vector2::Zero)
 				, size(Vector2::Zero)
 				, offset(Vector2::Zero)
 				, atlasSize(Vector2::Zero)
@@ -41,6 +45,7 @@ namespace ya
 
 		void Create(std::wstring name
 			, std::shared_ptr<graphics::Texture> atlas
+			, ya::enums::eAnimationType type
 			, Vector2 leftTop
 			, Vector2 size
 			, UINT columnLength

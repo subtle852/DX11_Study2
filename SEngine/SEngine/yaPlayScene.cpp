@@ -104,7 +104,7 @@ namespace ya
 			std::shared_ptr<Texture> atlas
 				= Resources::Load<Texture>(L"Idle", L"..\\Resources\\Texture\\Idle.png");
 			Animator* at = player->AddComponent<Animator>();
-			at->Create(L"Idle", atlas, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
+			at->Create(L"Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
 			at->PlayAnimation(L"Idle", true);
 				
 			//at->CompleteEvent(L"Idle") = std::bind();

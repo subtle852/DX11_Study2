@@ -39,6 +39,7 @@ namespace ya
 
 		void Create(const std::wstring& name
 			, std::shared_ptr<graphics::Texture> atlas
+			, enums::eAnimationType type
 			, Vector2 leftTop
 			, Vector2 size
 			, UINT columnLength
