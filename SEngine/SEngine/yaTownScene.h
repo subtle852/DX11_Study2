@@ -19,5 +19,6 @@ namespace ya
 
 	private:
 		GameObject* mBG_TOWN_MAP;
+		GameObject* mPlayer;
 	};
 }

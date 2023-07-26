@@ -10,6 +10,7 @@
 #include "yaObject.h"
 #include "yaAnimator.h"
 #include "yaRenderer.h"
+#include "yaMiniScript.h"
 
 namespace ya
 {
@@ -21,45 +22,54 @@ namespace ya
 	}
 	void TownScene::Initialize()
 	{
-		//BG 
-		//{
-		//	std::shared_ptr<Texture> texture
-		//		= Resources::Load<Texture>(L"BG_TOWN_MAP", L"..\\Resources\\SCENE\\STAGE01\\BG_TOWN_MAP.png");
+		// BG 
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"BG_TOWN_MAP", L"..\\Resources\\SCENE\\STAGE01\\BG_TOWN_MAP.png");
 
-		//	mBG_TOWN_MAP = object::Instantiate<GameObject>(Vector3(0.0f, 0.0f, 50.0f)
-		//		, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 10.0f
-		//		, eLayerType::Player);
-		//	mBG_TOWN_MAP->SetName(L"BG_TOWN_MAP");
+			mBG_TOWN_MAP = object::Instantiate<GameObject>(Vector3(0.0f, 0.0f, 50.0f)
+				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 15.0f
+				, eLayerType::Player);
+			mBG_TOWN_MAP->SetName(L"BG_TOWN_MAP");
 
-		//	MeshRenderer* mr = mBG_TOWN_MAP->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TOWN_MAP"));
-		//	//player->AddComponent<CameraScript>();
-		//}
+			MeshRenderer* mr = mBG_TOWN_MAP->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TOWN_MAP"));
+			//player->AddComponent<CameraScript>();
+		}
 
 		// 애니메이션
 		{
-			GameObject* player
-				= object::Instantiate<GameObject>(Vector3(0.0f, 0.0f, 40.f)
-					, Vector3::One * 50
+			GameObject* mPlayer
+				= object::Instantiate<GameObject>(Vector3(-2.25f, 1.65f, 40.f)
+					, Vector3::One * 4.0f
 					, eLayerType::Player);
-			player->SetName(L"MINI");
+			mPlayer->SetName(L"MINI");
 
-			Collider2D* cd = player->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(0.3f, 0.3f));
+			Collider2D* cd = mPlayer->AddComponent<Collider2D>();
+			cd->SetSize(Vector2(1.0f, 1.0f));
 
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			MeshRenderer* mr = mPlayer->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
 
 			std::shared_ptr<Texture> atlas
 				= Resources::Load<Texture>(L"MINI_CHAR", L"..\\Resources\\Texture\\MINI_CHAR.png");
-			Animator* at = player->AddComponent<Animator>();
+			Animator* at = mPlayer->AddComponent<Animator>();
 			at->Create(L"MINI_CHAR", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(56.0f / 4.0f, 16.0f), 4);
 			at->PlayAnimation(L"MINI_CHAR", true);
 
-			//at->CompleteEvent(L"Idle") = std::bind();
-			//player->AddComponent<RamonaScript>();
+			mPlayer->AddComponent<MiniScript>();
+		}
+
+		// Light
+		{
+			GameObject* light = new GameObject();
+			light->SetName(L"Smile");
+			AddGameObject(eLayerType::Light, light);
+			Light* lightComp = light->AddComponent<Light>();
+			lightComp->SetType(eLightType::Directional);
+			lightComp->SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 
 		// Main Camera

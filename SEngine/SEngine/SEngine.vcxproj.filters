@@ -46,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="yaPlayer.cpp" />
     <ClCompile Include="yaRamona.cpp" />
+    <ClCompile Include="yaMiniScript.cpp">
+      <Filter>Contents\Script\PLAYER</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -96,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="yaPlayer.h" />
     <ClInclude Include="yaRamona.h" />
+    <ClInclude Include="yaMiniScript.h">
+      <Filter>Contents\Script\PLAYER</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Contents">
