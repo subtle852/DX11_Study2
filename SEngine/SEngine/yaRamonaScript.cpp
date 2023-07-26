@@ -337,6 +337,8 @@ namespace ya
 
 	void RamonaScript::Update()
 	{
+		mPreviousState = mRamonaState;
+
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 
@@ -348,14 +350,16 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::LEFT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"WalkLeft", true);
+			//Animator* at = this->GetOwner()->GetComponent<Animator>();
+			//at->PlayAnimation(L"WalkLeft", true);
+			mRamonaState = ePlayerState::L_Walk;
 		}
 
 		if (Input::GetKeyUp(eKeyCode::LEFT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"IdleLeft", true);
+			//Animator* at = this->GetOwner()->GetComponent<Animator>();
+			//at->PlayAnimation(L"IdleLeft", true);
+			mRamonaState = ePlayerState::L_Idle;
 		}
 
 		if (Input::GetKey(eKeyCode::RIGHT))
@@ -366,14 +370,16 @@ namespace ya
 
 		if (Input::GetKeyDown(eKeyCode::RIGHT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"WalkRight", true);
+			//Animator* at = this->GetOwner()->GetComponent<Animator>();
+			//at->PlayAnimation(L"WalkRight", true);
+			mRamonaState = ePlayerState::R_Walk;
 		}
 
 		if (Input::GetKeyUp(eKeyCode::RIGHT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"IdleRight", true);
+			//Animator* at = this->GetOwner()->GetComponent<Animator>();
+			//at->PlayAnimation(L"IdleRight", true);
+			mRamonaState = ePlayerState::R_Idle;
 		}
 
 		else if (Input::GetKey(eKeyCode::DOWN))
@@ -451,6 +457,31 @@ namespace ya
 			//Vector3 pos = tr->GetPosition();
 			//pos.y += 1.0f;
 			//tr->SetPosition(pos);
+		}
+
+		if(mPreviousState != mRamonaState)
+		{
+			Animator* at = this->GetOwner()->GetComponent<Animator>();
+
+			switch (mRamonaState)
+			{
+
+			case ePlayerState::L_Idle:
+				at->PlayAnimation(L"IdleLeft", true);
+				break;
+
+			case ePlayerState::R_Idle:
+				at->PlayAnimation(L"IdleRight", true);
+				break;
+
+			case ePlayerState::L_Walk:
+				at->PlayAnimation(L"WalkLeft", true);
+				break;
+
+			case ePlayerState::R_Walk:
+				at->PlayAnimation(L"WalkRight", true);
+				break;
+			}
 		}
 	}
 

@@ -51,28 +51,28 @@ namespace ya
 	{
 		if (Input::GetKeyDown(eKeyCode::ENTER))
 		{
-			if (mTitleEnterCount > 0)
+			//if (mTitleEnterCount > 0)
 			{
 				SceneManager::LoadScene(L"MainScene");
 			}
 
-			else
-			{
-				mBG_TITLE_02 = new GameObject();
-				AddGameObject(eLayerType::BG, mBG_TITLE_02);
-				MeshRenderer* mr = mBG_TITLE_02->AddComponent<MeshRenderer>();
-				mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-				mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TITLE_02"));
-				mBG_TITLE_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
-				std::shared_ptr<Texture> texture
-					= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
-				mBG_TITLE_02->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
-					texture.get()->GetImageRatioOfHeight(), 0.0f))
-					* 13.0f);
-				//player->AddComponent<CameraScript>();
+			//else
+			//{
+			//	mBG_TITLE_02 = new GameObject();
+			//	AddGameObject(eLayerType::BG, mBG_TITLE_02);
+			//	MeshRenderer* mr = mBG_TITLE_02->AddComponent<MeshRenderer>();
+			//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			//	mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_TITLE_02"));
+			//	mBG_TITLE_02->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, 49.0f));
+			//	std::shared_ptr<Texture> texture
+			//		= Resources::Load<Texture>(L"BG_TITLE_02", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_02.png");
+			//	mBG_TITLE_02->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
+			//		texture.get()->GetImageRatioOfHeight(), 0.0f))
+			//		* 13.0f);
+			//	//player->AddComponent<CameraScript>();
 
-				mTitleEnterCount = 1;
-			}
+			//	mTitleEnterCount = 1;
+			//}
 		}
 
 		Scene::Update();

@@ -49,6 +49,7 @@ namespace ya
 
 	private:
 		ePlayerState mRamonaState = ePlayerState::R_Idle;
+		ePlayerState mPreviousState = ePlayerState::R_Idle;
 
 	};
 }
