@@ -13,9 +13,10 @@
 #include "yaRenderer.h"
 #include "yaCollider2D.h"
 #include "yaCollisionManager.h"
-#include "yaPlayerScript.h"
+#include "yaRamonaScript.h"
 #include "yaAnimator.h"
 #include "yaLight.h"
+#include "yaRamona.h"	
 
 namespace ya
 {
@@ -107,9 +108,9 @@ namespace ya
 			Animator* at = player->AddComponent<Animator>();
 			at->Create(L"Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
 			at->PlayAnimation(L"Idle", true);
-
+				
 			//at->CompleteEvent(L"Idle") = std::bind();
-			player->AddComponent<PlayerScript>();
+			player->AddComponent<RamonaScript>();
 		}
 
 		// Light

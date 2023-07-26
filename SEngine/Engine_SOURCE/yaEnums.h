@@ -62,4 +62,30 @@ namespace ya::enums
 		Spot,
 		End,
 	};
+
+	enum class eDirection
+	{
+		L,
+		R,
+	};
+
+	enum class ePlayerState
+	{
+		L_Idle,
+		R_Idle,
+		L_Walk,
+		R_Walk,
+		L_Run,
+		R_Run,
+		L_Jump,
+		R_Jump,
+		L_NormalAttack,
+		R_NormalAttack,
+		L_Kick,
+		R_Kick,
+		L_Guard,
+		R_Guard,
+		L_Evade,
+		R_Evade,
+	};
 }
