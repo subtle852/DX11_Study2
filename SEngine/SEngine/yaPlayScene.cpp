@@ -16,7 +16,6 @@
 #include "yaRamonaScript.h"
 #include "yaAnimator.h"
 #include "yaLight.h"
-#include "yaRamona.h"	
 
 namespace ya
 {
@@ -104,7 +103,7 @@ namespace ya
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
 
 			std::shared_ptr<Texture> atlas
-				= Resources::Load<Texture>(L"Idle", L"..\\Resources\\Texture\\Idle.png");
+				= Resources::Load<Texture>(L"Idle", L"..\\Resources\\TEXTURE\\RAMONA\\Idle.png");
 			Animator* at = player->AddComponent<Animator>();
 			at->Create(L"Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
 			at->PlayAnimation(L"Idle", true);

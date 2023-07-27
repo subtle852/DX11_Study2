@@ -343,14 +343,14 @@ namespace renderer
 
 
 		std::shared_ptr<Texture> texture
-			= Resources::Load<Texture>(L"Link", L"..\\Resources\\Texture\\Link.png");
+			= Resources::Load<Texture>(L"Link", L"..\\Resources\\TEXTURE\\Link.png");
 
 		std::shared_ptr<Material> material = std::make_shared<Material>();
 		material->SetShader(spriteShader);
 		material->SetTexture(texture);
 		Resources::Insert(L"SpriteMaterial", material);
 
-		texture = Resources::Load<Texture>(L"Smile", L"..\\Resources\\Texture\\Smile.png");
+		texture = Resources::Load<Texture>(L"Smile", L"..\\Resources\\TEXTURE\\Smile.png");
 		material = std::make_shared<Material>();
 		material->SetShader(spriteShader);
 		material->SetTexture(texture);

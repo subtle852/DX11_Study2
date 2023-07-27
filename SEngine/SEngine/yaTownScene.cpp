@@ -12,6 +12,8 @@
 #include "yaRenderer.h"
 #include "yaMiniScript.h"
 #include "yaLight.h"
+#include "yaCollider2D.h"
+#include "yaTexture.h"
 
 namespace ya
 {
@@ -47,15 +49,15 @@ namespace ya
 					, eLayerType::Player);
 			mPlayer->SetName(L"MINI");
 
-			Collider2D* cd = mPlayer->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(1.0f, 1.0f));
+			//Collider2D* cd = mPlayer->AddComponent<Collider2D>();
+			//cd->SetSize(Vector2(5.0f, 5.0f));
 
 			MeshRenderer* mr = mPlayer->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
 
 			std::shared_ptr<Texture> atlas
-				= Resources::Load<Texture>(L"MINI_CHAR", L"..\\Resources\\Texture\\MINI_CHAR.png");
+				= Resources::Load<Texture>(L"MINI_CHAR", L"..\\Resources\\TEXTURE\\RAMONA\\MINI_CHAR.png");
 			Animator* at = mPlayer->AddComponent<Animator>();
 			at->Create(L"MINI_CHAR", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(56.0f / 4.0f, 16.0f), 4);
 			at->PlayAnimation(L"MINI_CHAR", true);

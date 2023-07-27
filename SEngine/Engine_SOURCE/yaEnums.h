@@ -79,6 +79,8 @@ namespace ya::enums
 		R_Run,
 		L_Jump,
 		R_Jump,
+		L_DJump,
+		R_DJump,
 		L_NormalAttack,
 		R_NormalAttack,
 		L_Kick,

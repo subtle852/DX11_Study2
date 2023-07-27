@@ -14,7 +14,9 @@ namespace ya
 		virtual void Initialize() override;
 		virtual void Update() override;
 
-		void Complete();
+		void JumpStart();
+		void JumpComplete();
+		//void DJumpComplete();
 		void SuperComplete();
 
 		virtual void OnCollisionEnter(Collider2D* other) override;
@@ -31,8 +33,11 @@ namespace ya
 		//void L_run();
 		//void R_run();
 
-		//void L_jump();
-		//void R_jump();
+		void L_jump();
+		void R_jump();
+
+		void L_djump();
+		void R_djump();
 
 		//void L_normalAttack();
 		//void R_normalAttack();
@@ -48,8 +53,14 @@ namespace ya
 
 
 	private:
-		ePlayerState mRamonaState = ePlayerState::R_Idle;
+		ePlayerState mState = ePlayerState::R_Idle;
 		ePlayerState mPreviousState = ePlayerState::R_Idle;
 
+		eDirection mDirection = eDirection::R;
+
+		bool mIsJump = false;
+		float mJumpTime = 0.0f;
+		float mJumpStartPosY = -100.0f;
+		bool mIsDJump = false;
 	};
 }
