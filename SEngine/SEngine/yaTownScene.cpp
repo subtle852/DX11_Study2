@@ -11,6 +11,7 @@
 #include "yaAnimator.h"
 #include "yaRenderer.h"
 #include "yaMiniScript.h"
+#include "yaLight.h"
 
 namespace ya
 {
@@ -41,7 +42,7 @@ namespace ya
 		// 애니메이션
 		{
 			GameObject* mPlayer
-				= object::Instantiate<GameObject>(Vector3(-2.25f, 1.65f, 40.f)
+				= object::Instantiate<GameObject>(Vector3(-2.25f, 1.65f, 49.f)
 					, Vector3::One * 4.0f
 					, eLayerType::Player);
 			mPlayer->SetName(L"MINI");
@@ -65,7 +66,7 @@ namespace ya
 		// Light
 		{
 			GameObject* light = new GameObject();
-			light->SetName(L"Smile");
+			light->SetName(L"Light1");
 			AddGameObject(eLayerType::Light, light);
 			Light* lightComp = light->AddComponent<Light>();
 			lightComp->SetType(eLightType::Directional);
@@ -73,30 +74,14 @@ namespace ya
 		}
 
 		// Main Camera
-		Camera* cameraComp = nullptr;
-
 		{
 			GameObject* camera = new GameObject();
 			camera->SetName(L"MainCamera");
 			AddGameObject(eLayerType::Player, camera);
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
-			cameraComp = camera->AddComponent<Camera>();
-			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
-			camera->AddComponent<CameraScript>();
-			renderer::cameras.push_back(cameraComp);// Main Camera 렌더러에 추가
-			renderer::mainCamera = cameraComp;
-		}
-
-		// UI Camera
-		{
-			GameObject* camera = new GameObject();
-			camera->SetName(L"UICamera");
-			AddGameObject(eLayerType::Player, camera);
-			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 			Camera* cameraComp = camera->AddComponent<Camera>();
-			cameraComp->TurnLayerMask(eLayerType::Player, false);// Player를 안보이게 설정
-			cameraComp->TurnLayerMask(eLayerType::Monster, false);
-			//camera->AddComponent<CameraScript>();
+			cameraComp->TurnLayerMask(eLayerType::UI, false);
+			camera->AddComponent<CameraScript>();
 		}
 	}
 

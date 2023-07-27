@@ -11,6 +11,7 @@
 #include "yaInput.h"
 #include "yaSceneManager.h"
 #include "yaTime.h"
+#include "yaLight.h"
 
 namespace ya
 {
@@ -35,6 +36,16 @@ namespace ya
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial_BG_STAGE01_SHOP"));
 			//player->AddComponent<CameraScript>();
+		}
+
+		// Light
+		{
+			GameObject* light = new GameObject();
+			light->SetName(L"Light1");
+			AddGameObject(eLayerType::Light, light);
+			Light* lightComp = light->AddComponent<Light>();
+			lightComp->SetType(eLightType::Directional);
+			lightComp->SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 
 		//Main Camera

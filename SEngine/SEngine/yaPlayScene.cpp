@@ -116,12 +116,22 @@ namespace ya
 		// Light
 		{
 			GameObject* light = new GameObject();
-			light->SetName(L"Smile");
+			light->SetName(L"Light1");
 			AddGameObject(eLayerType::Light, light);
 			Light* lightComp = light->AddComponent<Light>();
 			lightComp->SetType(eLightType::Directional);
-			lightComp->SetColor(Vector4(1.0f, 0.0f, 1.0f, 1.0f));
+			lightComp->SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
+
+		//{
+		//	GameObject* light = new GameObject();
+		//	light->SetName(L"Light2");
+		//	AddGameObject(eLayerType::Light, light);
+		//	Light* lightComp = light->AddComponent<Light>();
+		//	lightComp->SetType(eLightType::Point);
+		//	lightComp->SetColor(Vector4(0.5f, 0.5f, 1.0f, 1.0f));
+		//	lightComp->SetRadius(3.0f);
+		//}
 
 		// Main Camera
 		Camera* cameraComp = nullptr;

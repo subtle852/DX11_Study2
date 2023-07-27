@@ -8,6 +8,7 @@
 #include "yaInput.h"
 #include "yaSceneManager.h"
 #include "yaTime.h"
+#include "yaLight.h"
 
 namespace ya
 {
@@ -44,6 +45,16 @@ namespace ya
 			mUI_MAIN_ENTER->GetComponent<Transform>()->SetScale((Vector3(texture.get()->GetImageRatioOfWidth(),
 				texture.get()->GetImageRatioOfHeight(), 0.0f))
 				* 13.0f);
+		}
+
+		// Light
+		{
+			GameObject* light = new GameObject();
+			light->SetName(L"Light1");
+			AddGameObject(eLayerType::Light, light);
+			Light* lightComp = light->AddComponent<Light>();
+			lightComp->SetType(eLightType::Directional);
+			lightComp->SetColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 		}
 
 		//Main Camera
