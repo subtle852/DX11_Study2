@@ -24,14 +24,14 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* other) override;
 
 	private:
-		//void L_idle();
-		//void R_idle();
+		void L_idle();
+		void R_idle();
 
-		//void L_walk();
-		//void R_walk();
+		void L_walk();
+		void R_walk();
 
-		//void L_run();
-		//void R_run();
+		void L_run();
+		void R_run();
 
 		void L_jump();
 		void R_jump();
@@ -62,5 +62,10 @@ namespace ya
 		float mJumpTime = 0.0f;
 		float mJumpStartPosY = -100.0f;
 		bool mIsDJump = false;
+
+		float mJumpHalfTime = 0.3f;
+		float mJumpHeight = 1.8f;
+
+		//bool mIsRun = false;
 	};
 }

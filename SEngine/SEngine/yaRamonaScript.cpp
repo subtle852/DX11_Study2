@@ -354,20 +354,26 @@ namespace ya
 			{
 
 			case ePlayerState::L_Idle:
-				at->PlayAnimation(L"L_Idle", true);
+				L_idle();
 				break;
-
 			case ePlayerState::R_Idle:
-				at->PlayAnimation(L"R_Idle", true);
+				R_idle();
 				break;
 
 			case ePlayerState::L_Walk:
-				at->PlayAnimation(L"L_Walk", true);
+				L_walk();
+				break;
+			case ePlayerState::R_Walk:
+				R_walk();
 				break;
 
-			case ePlayerState::R_Walk:
-				at->PlayAnimation(L"R_Walk", true);
+			case ePlayerState::L_Run:
+				L_run();
 				break;
+			case ePlayerState::R_Run:
+				R_run();
+				break;
+			
 			case ePlayerState::L_Jump:
 				L_jump();
 				break;
@@ -396,7 +402,7 @@ namespace ya
 		{
 			mDirection = eDirection::L;
 
-			if(mIsJump == false)// 점프 상태라면 Walk 애니메이션이 동작되어서는 안됨
+			if(mIsJump == false)// Walk 애니메이션이 동작되어서는 안되는 상황: 점프
 			mState = ePlayerState::L_Walk;
 
 			pos.x -= 1.0f * Time::DeltaTime();
@@ -451,7 +457,7 @@ namespace ya
 		if (Input::GetKey(eKeyCode::DOWN))
 		{
 			if (mIsJump == false && mState != ePlayerState::L_Jump && mState != ePlayerState::R_Jump
-				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)
+				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)// 점프나 더블점프 중에는 상하이동을 못하도록 막음
 			{
 				pos.y -= 1.0f * Time::DeltaTime();
 				tr->SetPosition(pos);
@@ -486,13 +492,16 @@ namespace ya
 			if (mIsJump == false && mState != ePlayerState::L_Jump && mState != ePlayerState::R_Jump
 				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)
 			{
-				if (mDirection == eDirection::L)
+				if (!(Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)))// 좌우키 입력이 있는 상태라면 Idle 상태로 전환시킬 필요가 없음
 				{
-					mState = ePlayerState::L_Idle;
-				}
-				else
-				{
-					mState = ePlayerState::R_Idle;
+					if (mDirection == eDirection::L)
+					{
+						mState = ePlayerState::L_Idle;
+					}
+					else
+					{
+						mState = ePlayerState::R_Idle;
+					}
 				}
 			}
 		}
@@ -532,28 +541,85 @@ namespace ya
 		{
 			if (mIsJump == false && mIsDJump == false)
 			{
-				if (mDirection == eDirection::L)
+				if (!(Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)))// 좌우키 입력이 있는 상태라면 Idle 상태로 전환시킬 필요가 없음
 				{
-					mState = ePlayerState::L_Idle;
-				}
-				else
-				{
-					mState = ePlayerState::R_Idle;
+					if (mDirection == eDirection::L)
+					{
+						mState = ePlayerState::L_Idle;
+					}
+					else
+					{
+						mState = ePlayerState::R_Idle;
+					}
 				}
 			}
 		}
 
 		//////////////////////////////////////////////////////////////////// 달리기
-		if (Input::GetKeyDown(eKeyCode::LSHIFT))
+		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"R_Run", true);
+			if (mState == ePlayerState::L_Walk || mState == ePlayerState::R_Walk)
+			{
+				//mIsRun = true;
+
+				if (mDirection == eDirection::L)
+				{
+					if (Input::GetKey(eKeyCode::UP))
+					{
+						pos.y += 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+					else if (Input::GetKey(eKeyCode::DOWN))
+					{
+						pos.y -= 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+					else
+					{
+						pos.x -= 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+
+					mState = ePlayerState::L_Run;
+				}
+				else
+				{
+					if (Input::GetKey(eKeyCode::UP))
+					{
+						pos.y += 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+					else if (Input::GetKey(eKeyCode::DOWN))
+					{
+						pos.y -= 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+					else
+					{
+						pos.x += 0.5f * Time::DeltaTime();
+						tr->SetPosition(pos);
+					}
+
+					mState = ePlayerState::R_Run;
+				}
+			}
 		}
 
 		if (Input::GetKeyUp(eKeyCode::LSHIFT))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"R_Idle", true);
+			if (mState == ePlayerState::L_Run || mState == ePlayerState::R_Run)
+			{
+				//mIsRun = false;
+
+				if (mDirection == eDirection::L)
+				{
+					mState = ePlayerState::L_Walk;
+				}
+				else
+				{
+					mState = ePlayerState::R_Walk;
+				}
+			}
 		}
 
 		//////////////////////////////////////////////////////////////////// 점프
@@ -578,22 +644,71 @@ namespace ya
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 				Vector3 pos = tr->GetPosition();
 				mJumpStartPosY = pos.y;
+
+				//if (Input::GetKey(eKeyCode::LSHIFT))
+				//{
+				//	mJumpHeight = 2.5f;
+				//}
+				//else
+				//{
+				//	mJumpHeight = 1.8f;
+				//}
 			}
 
 			mJumpTime += Time::DeltaTime();// 점프 체공 시간
 
-			if (mJumpTime < 0.3f)// 좌표 상승 구간
+			if (mJumpTime < mJumpHalfTime)// 좌표 상승 구간
 			{
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 				Vector3 pos = tr->GetPosition();
-				pos.y += 1.5f * Time::DeltaTime();
+				pos.y += mJumpHeight * Time::DeltaTime();
 				tr->SetPosition(pos);
+
+				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정
+				{
+					if (mDirection == eDirection::L)
+					{
+						if (Input::GetKey(eKeyCode::UP))
+						{
+							pos.y += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else if (Input::GetKey(eKeyCode::DOWN))
+						{
+							pos.y -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else
+						{
+							pos.x -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+					else
+					{
+						if (Input::GetKey(eKeyCode::UP))
+						{
+							pos.y += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else if (Input::GetKey(eKeyCode::DOWN))
+						{
+							pos.y -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else
+						{
+							pos.x += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+				}
 			}
 			else// 좌표 하락 구간
 			{
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 				Vector3 pos = tr->GetPosition();
-				pos.y -= 1.5f * Time::DeltaTime();
+				pos.y -= mJumpHeight * Time::DeltaTime();
 				tr->SetPosition(pos);
 
 				if (pos.y <= mJumpStartPosY)// 좌표 하락하다가 점프 시작한 y좌표 위치에 도달(점프를, 좌표를 멈춰야 함)
@@ -624,9 +739,49 @@ namespace ya
 						}
 					}
 				}
+
+				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정
+				{
+					if (mDirection == eDirection::L)
+					{
+						if (Input::GetKey(eKeyCode::UP))
+						{
+							pos.y += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else if (Input::GetKey(eKeyCode::DOWN))
+						{
+							pos.y -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else
+						{
+							pos.x -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+					else
+					{
+						if (Input::GetKey(eKeyCode::UP))
+						{
+							pos.y += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else if (Input::GetKey(eKeyCode::DOWN))
+						{
+							pos.y -= 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+						else
+						{
+							pos.x += 1.2f * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+				}
 			}
 
-			if (Input::GetKeyDown(eKeyCode::SPACE) && mJumpTime > 0.01f)
+			if (Input::GetKeyDown(eKeyCode::SPACE) && mJumpTime > 0.01f)// 점프 중 더블 점프가 발동되는 조건
 			{
 				if (mIsDJump == false)
 				{
@@ -737,6 +892,36 @@ namespace ya
 	void RamonaScript::OnCollisionExit(Collider2D* other)
 	{
 		int a = 0;
+	}
+	void RamonaScript::L_idle()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Idle", true);
+	}
+	void RamonaScript::R_idle()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Idle", true);
+	}
+	void RamonaScript::L_walk()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Walk", true);
+	}
+	void RamonaScript::R_walk()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Walk", true);
+	}
+	void RamonaScript::L_run()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Run", true);
+	}
+	void RamonaScript::R_run()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Run", true);
 	}
 	void RamonaScript::L_jump()
 	{

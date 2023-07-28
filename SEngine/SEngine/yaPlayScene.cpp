@@ -91,12 +91,12 @@ namespace ya
 		{
 			GameObject* player
 				= object::Instantiate<GameObject>(Vector3(-2.0f, 0.0f, 40.f)
-					, Vector3::One * 5
+					, Vector3::One * 3
 					, eLayerType::Monster);
 			player->SetName(L"Ramona");
 
 			Collider2D* cd = player->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(0.3f, 0.3f));
+			cd->SetSize(Vector2(0.2f, 0.2f));
 
 			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
