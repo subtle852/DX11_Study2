@@ -10,6 +10,8 @@ namespace ya
 		A, S, D, F, G, H, J, K, L,
 		Z, X, C, V, B, N, M,
 
+		NUM0, NUM1, NUM2, NUM3, NUM4, NUM5, NUM6, NUM7, NUM8, NUM9,
+
 		UP, DOWN, LEFT, RIGHT, SPACE, ENTER, LSHIFT,
 		LBUTTON, RBUTTON,
 		END,

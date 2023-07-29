@@ -54,29 +54,64 @@ namespace ya
 		at->Create(L"L_DJump", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(757.0f / 12.0f, 63.0f), 12);
 
 		atlas
-			= Resources::Load<Texture>(L"NormalAttack", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack.png");
+			= Resources::Load<Texture>(L"Guard", L"..\\Resources\\TEXTURE\\RAMONA\\Guard_ING.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"NormalAttack", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3);
-
-		atlas
-			= Resources::Load<Texture>(L"Kick", L"..\\Resources\\TEXTURE\\RAMONA\\Kick.png");
-		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Kick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
-
-		atlas
-			= Resources::Load<Texture>(L"RoundKick", L"..\\Resources\\TEXTURE\\RAMONA\\RoundKick.png");
-		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"RoundKick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13);
-
-		atlas
-			= Resources::Load<Texture>(L"Guard", L"..\\Resources\\TEXTURE\\RAMONA\\Guard.png");
-		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Guard", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(219.0f / 5.0f, 70.0f), 5);
+		at->Create(L"R_Guard", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(87.0f / 2.0f, 70.0f), 2);
+		at->Create(L"L_Guard", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(87.0f / 2.0f, 70.0f), 2);
 
 		atlas
 			= Resources::Load<Texture>(L"Evade", L"..\\Resources\\TEXTURE\\RAMONA\\Evade.png");
 		at = this->GetOwner()->GetComponent<Animator>();
-		at->Create(L"Evade", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
+		at->Create(L"R_Evade", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
+		at->Create(L"L_Evade", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(399.0f / 7.0f, 64.0f), 7);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack1", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack1.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_NormalAttack1", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack1_L", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack1_L.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"L_NormalAttack1", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack2", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack2.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_NormalAttack2", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack2_L", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack2_L.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"L_NormalAttack2", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack3", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack3.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_NormalAttack3", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"NormalAttack3_L", L"..\\Resources\\TEXTURE\\RAMONA\\NormalAttack3_L.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"L_NormalAttack3", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(186.0f / 3.0f, 70.0f), 3, Vector2::Zero, 0.15f);
+
+		atlas
+			= Resources::Load<Texture>(L"Kick", L"..\\Resources\\TEXTURE\\RAMONA\\Kick.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_Kick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
+		at->Create(L"L_Kick", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(310.0f / 5.0f, 70.0f), 5);
+
+		atlas
+			= Resources::Load<Texture>(L"RoundKick", L"..\\Resources\\TEXTURE\\RAMONA\\RoundKick.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_RoundKick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13, Vector2::Zero, 0.07f);
+		at->Create(L"L_RoundKick", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(897.0f / 13.0f, 72.0f), 13, Vector2::Zero, 0.07f);
+
+		atlas
+			= Resources::Load<Texture>(L"BehindAttack", L"..\\Resources\\TEXTURE\\RAMONA\\BehindAttack.png");
+		at = this->GetOwner()->GetComponent<Animator>();
+		at->Create(L"R_BehindKick", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(240.0f / 6.0f, 69.0f), 6);
+		at->Create(L"L_BehindKick", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(240.0f / 6.0f, 69.0f), 6);
 
 		atlas
 			= Resources::Load<Texture>(L"Super", L"..\\Resources\\TEXTURE\\RAMONA\\Super.png");
@@ -338,8 +373,22 @@ namespace ya
 		at->CompleteEvent(L"L_Jump") = std::bind(&RamonaScript::JumpComplete, this);
 		at->CompleteEvent(L"R_Jump") = std::bind(&RamonaScript::JumpComplete, this);
 
-		//at->CompleteEvent(L"L_DJump") = std::bind(&RamonaScript::JumpComplete, this);
-		//at->CompleteEvent(L"R_DJump") = std::bind(&RamonaScript::JumpComplete, this);
+		at->CompleteEvent(L"L_Evade") = std::bind(&RamonaScript::EvadeComplete, this);
+		at->CompleteEvent(L"R_Evade") = std::bind(&RamonaScript::EvadeComplete, this);
+
+		at->CompleteEvent(L"L_NormalAttack1") = std::bind(&RamonaScript::NormalAttackComplete, this);
+		at->CompleteEvent(L"R_NormalAttack1") = std::bind(&RamonaScript::NormalAttackComplete, this);
+		at->CompleteEvent(L"L_NormalAttack2") = std::bind(&RamonaScript::NormalAttackComplete, this);
+		at->CompleteEvent(L"R_NormalAttack2") = std::bind(&RamonaScript::NormalAttackComplete, this);
+		at->CompleteEvent(L"L_NormalAttack3") = std::bind(&RamonaScript::NormalAttackComplete, this);
+		at->CompleteEvent(L"R_NormalAttack3") = std::bind(&RamonaScript::NormalAttackComplete, this);
+
+		at->CompleteEvent(L"L_Kick") = std::bind(&RamonaScript::KickComplete, this);
+		at->CompleteEvent(L"R_Kick") = std::bind(&RamonaScript::KickComplete, this);
+		at->CompleteEvent(L"L_RoundKick") = std::bind(&RamonaScript::KickComplete, this);
+		at->CompleteEvent(L"R_RoundKick") = std::bind(&RamonaScript::KickComplete, this);
+		at->CompleteEvent(L"L_BehindKick") = std::bind(&RamonaScript::KickComplete, this);
+		at->CompleteEvent(L"R_BehindKick") = std::bind(&RamonaScript::KickComplete, this);
 
 		at->CompleteEvent(L"Super") = std::bind(&RamonaScript::SuperComplete, this);
 	}
@@ -352,7 +401,6 @@ namespace ya
 
 			switch (mState)
 			{
-
 			case ePlayerState::L_Idle:
 				L_idle();
 				break;
@@ -373,7 +421,7 @@ namespace ya
 			case ePlayerState::R_Run:
 				R_run();
 				break;
-			
+
 			case ePlayerState::L_Jump:
 				L_jump();
 				break;
@@ -386,6 +434,58 @@ namespace ya
 			case ePlayerState::R_DJump:
 				R_djump();
 				break;
+
+			case ePlayerState::L_Guard:
+				L_guard();
+				break;
+			case ePlayerState::R_Guard:
+				R_guard();
+				break;
+
+			case ePlayerState::L_Evade:
+				L_evade();
+				break;
+			case ePlayerState::R_Evade:
+				R_evade();
+				break;
+
+			case ePlayerState::L_NormalAttack1:
+				L_normalattack1();
+				break;
+			case ePlayerState::R_NormalAttack1:
+				R_normalattack1();
+				break;
+			case ePlayerState::L_NormalAttack2:
+				L_normalattack2();
+				break;
+			case ePlayerState::R_NormalAttack2:
+				R_normalattack2();
+				break;
+			case ePlayerState::L_NormalAttack3:
+				L_normalattack3();
+				break;
+			case ePlayerState::R_NormalAttack3:
+				R_normalattack3();
+				break;
+
+			case ePlayerState::R_Kick:
+				R_kick();
+				break;
+			case ePlayerState::L_Kick:
+				L_kick();
+				break;
+			case ePlayerState::R_RoundKick:
+				R_roundkick();
+				break;
+			case ePlayerState::L_RoundKick:
+				L_roundkick();
+				break;
+			case ePlayerState::R_BehindKick:
+				R_behindkick();
+				break;
+			case ePlayerState::L_BehindKick:
+				L_behindkick();
+				break;
 			}
 		}
 
@@ -397,13 +497,16 @@ namespace ya
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 
-		//////////////////////////////////////////////////////////////////// 좌우 이동
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 좌우 이동
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (Input::GetKey(eKeyCode::LEFT))// 좌표 지속 이동
 		{
 			mDirection = eDirection::L;
 
-			if(mIsJump == false)// Walk 애니메이션이 동작되어서는 안되는 상황: 점프
-			mState = ePlayerState::L_Walk;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::L_Walk;
 
 			pos.x -= 1.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
@@ -413,24 +516,27 @@ namespace ya
 		{
 			mDirection = eDirection::L;
 
-			if (mIsJump == false)
-			mState = ePlayerState::L_Walk;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::L_Walk;
 		}
 
 		if (Input::GetKeyUp(eKeyCode::LEFT))// 키 입력이 끝나고 이동하지 않을 때, Idle 상태로 전환
 		{
 			mDirection = eDirection::L;
 
-			if (mIsJump == false)
-			mState = ePlayerState::L_Idle;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::L_Idle;
 		}
 
 		if (Input::GetKey(eKeyCode::RIGHT))// 좌표 지속 이동
 		{
 			mDirection = eDirection::R;
 
-			if (mIsJump == false)
-			mState = ePlayerState::R_Walk;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::R_Walk;
 
 			pos.x += 1.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
@@ -440,24 +546,28 @@ namespace ya
 		{
 			mDirection = eDirection::R;
 
-			if (mIsJump == false)
-			mState = ePlayerState::R_Walk;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::R_Walk;
 		}
 
 		if (Input::GetKeyUp(eKeyCode::RIGHT))// 키 입력이 끝나고 이동하지 않을 때, Idle 상태로 전환
 		{
 			mDirection = eDirection::R;
 
-			if (mIsJump == false)
-			mState = ePlayerState::R_Idle;
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
+				mState = ePlayerState::R_Idle;
 		}
 
 
-		//////////////////////////////////////////////////////////////////// 상하 이동
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 상하 이동
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (Input::GetKey(eKeyCode::DOWN))
 		{
-			if (mIsJump == false && mState != ePlayerState::L_Jump && mState != ePlayerState::R_Jump
-				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)// 점프나 더블점프 중에는 상하이동을 못하도록 막음
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				pos.y -= 1.0f * Time::DeltaTime();
 				tr->SetPosition(pos);
@@ -474,8 +584,8 @@ namespace ya
 		}
 		if (Input::GetKeyDown(eKeyCode::DOWN))
 		{
-			if (mIsJump == false && mState != ePlayerState::L_Jump && mState != ePlayerState::R_Jump
-				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				if (mDirection == eDirection::L)
 				{
@@ -489,8 +599,8 @@ namespace ya
 		}
 		if (Input::GetKeyUp(eKeyCode::DOWN))// 키 입력이 끝나고 이동하지 않을 때, Idle 상태로 전환
 		{
-			if (mIsJump == false && mState != ePlayerState::L_Jump && mState != ePlayerState::R_Jump
-				&& mState != ePlayerState::L_DJump && mState != ePlayerState::R_DJump)
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				if (!(Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)))// 좌우키 입력이 있는 상태라면 Idle 상태로 전환시킬 필요가 없음
 				{
@@ -508,7 +618,8 @@ namespace ya
 
 		if (Input::GetKey(eKeyCode::UP))
 		{
-			if (mIsJump == false && mIsDJump == false)// 점프 상태라면 Walk 애니메이션이 동작되어서는 안됨
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				pos.y += 1.0f * Time::DeltaTime();
 				tr->SetPosition(pos);
@@ -525,7 +636,8 @@ namespace ya
 		}
 		if (Input::GetKeyDown(eKeyCode::UP))
 		{
-			if (mIsJump == false && mIsDJump == false)
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				if (mDirection == eDirection::L)
 				{
@@ -539,7 +651,8 @@ namespace ya
 		}
 		if (Input::GetKeyUp(eKeyCode::UP))// 키 입력이 끝나고 이동하지 않을 때, Idle 상태로 전환
 		{
-			if (mIsJump == false && mIsDJump == false)
+			if (mIsJump == false && mIsEvade == false && mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
+				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false)// Walk 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 			{
 				if (!(Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)))// 좌우키 입력이 있는 상태라면 Idle 상태로 전환시킬 필요가 없음
 				{
@@ -555,12 +668,14 @@ namespace ya
 			}
 		}
 
-		//////////////////////////////////////////////////////////////////// 달리기
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 달리기
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (Input::GetKey(eKeyCode::LSHIFT))
 		{
 			if (mState == ePlayerState::L_Walk || mState == ePlayerState::R_Walk)
 			{
-				//mIsRun = true;
+				mIsRun = true;
 
 				if (mDirection == eDirection::L)
 				{
@@ -609,7 +724,7 @@ namespace ya
 		{
 			if (mState == ePlayerState::L_Run || mState == ePlayerState::R_Run)
 			{
-				//mIsRun = false;
+				mIsRun = false;
 
 				if (mDirection == eDirection::L)
 				{
@@ -622,7 +737,9 @@ namespace ya
 			}
 		}
 
-		//////////////////////////////////////////////////////////////////// 점프
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 점프
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (Input::GetKeyDown(eKeyCode::SPACE) && mIsDJump == false)
 		{
 			mIsJump = true;
@@ -645,14 +762,14 @@ namespace ya
 				Vector3 pos = tr->GetPosition();
 				mJumpStartPosY = pos.y;
 
-				//if (Input::GetKey(eKeyCode::LSHIFT))
-				//{
-				//	mJumpHeight = 2.5f;
-				//}
-				//else
-				//{
-				//	mJumpHeight = 1.8f;
-				//}
+				if (Input::GetKey(eKeyCode::LSHIFT))// 달릴 때, 점프 높이 더 높게 수정
+				{
+					mJumpHeight = 2.5f;
+				}
+				else
+				{
+					mJumpHeight = 1.8f;
+				}
 			}
 
 			mJumpTime += Time::DeltaTime();// 점프 체공 시간
@@ -664,23 +781,25 @@ namespace ya
 				pos.y += mJumpHeight * Time::DeltaTime();
 				tr->SetPosition(pos);
 
-				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정
+				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정 (상승 하는 경우)
 				{
+					mIsRun = true;
+
 					if (mDirection == eDirection::L)
 					{
 						if (Input::GetKey(eKeyCode::UP))
 						{
-							pos.y += 1.2f * Time::DeltaTime();
+							pos.y += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else if (Input::GetKey(eKeyCode::DOWN))
 						{
-							pos.y -= 1.2f * Time::DeltaTime();
+							pos.y -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else
 						{
-							pos.x -= 1.2f * Time::DeltaTime();
+							pos.x -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 					}
@@ -688,17 +807,17 @@ namespace ya
 					{
 						if (Input::GetKey(eKeyCode::UP))
 						{
-							pos.y += 1.2f * Time::DeltaTime();
+							pos.y += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else if (Input::GetKey(eKeyCode::DOWN))
 						{
-							pos.y -= 1.2f * Time::DeltaTime();
+							pos.y -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else
 						{
-							pos.x += 1.2f * Time::DeltaTime();
+							pos.x += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 					}
@@ -740,23 +859,25 @@ namespace ya
 					}
 				}
 
-				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정
+				if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정 (하락하는 경우)
 				{
+					mIsRun = true;
+
 					if (mDirection == eDirection::L)
 					{
 						if (Input::GetKey(eKeyCode::UP))
 						{
-							pos.y += 1.2f * Time::DeltaTime();
+							pos.y += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else if (Input::GetKey(eKeyCode::DOWN))
 						{
-							pos.y -= 1.2f * Time::DeltaTime();
+							pos.y -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else
 						{
-							pos.x -= 1.2f * Time::DeltaTime();
+							pos.x -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 					}
@@ -764,17 +885,17 @@ namespace ya
 					{
 						if (Input::GetKey(eKeyCode::UP))
 						{
-							pos.y += 1.2f * Time::DeltaTime();
+							pos.y += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else if (Input::GetKey(eKeyCode::DOWN))
 						{
-							pos.y -= 1.2f * Time::DeltaTime();
+							pos.y -= 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 						else
 						{
-							pos.x += 1.2f * Time::DeltaTime();
+							pos.x += 1.0f * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
 					}
@@ -800,46 +921,260 @@ namespace ya
 			}
 		}
 
-		// Normal Attack: J
-		if (Input::GetKeyDown(eKeyCode::J))
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 가드
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (Input::GetKey(eKeyCode::Q))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"NormalAttack", false);
+			if (mIsJump == false && mIsDJump == false && mIsEvade == false)
+			{
+				if (mDirection == eDirection::L)
+				{
+					mState = ePlayerState::L_Guard;
+				}
+				else
+				{
+					mState = ePlayerState::R_Guard;
+				}
+			}
+		}
+		if (Input::GetKeyUp(eKeyCode::Q))
+		{
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_Idle;
+			}
+			else
+			{
+				mState = ePlayerState::R_Idle;
+			}
 		}
 
-		// Kick: K
-		if (Input::GetKeyDown(eKeyCode::K))
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 회피
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Evade: F
+		if (Input::GetKeyDown(eKeyCode::F))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Kick", false);
+			if (mIsJump == false && mIsDJump == false)
+			{
+				mIsEvade = true;
+
+				if (mDirection == eDirection::L)
+				{
+					mState = ePlayerState::L_Evade;
+				}
+				else
+				{
+					mState = ePlayerState::R_Evade;
+				}
+			}
 		}
 
-		// Round Kick: L
-		if (Input::GetKeyDown(eKeyCode::L))
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 평타
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// 첫번째 공격
+		if (Input::GetKeyDown(eKeyCode::W) && mIsNormalAttack3 == false)
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"RoundKick", false);
+			mIsNormalAttack1 = true;
+			mIsNormalAttack2 = false;
+			mIsNormalAttack3 = false;
+			//mCanNormalAttack2 = false;
+			//mCanNormalAttack3 = false;
+			mNormalAttack2Time = 0.0f;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_NormalAttack1;
+			}
+			else
+			{
+				mState = ePlayerState::R_NormalAttack1;
+			}
 		}
 
-		// Guard: H
-		if (Input::GetKeyDown(eKeyCode::H))
+		// 오류 방지
+		if (mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false)
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Guard", false);
+			mIsNormalAttack1 = false;
+			mIsNormalAttack2 = false;
+			mIsNormalAttack3 = false;
+			mCanNormalAttack2 = false;
+			mCanNormalAttack3 = false;
+			mNormalAttack2Time = 0.0f;
 		}
 
-		// Evade: N
-		if (Input::GetKeyDown(eKeyCode::N))
+		// 오류 방지
+		if (!(mState == ePlayerState::L_NormalAttack1 || mState == ePlayerState::R_NormalAttack1
+			|| mState == ePlayerState::L_NormalAttack2 || mState == ePlayerState::R_NormalAttack2
+			|| mState == ePlayerState::L_NormalAttack3 || mState == ePlayerState::R_NormalAttack3))
 		{
-			Animator* at = this->GetOwner()->GetComponent<Animator>();
-			at->PlayAnimation(L"Evade", false);
-			//at->PlayAnimation(L"Super", true);
-
-			//Transform* tr = this->GetOwner()->GetComponent<Transform>();
-			//Vector3 pos = tr->GetPosition();
-			//pos.y += 1.0f;
-			//tr->SetPosition(pos);
+			mIsNormalAttack1 = false;
+			mIsNormalAttack2 = false;
+			mIsNormalAttack3 = false;
+			mCanNormalAttack2 = false;
+			mCanNormalAttack3 = false;
+			mNormalAttack2Time = 0.0f;
 		}
+
+		// 두번째 공격 조건
+		if (Input::GetKeyUp(eKeyCode::W) && mIsNormalAttack1 == true && mIsNormalAttack2 == false)
+		{
+			mCanNormalAttack2 = true;
+		}
+
+		// 두번째 공격
+		if (mCanNormalAttack2 == true && Input::GetKeyDown(eKeyCode::W) && mIsNormalAttack2 == false && mIsNormalAttack3 == false)
+		{
+			mIsNormalAttack1 = false;
+			mIsNormalAttack2 = true;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_NormalAttack2;
+			}
+			else
+			{
+				mState = ePlayerState::R_NormalAttack2;
+			}
+
+		}
+
+		// 세번째 공격 조건을 위한 시간 측정
+		if (mIsNormalAttack2)
+		{
+			mNormalAttack2Time += Time::DeltaTime();
+		}
+
+		// 세번째 공격 조건
+		if (Input::GetKeyUp(eKeyCode::W) && mIsNormalAttack1 == false && mIsNormalAttack2 == true)// && mNormalAttack2Time >= 0.1f)
+		{
+			if (mNormalAttack2Time > 0.004f)
+			{
+				mCanNormalAttack3 = true;
+			}
+		}
+
+		// 세번째 공격
+		if (mCanNormalAttack3 == true && Input::GetKeyDown(eKeyCode::W) && mIsNormalAttack3 == false)
+		{
+			mIsNormalAttack2 = false;
+			mNormalAttack2Time = 0.0f;
+			mIsNormalAttack3 = true;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_NormalAttack3;
+			}
+			else
+			{
+				mState = ePlayerState::R_NormalAttack3;
+			}
+
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 발차기
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (Input::GetKeyDown(eKeyCode::E) && mIsKick == false)
+		{
+			mIsKick = true;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_Kick;
+			}
+			else
+			{
+				mState = ePlayerState::R_Kick;
+			}
+		}
+
+		// 오류 방지
+		if (!(mState == ePlayerState::L_Kick || mState == ePlayerState::R_Kick))
+		{
+			mIsKick = false;
+		}
+
+		// Round Kick: UP + E
+		if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::E) && mIsRoundKick == false)
+		{
+			mIsKick = false;
+			mIsRoundKick = true;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_RoundKick;
+			}
+			else
+			{
+				mState = ePlayerState::R_RoundKick;
+			}
+		}
+
+		// 오류 방지
+		if (!(mState == ePlayerState::L_RoundKick || mState == ePlayerState::R_RoundKick))
+		{
+			mIsRoundKick = false;
+		}
+
+		// Behind Kick: DOWN + E
+		if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::E) && mIsBehindKick == false)
+		{
+			mIsKick = false;
+			mIsBehindKick = true;
+
+			if (mDirection == eDirection::L)
+			{
+				mState = ePlayerState::L_BehindKick;
+			}
+			else
+			{
+				mState = ePlayerState::R_BehindKick;
+			}
+		}
+
+		// 오류 방지
+		if (!(mState == ePlayerState::L_BehindKick || mState == ePlayerState::R_BehindKick))
+		{
+			mIsBehindKick = false;
+		}
+
+		// NormalWeaponAttack: D
+
+		// WeaponDownAttack: D + DOWN
+
+		// WeaponSideAttack: D + LEFT OR RIGHT
+
+		// WeaponStackAttack: D + UP
+
+		// JumpDownAttack: 점프 중 + W (공격 성공 시, JumpDownHit 애니메이션 실행 후 마저 착지)
+
+		// JumpSlideAttack: 점프 중+ E
+
+		// RunJumpAttack: SHIFT(눌러졌던 상태에서) + 점프 중 + W
+		
+		// RunJumpDownAttack: SHIFT(눌러졌던 상태에서) + 점프 중 + E
+
+		// RunWeaponAttack: 달리는 상태에서 + W
+
+		// RunSlideAttack: 달리는 상태에서 + E
+
+		// FireBall: R (퍼센트 10 이상)
+
+		//// Super: R (GP 50 이상)
+		//if (Input::GetKeyDown(eKeyCode::R))
+		//{
+		//	at->PlayAnimation(L"Super", true);
+
+		//	Transform* tr = this->GetOwner()->GetComponent<Transform>();
+		//	Vector3 pos = tr->GetPosition();
+		//	pos.y += 1.0f;
+		//	tr->SetPosition(pos);
+		//}
+
 	}
 
 	void RamonaScript::JumpStart()
@@ -871,6 +1206,73 @@ namespace ya
 		}*/
 	}
 
+	void RamonaScript::EvadeComplete()
+	{
+		mIsEvade = false;
+
+		if (mDirection == eDirection::L)
+		{
+			mState = ePlayerState::L_Idle;
+		}
+		else
+		{
+			mState = ePlayerState::R_Idle;
+		}
+	}
+
+	void RamonaScript::NormalAttackComplete()
+	{
+		if (mIsNormalAttack1 == true)
+		{
+			mIsNormalAttack1 = false;
+
+			mCanNormalAttack2 = false;
+			mCanNormalAttack3 = false;
+		}
+
+		if (mIsNormalAttack2 == true)
+		{
+			mIsNormalAttack2 = false;
+
+			mCanNormalAttack2 = false;
+			mCanNormalAttack3 = false;
+		}
+
+		if (mIsNormalAttack3 == true)
+		{
+			mIsNormalAttack3 = false;
+
+			mCanNormalAttack2 = false;
+			mCanNormalAttack3 = false;
+			mNormalAttack2Time = 0.0f;
+		}
+
+		if (mDirection == eDirection::L)
+		{
+			mState = ePlayerState::L_Idle;
+		}
+		else
+		{
+			mState = ePlayerState::R_Idle;
+		}
+	}
+
+	void RamonaScript::KickComplete()
+	{
+		mIsKick = false;
+		mIsRoundKick = false;
+		mIsBehindKick = false;
+
+		if (mDirection == eDirection::L)
+		{
+			mState = ePlayerState::L_Idle;
+		}
+		else
+		{
+			mState = ePlayerState::R_Idle;
+		}
+	}
+
 	void RamonaScript::SuperComplete()
 	{
 		//Transform* tr = this->GetOwner()->GetComponent<Transform>();
@@ -880,6 +1282,9 @@ namespace ya
 
 		//Complete();
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void RamonaScript::OnCollisionEnter(Collider2D* other)
 	{
@@ -893,6 +1298,10 @@ namespace ya
 	{
 		int a = 0;
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void RamonaScript::L_idle()
 	{
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
@@ -942,5 +1351,101 @@ namespace ya
 	{
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_DJump", false);
+	}
+	void RamonaScript::L_guard()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Guard", false);
+	}
+	void RamonaScript::R_guard()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Guard", false);
+	}
+	void RamonaScript::L_evade()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Evade", true);
+	}
+	void RamonaScript::R_evade()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Evade", true);
+	}
+	void RamonaScript::L_normalattack1()
+	{
+		mIsNormalAttack1 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_NormalAttack1", true);
+	}
+	void RamonaScript::R_normalattack1()
+	{
+		mIsNormalAttack1 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_NormalAttack1", true);
+	}
+	void RamonaScript::L_normalattack2()
+	{
+		mCanNormalAttack2 = false;
+		mIsNormalAttack2 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_NormalAttack2", true);
+	}
+	void RamonaScript::R_normalattack2()
+	{
+		mCanNormalAttack2 = false;
+		mIsNormalAttack2 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_NormalAttack2", true);
+	}
+	void RamonaScript::L_normalattack3()
+	{
+		mCanNormalAttack3 = false;
+		mIsNormalAttack3 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_NormalAttack3", true);
+	}
+	void RamonaScript::R_normalattack3()
+	{
+		mCanNormalAttack3 = false;
+		mIsNormalAttack3 = true;
+
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_NormalAttack3", true);
+	}
+	void RamonaScript::L_kick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Kick", true);
+	}
+	void RamonaScript::R_kick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Kick", true);
+	}
+	void RamonaScript::L_roundkick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_RoundKick", true);
+	}
+	void RamonaScript::R_roundkick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_RoundKick", true);
+	}
+	void RamonaScript::L_behindkick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_BehindKick", true);
+	}
+	void RamonaScript::R_behindkick()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_BehindKick", true);
 	}
 }

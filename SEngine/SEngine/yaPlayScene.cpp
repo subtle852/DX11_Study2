@@ -27,7 +27,7 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		CollisionManager::SetLayer(eLayerType::UI, eLayerType::Monster, true);
+		CollisionManager::SetLayer(eLayerType::Player, eLayerType::Monster, true);
 
 		// STAGE 01 - BG 
 		{
@@ -36,7 +36,7 @@ namespace ya
 
 			mBG_STAGE01_01 = object::Instantiate<GameObject>(Vector3(0.0f, -0.34f, 50.0f)
 				, Vector3(texture.get()->GetImageRatioOfWidth(), texture.get()->GetImageRatioOfHeight(), 0.0f) * 272.0f
-				, eLayerType::Player);// Player로 설정
+				, eLayerType::BG);// Player로 설정
 			mBG_STAGE01_01->SetName(L"BG_STAGE01_01");
 
 			MeshRenderer* mr = mBG_STAGE01_01->AddComponent<MeshRenderer>();
@@ -92,11 +92,19 @@ namespace ya
 			GameObject* player
 				= object::Instantiate<GameObject>(Vector3(-2.0f, 0.0f, 40.f)
 					, Vector3::One * 3
-					, eLayerType::Monster);
+					, eLayerType::Player);
 			player->SetName(L"Ramona");
 
 			Collider2D* cd = player->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(0.2f, 0.2f));
+			cd->SetSize(Vector2(0.15f, 0.15f));
+
+			Collider2D* cd2 = player->AddComponent<Collider2D>();
+			cd2->SetSize(Vector2(0.3f, 0.08f));
+			cd2->SetCenter(Vector2(0.0f, 0.08f));
+
+			Collider2D* cd3 = player->AddComponent<Collider2D>();
+			cd3->SetSize(Vector2(0.3f, 0.08f));
+			cd3->SetCenter(Vector2(0.0f, -0.2f));
 
 			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -141,7 +149,7 @@ namespace ya
 			AddGameObject(eLayerType::Player, camera);
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 			cameraComp = camera->AddComponent<Camera>();
-			cameraComp->TurnLayerMask(eLayerType::UI, false);// UI를 안보이게 설정
+			cameraComp->TurnLayerMask(eLayerType::UI, false);
 			camera->AddComponent<CameraScript>();
 			renderer::cameras.push_back(cameraComp);// Main Camera 렌더러에 추가
 			renderer::mainCamera = cameraComp;
@@ -154,22 +162,11 @@ namespace ya
 			AddGameObject(eLayerType::Player, camera);
 			camera->GetComponent<Transform>()->SetPosition(Vector3(0.0f, 0.0f, -10.0f));
 			Camera* cameraComp = camera->AddComponent<Camera>();
-			cameraComp->TurnLayerMask(eLayerType::Player, false);// Player를 안보이게 설정
+			cameraComp->TurnLayerMask(eLayerType::BG, false);
+			cameraComp->TurnLayerMask(eLayerType::Player, false);
 			cameraComp->TurnLayerMask(eLayerType::Monster, false);
 			//camera->AddComponent<CameraScript>();
 		}
-
-		//// Grid
-		//{
-		//	GameObject* grid = new GameObject();
-		//	grid->SetName(L"Grid");
-		//	AddGameObject(eLayerType::Grid, grid);
-		//	MeshRenderer* mr = grid->AddComponent<MeshRenderer>();
-		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
-		//	mr->SetMaterial(Resources::Find<Material>(L"GridMaterial"));
-		//	GridScript* gridSc = grid->AddComponent<GridScript>();
-		//	gridSc->SetCamera(cameraComp);
-		//}
 	}
 
 	void PlayScene::Update()

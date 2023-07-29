@@ -12,32 +12,32 @@ namespace ya
 		Vector3 pos = tr->GetPosition();
 
 
-		if (Input::GetKey(eKeyCode::W))
+		if (Input::GetKey(eKeyCode::NUM6))
 		{
 			pos.z += 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
-		else if (Input::GetKey(eKeyCode::S))
+		else if (Input::GetKey(eKeyCode::NUM4))
 		{
 			pos.z -= 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
-		else if (Input::GetKey(eKeyCode::A))
+		else if (Input::GetKey(eKeyCode::NUM1))
 		{
 			pos.x -= 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
-		else if (Input::GetKey(eKeyCode::D))
+		else if (Input::GetKey(eKeyCode::NUM3))
 		{
 			pos.x += 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
-		else if (Input::GetKey(eKeyCode::Q))
+		else if (Input::GetKey(eKeyCode::NUM2))
 		{
 			pos.y -= 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
 		}
-		else if (Input::GetKey(eKeyCode::E))
+		else if (Input::GetKey(eKeyCode::NUM5))
 		{
 			pos.y += 5.0f * Time::DeltaTime();
 			tr->SetPosition(pos);
