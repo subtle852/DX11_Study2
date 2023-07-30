@@ -155,7 +155,9 @@
     <ClInclude Include="yaBoss01Scene.h" />
     <ClInclude Include="yaCameraScript.h" />
     <ClInclude Include="yaEndingScene.h" />
+    <ClInclude Include="yaEnemyScript.h" />
     <ClInclude Include="yaGridScript.h" />
+    <ClInclude Include="yaLukeScript.h" />
     <ClInclude Include="yaMainScene.h" />
     <ClInclude Include="yaMiniScript.h" />
     <ClInclude Include="yaPlayer.h" />
@@ -173,7 +175,9 @@
     <ClCompile Include="yaBoss01Scene.cpp" />
     <ClCompile Include="yaCameraScript.cpp" />
     <ClCompile Include="yaEndingScene.cpp" />
+    <ClCompile Include="yaEnemyScript.cpp" />
     <ClCompile Include="yaGridScript.cpp" />
+    <ClCompile Include="yaLukeScript.cpp" />
     <ClCompile Include="yaMainScene.cpp" />
     <ClCompile Include="SEngine.cpp" />
     <ClCompile Include="yaMiniScript.cpp" />

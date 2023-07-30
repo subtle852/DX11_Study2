@@ -3,11 +3,11 @@
 
 namespace ya
 {
-	class PlayerScript : public Script
+	class EnemyScript : public Script
 	{
 	public:
-		PlayerScript();
-		~PlayerScript();
+		EnemyScript();
+		~EnemyScript();
 
 		virtual void Initialize() override;
 		virtual void Update() override;

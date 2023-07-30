@@ -1,24 +1,34 @@
 #include "yaPlayScene.h"
+
 #include "yaTransform.h"
+#include "yaMesh.h"
+#include "yaRenderer.h"
 #include "yaMeshRenderer.h"
 #include "yaResources.h"
-#include "yaMesh.h"
-#include "yaCameraScript.h"
-#include "yaCamera.h"
-#include "yaInput.h"
-#include "yaSceneManager.h"
-#include "yaTime.h"
+
 #include "yaGridScript.h"
+#include "yaCamera.h"
+#include "yaCameraScript.h"
+
+#include "yaInput.h"
+#include "yaTime.h"
 #include "yaObject.h"
-#include "yaRenderer.h"
+
+#include "yaSceneManager.h"
 #include "yaCollider2D.h"
 #include "yaCollisionManager.h"
-#include "yaRamonaScript.h"
+
 #include "yaAnimator.h"
 #include "yaLight.h"
 
+#include "yaRamonaScript.h"
+#include "yaLukeScript.h"
+
 namespace ya
 {
+	GameObject* PlayScene::mRamona = nullptr;
+	Vector3 PlayScene::mRamonaPos = Vector3::Zero;
+
 	PlayScene::PlayScene()
 	{
 	}
@@ -27,7 +37,7 @@ namespace ya
 	}
 	void PlayScene::Initialize()
 	{
-		CollisionManager::SetLayer(eLayerType::Player, eLayerType::Monster, true);
+		CollisionManager::SetLayer(eLayerType::Player, eLayerType::Enemy, true);
 
 		// STAGE 01 - BG 
 		{
@@ -89,35 +99,49 @@ namespace ya
 
 		// 애니메이션
 		{
-			GameObject* player
+			mRamona
 				= object::Instantiate<GameObject>(Vector3(-2.0f, 0.0f, 40.f)
 					, Vector3::One * 3
 					, eLayerType::Player);
-			player->SetName(L"Ramona");
+			mRamona->SetName(L"Ramona");
 
-			Collider2D* cd = player->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(0.15f, 0.15f));
+			//Collider2D* cd = mRamona->AddComponent<Collider2D>();// 충돌체는 RamonaScript에서 생성
+			//cd->SetSize(Vector2(0.15f, 0.15f));
 
-			Collider2D* cd2 = player->AddComponent<Collider2D>();
-			cd2->SetSize(Vector2(0.3f, 0.08f));
-			cd2->SetCenter(Vector2(0.0f, 0.08f));
-
-			Collider2D* cd3 = player->AddComponent<Collider2D>();
-			cd3->SetSize(Vector2(0.3f, 0.08f));
-			cd3->SetCenter(Vector2(0.0f, -0.2f));
-
-			MeshRenderer* mr = player->AddComponent<MeshRenderer>();
+			MeshRenderer* mr = mRamona->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
 			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
 
 			std::shared_ptr<Texture> atlas
-				= Resources::Load<Texture>(L"Idle", L"..\\Resources\\TEXTURE\\RAMONA\\Idle.png");
-			Animator* at = player->AddComponent<Animator>();
-			at->Create(L"Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
-			at->PlayAnimation(L"Idle", true);
+				= Resources::Load<Texture>(L"Ramona_Idle", L"..\\Resources\\TEXTURE\\RAMONA\\Idle.png");
+			Animator* at = mRamona->AddComponent<Animator>();
+			at->Create(L"Basic_Ramona_Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(151.0f / 5.0f, 65.0f), 5);
+			at->PlayAnimation(L"Basic_Ramona_Idle", true);
 				
 			//at->CompleteEvent(L"Idle") = std::bind();
-			player->AddComponent<RamonaScript>();
+			mRamona->AddComponent<RamonaScript>();
+		}
+		{
+			mLuke
+				= object::Instantiate<GameObject>(Vector3(2.0f, 0.0f, 40.f)
+					, Vector3::One * 3
+					, eLayerType::Enemy);
+			mLuke->SetName(L"Luke");
+
+			Collider2D* cd = mLuke->AddComponent<Collider2D>();
+			cd->SetSize(Vector2(0.15f, 0.15f));
+
+			MeshRenderer* mr = mLuke->AddComponent<MeshRenderer>();
+			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+			mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
+
+			std::shared_ptr<Texture> atlas
+				= Resources::Load<Texture>(L"Basic_Luke_Idle", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_IDLE.png");
+			Animator* at = mLuke->AddComponent<Animator>();
+			at->Create(L"R_Basic_Luke_Idle", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(923.0f / 8.0f, 116.0f), 8);
+			at->PlayAnimation(L"R_Basic_Luke_Idle", true);
+
+			mLuke->AddComponent<LukeScript>();
 		}
 
 		// Light
@@ -164,7 +188,7 @@ namespace ya
 			Camera* cameraComp = camera->AddComponent<Camera>();
 			cameraComp->TurnLayerMask(eLayerType::BG, false);
 			cameraComp->TurnLayerMask(eLayerType::Player, false);
-			cameraComp->TurnLayerMask(eLayerType::Monster, false);
+			cameraComp->TurnLayerMask(eLayerType::Enemy, false);
 			//camera->AddComponent<CameraScript>();
 		}
 	}
@@ -177,6 +201,13 @@ namespace ya
 		//pos.x -= 1.0f * Time::DeltaTime();
 
 		//tr->SetPosition(pos);
+
+		if (IsPlayerExist())
+		{
+			Transform* tr = mRamona->GetComponent<Transform>();
+			Vector3 pos = tr->GetPosition();
+			mRamonaPos = pos;
+		}
 
 		if (Input::GetKeyDown(eKeyCode::ENTER))
 		{

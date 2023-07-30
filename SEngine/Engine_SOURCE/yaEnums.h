@@ -23,7 +23,7 @@ namespace ya::enums
 		Grid,
 		BG,
 		Player,
-		Monster,
+		Enemy,
 		Light,
 		UI,
 		End = 16,
@@ -47,6 +47,14 @@ namespace ya::enums
 		Cube,
 		End,
 	};
+
+	//enum class eColliderState
+	//{
+	//	Active,
+	//	NoneActive,
+	//	OnCollsion,
+	//	End,
+	//};
 
 	enum class eAnimationType : UINT
 	{

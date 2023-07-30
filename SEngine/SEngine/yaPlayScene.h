@@ -17,8 +17,27 @@ namespace ya
 		virtual void OnEnter() override;
 		virtual void OnExit() override;
 
+		static bool IsPlayerExist()
+		{
+			if (mRamona != nullptr)
+				return true;
+
+			return false;
+		}
+
+		static Vector3 GetPlayerPosition()
+		{
+			if(mRamona != nullptr)
+				return mRamonaPos;
+		}
+
 	private:
-		GameObject* mBG_STAGE01_01;
-		GameObject* mUI_STAGE01_STATE;
+		GameObject* mBG_STAGE01_01 = nullptr;
+		GameObject* mUI_STAGE01_STATE = nullptr;
+
+		static GameObject* mRamona;
+		static Vector3 mRamonaPos;
+
+		GameObject* mLuke = nullptr;
 	};
 }

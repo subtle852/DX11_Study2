@@ -35,5 +35,7 @@ namespace ya
 		Vector3 mPosition;
 		Vector2 mSize;
 		Vector2 mCenter;
+
+		//eColliderState mState = eColliderState::Active;
 	};
 }

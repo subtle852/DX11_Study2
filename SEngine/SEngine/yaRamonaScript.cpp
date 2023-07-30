@@ -6,6 +6,7 @@
 #include "yaInput.h"
 #include "yaAnimator.h"
 #include "yaResources.h"
+#include "yaCollider2D.h"
 
 namespace ya
 {
@@ -21,6 +22,10 @@ namespace ya
 
 	void RamonaScript::Initialize()
 	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 애니메이션
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		std::shared_ptr<Texture> atlas
 			= Resources::Load<Texture>(L"Idle", L"..\\Resources\\TEXTURE\\RAMONA\\Idle.png");
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
@@ -404,9 +409,10 @@ namespace ya
 		//at->PlayAnimation(L"Super", true);
 		#pragma endregion
 
-		/// <summary>
-		///
-		/// </summary>
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		                                                    // 애니메이션 Event
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		at = GetOwner()->GetComponent<Animator>();
 
 		//at->StartEvent(L"L_Jump") = std::bind(&RamonaScript::JumpStart, this);
@@ -457,6 +463,24 @@ namespace ya
 		at->CompleteEvent(L"R_FireBall") = std::bind(&RamonaScript::FireBallComplete, this);
 		at->CompleteEvent(L"L_Super") = std::bind(&RamonaScript::SuperComplete, this);
 		at->CompleteEvent(L"R_Super") = std::bind(&RamonaScript::SuperComplete, this);
+
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 콜라이더
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		Collider2D* cd = this->GetOwner()->AddComponent<Collider2D>();
+		cd->SetSize(Vector2(0.15f, 0.15f));
+
+		Collider2D* cd2 = this->GetOwner()->AddComponent<Collider2D>();
+		cd2->SetSize(Vector2(0.3f, 0.08f));
+		cd2->SetCenter(Vector2(0.0f, 0.08f));
+
+		Collider2D* cd3 = this->GetOwner()->AddComponent<Collider2D>();
+		cd3->SetSize(Vector2(0.3f, 0.08f));
+		cd3->SetCenter(Vector2(0.0f, -0.2f));
+
+
 	}
 
 	void RamonaScript::Update()
