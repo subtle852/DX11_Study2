@@ -6,6 +6,14 @@ namespace ya
 {
 	class RamonaScript : public Script
 	{
+		struct RamonaAbility
+		{
+			float mHp = 100.0f;
+			int mHeart = 3;
+			float mGP = 0;
+			float mCoin = 0.0f;
+		};
+
 	public:
 		RamonaScript();
 		~RamonaScript();
@@ -17,10 +25,17 @@ namespace ya
 		void JumpStart();
 		void JumpComplete();
 		//void DJumpComplete();
+
 		void EvadeComplete();
+
 		void NormalAttackComplete();
 		void KickComplete();
 
+		void WeaponAttackComplete();
+		void JumpAttackComplete();
+		void RunAttackComplete();
+
+		void FireBallComplete();
 		void SuperComplete();
 
 
@@ -29,6 +44,8 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* other) override;
 
 	private:
+		bool NoneAnimationCondition();
+
 		void L_idle();
 		void R_idle();
 
@@ -64,8 +81,35 @@ namespace ya
 		void L_behindkick();
 		void R_behindkick();
 
+		void L_weaponnormalattack();
+		void R_weaponnormalattack();
+		void L_weapondownattack();
+		void R_weapondownattack();
+		void L_weaponsideattack();
+		void R_weaponsideattack();
+		void L_weaponstabattack();
+		void R_weaponstabattack();
+
+		void L_jumpdownattack();
+		void R_jumpdownattack();
+		void L_jumpslideattack();
+		void R_jumpslideattack();
+		void L_runjumpattack();
+		void R_runjumpattack();
+
+		void L_runweaponattack();
+		void R_runweaponattack();
+		void L_runslideattack();
+		void R_runslideattack();
+
+		void L_fireball();
+		void R_fireball();
+		void L_super();
+		void R_super();
 
 	private:
+		RamonaAbility mAbilty;
+
 		ePlayerState mState = ePlayerState::R_Idle;
 		ePlayerState mPreviousState = ePlayerState::R_Idle;
 
@@ -93,5 +137,20 @@ namespace ya
 		bool mIsKick = false;
 		bool mIsRoundKick = false;
 		bool mIsBehindKick = false;
+
+		bool mIsWeaponNormal = false;
+		bool mIsWeaponDown = false;
+		bool mIsWeaponSide = false;
+		bool mIsWeaponStab = false;
+
+		bool mIsJumpDown = false;
+		bool mIsJumpSlide = false;
+		bool mIsRunJump = false;
+
+		bool mIsRunWeapon = false;
+		bool mIsRunSlide = false;
+
+		bool mIsFireBall = false;
+		bool mIsSuper = false;
 	};
 }

@@ -105,5 +105,33 @@ namespace ya::enums
 		R_RoundKick,
 		L_BehindKick,
 		R_BehindKick,
+
+		L_WeaponNormalAttack,
+		R_WeaponNormalAttack,
+		L_WeaponDownAttack,
+		R_WeaponDownAttack,
+		L_WeaponSideAttack,
+		R_WeaponSideAttack,
+		L_WeaponStabAttack,
+		R_WeaponStabAttack,
+
+		L_JumpDownAttack,
+		R_JumpDownAttack,
+		L_JumpSlideAttack,
+		R_JumpSlideAttack,
+		L_RunJumpAttack,
+		R_RunJumpAttack,
+		//L_RunJumpDownAttack,
+		//R_RunJumpDownAttack,
+
+		L_RunWeaponAttack,
+		R_RunWeaponAttack,
+		L_RunSlideAttack,
+		R_RunSlideAttack,
+
+		L_FireBall,
+		R_FireBall,
+		L_Super,
+		R_Super,
 	};
 }
