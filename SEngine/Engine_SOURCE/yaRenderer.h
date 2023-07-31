@@ -41,6 +41,11 @@ namespace renderer
 		UINT animationType;
 	};
 
+	CBUFFER(ColliderCB, CBSLOT_COLLIDER)
+	{
+		UINT colliderState;
+	};
+
 	extern ya::graphics::ConstantBuffer* constantBuffer[(UINT)eCBType::End];
 
 	extern Microsoft::WRL::ComPtr<ID3D11SamplerState> samplerState[];

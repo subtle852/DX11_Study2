@@ -152,5 +152,13 @@ namespace ya
 
 		bool mIsFireBall = false;
 		bool mIsSuper = false;
+
+		/////////////////////////////////
+		Collider2D* mBodyCd = nullptr;
+		Collider2D* mUpperCd = nullptr;
+		Collider2D* mLowerCd = nullptr;
+		Collider2D* mBothCd = nullptr;
+
+		//Collider2D* mAllCd = nullptr;
 	};
 }

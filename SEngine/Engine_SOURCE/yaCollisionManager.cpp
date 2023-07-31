@@ -40,7 +40,42 @@ namespace ya
 
 		for (GameObject* leftObj : lefts)
 		{
-			Collider2D* leftCol = leftObj->GetComponent<Collider2D>();
+			std::vector<Collider2D*> compsLeft
+				= leftObj->GetComponents<Collider2D>();
+			
+			for (size_t i = 0; i < compsLeft.size(); i++)
+			{
+				auto leftCol = compsLeft[i]->GetOwner()->GetComponents<Collider2D>();
+				if (leftCol[i] == nullptr)
+					continue;
+				if (leftObj->GetState()
+					!= GameObject::eState::Active)
+					continue;
+
+				for (GameObject* rightObj : rights)
+				{
+					std::vector<Collider2D*> compsRight
+						= rightObj->GetComponents<Collider2D>();
+
+					for (size_t j = 0; j < compsRight.size(); j++)
+					{
+						auto rightCol = compsRight[j]->GetOwner()->GetComponents<Collider2D>();
+						if (rightCol[i] == nullptr)
+							continue;
+						if (leftObj == rightObj)
+						{
+							continue;
+						}
+						if (rightObj->GetState()
+							!= GameObject::eState::Active)
+							continue;
+
+						ColliderCollision(compsLeft[i], compsRight[j]);
+					}
+				}
+			}
+
+			/*Collider2D* leftCol = leftObj->GetComponent<Collider2D>();
 			if (leftCol == nullptr)
 				continue;
 			if (leftObj->GetState()
@@ -51,15 +86,24 @@ namespace ya
 			{
 				Collider2D* rightCol = rightObj->GetComponent<Collider2D>();
 				if (rightCol == nullptr)
+				{
 					continue;
+					int a = 0;
+				}
 				if (leftObj == rightObj)
+				{
 					continue;
+					int a = 0;
+				}
 				if (rightObj->GetState()
 					!= GameObject::eState::Active)
+				{
 					continue;
+					int a = 0;
+				}
 
 				ColliderCollision(leftCol, rightCol);
-			}
+			}*/
 		}
 	}
 
@@ -88,12 +132,22 @@ namespace ya
 				//최초 충돌
 				left->OnCollisionEnter(right);
 				right->OnCollisionEnter(left);
+
+				left->SetState(eColliderState::OnCollsion);
+				right->SetState(eColliderState::OnCollsion);
+
+				iter->second = true;
 			}
 			else
 			{
 				// 충돌 중
 				left->OnCollisionStay(right);
 				right->OnCollisionStay(left);
+
+				left->SetState(eColliderState::OnCollsion);
+				right->SetState(eColliderState::OnCollsion);
+
+				iter->second = true;
 			}
 		}
 		else
@@ -104,6 +158,11 @@ namespace ya
 				// 충돌하고 있다가 나갈떄
 				left->OnCollisionExit(right);
 				right->OnCollisionExit(left);
+
+				left->SetState(eColliderState::Active);
+				right->SetState(eColliderState::Active);
+
+				iter->second = false;
 			}
 		}
 	}
@@ -123,6 +182,19 @@ namespace ya
 		   ,Vector3{0.5f, -0.5f, 0.0f}
 		   ,Vector3{-0.5f, -0.5f, 0.0f}
 		};
+
+		//Vector3 leftPos = left->GetOwner()->GetComponent<Collider2D>()->GetPosition();
+		//Vector3 rightPos = right->GetOwner()->GetComponent<Collider2D>()->GetPosition();
+		//Matrix leftMatrix = Matrix::CreateTranslation(leftPos);
+		//Matrix rightMatrix = Matrix::CreateTranslation(rightPos);
+
+		//Vector3 leftCenter = Vector3(left->GetCenter().x, left->GetCenter().y, 0.0f);
+		//Matrix CenterLeft = Matrix::CreateTranslation(leftCenter);
+		//leftMatrix += CenterLeft;
+
+		//Vector3 rightCenter = Vector3(right->GetCenter().x, right->GetCenter().y, 0.0f);
+		//Matrix CenterRight = Matrix::CreateTranslation(rightCenter);
+		//leftMatrix += CenterRight;
 
 		Transform* leftTr = left->GetOwner()->GetComponent<Transform>();
 		Transform* rightTr = right->GetOwner()->GetComponent<Transform>();

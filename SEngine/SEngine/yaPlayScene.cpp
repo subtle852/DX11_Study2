@@ -128,8 +128,8 @@ namespace ya
 					, eLayerType::Enemy);
 			mLuke->SetName(L"Luke");
 
-			Collider2D* cd = mLuke->AddComponent<Collider2D>();
-			cd->SetSize(Vector2(0.15f, 0.15f));
+			Collider2D* cd2 = mLuke->AddComponent<Collider2D>();
+			cd2->SetSize(Vector2(0.15f, 0.15f));
 
 			MeshRenderer* mr = mLuke->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));

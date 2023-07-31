@@ -3,6 +3,7 @@
 #include "yaTransform.h"
 #include "yaRenderer.h"
 #include "yaAnimator.h"
+#include "yaCollider2D.h"
 
 namespace ya
 {
@@ -33,6 +34,10 @@ namespace ya
 		Animator* animator = GetOwner()->GetComponent<Animator>();
 		if (animator)
 			animator->Binds();
+
+		Collider2D* cd = GetOwner()->GetComponent<Collider2D>();
+		if (cd)
+			cd->BindConstantBuffer();
 
 		mMesh->Render();
 

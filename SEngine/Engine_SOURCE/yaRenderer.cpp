@@ -304,6 +304,10 @@ namespace renderer
 		// light structed buffer
 		lightsBuffer = new StructedBuffer();
 		lightsBuffer->Create(sizeof(LightAttribute), 2, eSRVType::None);
+
+		// Collider Buffer
+		constantBuffer[(UINT)eCBType::Collider] = new ConstantBuffer(eCBType::Collider);
+		constantBuffer[(UINT)eCBType::Collider]->Create(sizeof(ColliderCB));
 	}
 
 	void LoadShader()

@@ -469,18 +469,21 @@ namespace ya
 															// 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		Collider2D* cd = this->GetOwner()->AddComponent<Collider2D>();
-		cd->SetSize(Vector2(0.15f, 0.15f));
+		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
+		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
+		//mBodyCd->SetCenter(Vector2(0.5f, 0.0f));
 
-		Collider2D* cd2 = this->GetOwner()->AddComponent<Collider2D>();
-		cd2->SetSize(Vector2(0.3f, 0.08f));
-		cd2->SetCenter(Vector2(0.0f, 0.08f));
+		//mUpperCd = this->GetOwner()->AddComponent<Collider2D>();
+		//mUpperCd->SetSize(Vector2(0.2f, 0.08f));
+		//mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
 
-		Collider2D* cd3 = this->GetOwner()->AddComponent<Collider2D>();
-		cd3->SetSize(Vector2(0.3f, 0.08f));
-		cd3->SetCenter(Vector2(0.0f, -0.2f));
+		//mLowerCd = this->GetOwner()->AddComponent<Collider2D>();
+		//mLowerCd->SetSize(Vector2(0.2f, 0.08f));
+		//mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
 
-
+		//mBothCd = this->GetOwner()->AddComponent<Collider2D>();
+		//mBothCd->SetSize(Vector2(0.25f, 0.22f));
+		//mBothCd->SetCenter(Vector2(0.22f, -0.05f));
 	}
 
 	void RamonaScript::Update()
@@ -653,6 +656,43 @@ namespace ya
 		// 여기 아래에서부터 상태 변화가 진행되어야
 		// 다음번 Update 부분으로 들어올 때, mState의 switch문 조건인
 		// 이전 상태와 현재 상태를 비교해서 다른 경우, case에 따라 작동하게 됨
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 콜라이더
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//if (mDirection == eDirection::L)
+		//{
+		//	//std::vector<Collider2D*> comps
+		//	//	= this->GetOwner()->GetComponents<Collider2D>();
+
+		//	//mUpperCd = comps[1];
+		//	mUpperCd->SetCenter(Vector2(-0.2f, 0.08f));
+
+		//	//mLowerCd = comps[2];
+		//	mLowerCd->SetCenter(Vector2(-0.2f, -0.2f));
+
+		//	//mBothCd = comps[3];
+		//	//mBothCd->SetCenter(Vector2(-0.22f, -0.05f));
+		//}
+		//else
+		//{
+		//	//std::vector<Collider2D*> comps
+		//	//	= this->GetOwner()->GetComponents<Collider2D>();
+
+		//	//mUpperCd = comps[1];
+		//	mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
+
+		//	//mLowerCd = comps[2];
+		//	mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
+
+		//	//mBothCd = comps[3];
+		//	//mBothCd->SetCenter(Vector2(0.22f, -0.05f));
+		//}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 위치
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();

@@ -28,6 +28,11 @@ cbuffer Animator : register(b3)
     float3 pad;
 }
 
+cbuffer Collider : register(b4)
+{
+    uint colliderState;
+}
+
 Texture2D albedoTexture : register(t0);
 Texture2D atlasTexture : register(t12);
 

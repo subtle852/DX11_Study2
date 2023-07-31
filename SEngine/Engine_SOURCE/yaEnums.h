@@ -48,13 +48,13 @@ namespace ya::enums
 		End,
 	};
 
-	//enum class eColliderState
-	//{
-	//	Active,
-	//	NoneActive,
-	//	OnCollsion,
-	//	End,
-	//};
+	enum class eColliderState
+	{
+		Active,
+		NoneActive,
+		OnCollsion,// Active는 전제 조건
+		End,
+	};
 
 	enum class eAnimationType : UINT
 	{

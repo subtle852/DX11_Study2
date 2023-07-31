@@ -110,8 +110,8 @@ namespace ya
 
 		at = GetOwner()->GetComponent<Animator>();
 
-		//at->CompleteEvent(L"L_Jump") = std::bind(&LukeScript::JumpComplete, this);
-		//at->CompleteEvent(L"R_Jump") = std::bind(&LukeScript::JumpComplete, this);
+		at->CompleteEvent(L"L_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
+		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
 	}
 	void LukeScript::Update()
 	{
@@ -245,33 +245,52 @@ namespace ya
 		if (PlayScene::IsPlayerExist())
 			mPlayerPos = PlayScene::GetPlayerPosition();
 
-
-		if (IsPlayerInDetectionRange())
+		if (mIsAttacked1 == false)
 		{
-			mDirection = eDirection::L;
-			ChangeState(eLukeState::L_Angry);
-		}
-		else if(!IsPlayerInDetectionRange())
-		{
-			mDirection = eDirection::L;
-			ChangeState(eLukeState::L_Idle);
+			if (IsPlayerInDetectionRange())
+			{
+				mDirection = eDirection::L;
+				ChangeState(eLukeState::L_Angry);
+			}
+			else if (!IsPlayerInDetectionRange())
+			{
+				mDirection = eDirection::L;
+				ChangeState(eLukeState::L_Idle);
+			}
 		}
 
 	}
 	void LukeScript::JumpStart()
 	{
 	}
-	void LukeScript::JumpComplete()
+	void LukeScript::Attacked1Complete()
 	{
+		mIsAttacked1 = true;
+		ChangeState(eLukeState::L_Angry);
 	}
+
 	void LukeScript::OnCollisionEnter(Collider2D* other)
 	{
+	
 	}
 	void LukeScript::OnCollisionStay(Collider2D* other)
 	{
+		if (other->GetOwner()->GetName() == L"Ramona")
+		{
+			if (mIsAttacked1 == false)
+			{
+				ChangeState(eLukeState::L_Attacked1);
+				mIsAttacked1 = true;
+			}
+		}
 	}
+
 	void LukeScript::OnCollisionExit(Collider2D* other)
 	{
+		if (other->GetOwner()->GetName() == L"Ramona")
+		{
+			mIsAttacked1 = false;
+		}
 	}
 	void LukeScript::L_idle()
 	{

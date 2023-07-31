@@ -58,7 +58,7 @@ namespace ya
 		virtual void Update() override;
 
 		void JumpStart();
-		void JumpComplete();
+		void Attacked1Complete();
 
 		virtual void OnCollisionEnter(Collider2D* other) override;
 		virtual void OnCollisionStay(Collider2D* other) override;
@@ -152,6 +152,7 @@ namespace ya
 
 		bool mDectected = false;// 플레이어 감지
 
+		bool mIsIdle = false;
 		bool mIsAngry = false;
 		bool mIsWalk = false;
 		bool mIsRun = false;

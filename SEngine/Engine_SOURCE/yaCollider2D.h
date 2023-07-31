@@ -21,10 +21,16 @@ namespace ya
 		void OnCollisionExit(Collider2D* other);
 
 		void SetType(eColliderType type) { mType = type; }
+		Vector3 GetPosition() { return mPosition; }
 		Vector2 GetSize() { return mSize; }
 		void SetSize(Vector2 size) { mSize = size; }
+		Vector2 GetCenter() { return mCenter; }
 		void SetCenter(Vector2 size) { mCenter = size; }
 		UINT GetColliderID() { return mColliderID; }
+		eColliderState GetState() { return mState; }
+		void SetState(eColliderState state) { mState = state; }
+
+		void BindConstantBuffer();
 
 	private:
 		static UINT mColliderNumber;
@@ -36,6 +42,6 @@ namespace ya
 		Vector2 mSize;
 		Vector2 mCenter;
 
-		//eColliderState mState = eColliderState::Active;
+		eColliderState mState = eColliderState::Active;
 	};
 }
