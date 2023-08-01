@@ -22,8 +22,8 @@ namespace ya::enums
 	{
 		Grid,
 		BG,
-		Player,
 		Enemy,
+		Player,
 		Light,
 		UI,
 		End = 16,

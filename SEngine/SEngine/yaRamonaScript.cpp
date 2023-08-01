@@ -410,7 +410,7 @@ namespace ya
 		#pragma endregion
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		                                                    // 애니메이션 Event
+		                                                    // 이벤트
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		at = GetOwner()->GetComponent<Animator>();
@@ -471,7 +471,7 @@ namespace ya
 
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
-		//mBodyCd->SetCenter(Vector2(0.5f, 0.0f));
+		mBodyCd->SetCenter(Vector2(0.0f, 0.0f));
 
 		//mUpperCd = this->GetOwner()->AddComponent<Collider2D>();
 		//mUpperCd->SetSize(Vector2(0.2f, 0.08f));
@@ -481,9 +481,10 @@ namespace ya
 		//mLowerCd->SetSize(Vector2(0.2f, 0.08f));
 		//mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
 
-		//mBothCd = this->GetOwner()->AddComponent<Collider2D>();
-		//mBothCd->SetSize(Vector2(0.25f, 0.22f));
-		//mBothCd->SetCenter(Vector2(0.22f, -0.05f));
+		mBothCd = this->GetOwner()->AddComponent<Collider2D>();
+		mBothCd->SetSize(Vector2(0.3f, 0.3f));
+		mBothCd->SetCenter(Vector2(0.0f, -0.0f));
+		mBothCd->SetState(eColliderState::NoneActive);
 	}
 
 	void RamonaScript::Update()
@@ -1650,7 +1651,31 @@ namespace ya
 		// Glow, Counter,...
 		// 위 상태는 Collider를 추가하는 선행작업이 요구
 		// Collider 몇 개를? 어떤 위치에? 배치할지 고민 후 진행
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 공격할 때만, mBoth 콜라이더 켜기
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		if (
+				mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3 ||
+				mIsKick || mIsRoundKick ||mIsBehindKick ||
+				mIsWeaponNormal ||mIsWeaponDown ||mIsWeaponSide ||mIsWeaponStab ||
+				mIsJumpDown ||mIsJumpSlide ||mIsRunJump ||
+				mIsRunWeapon ||mIsRunSlide ||
+				mIsFireBall ||mIsSuper
+			)
+		{
+			mBothCd->SetState(eColliderState::Active);
+		}
+		else
+		{
+			mBothCd->SetState(eColliderState::NoneActive);
+		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 이벤트 함수
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void RamonaScript::JumpStart()
 	{
@@ -1810,8 +1835,9 @@ namespace ya
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 충돌
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void RamonaScript::OnCollisionEnter(Collider2D* other)
 	{
@@ -1826,8 +1852,9 @@ namespace ya
 		int a = 0;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 기타 함수
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	bool RamonaScript::NoneAnimationCondition()// XX 애니메이션이 동작되어서는 안되는 상황: ex. 점프, 회피
 	{
@@ -1844,6 +1871,10 @@ namespace ya
 
 		return false;
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 상태 애니메이션 함수
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void RamonaScript::L_idle()
 	{
@@ -1963,31 +1994,43 @@ namespace ya
 	}
 	void RamonaScript::L_kick()
 	{
+		mIsKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_Kick", true);
 	}
 	void RamonaScript::R_kick()
 	{
+		mIsKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_Kick", true);
 	}
 	void RamonaScript::L_roundkick()
 	{
+		mIsRoundKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_RoundKick", true);
 	}
 	void RamonaScript::R_roundkick()
 	{
+		mIsRoundKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_RoundKick", true);
 	}
 	void RamonaScript::L_behindkick()
 	{
+		mIsBehindKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_BehindKick", true);
 	}
 	void RamonaScript::R_behindkick()
 	{
+		mIsBehindKick = true;
+
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_BehindKick", true);
 	}

@@ -45,8 +45,10 @@ namespace ya
 			
 			for (size_t i = 0; i < compsLeft.size(); i++)
 			{
-				auto leftCol = compsLeft[i]->GetOwner()->GetComponents<Collider2D>();
-				if (leftCol[i] == nullptr)
+				auto leftCol = compsLeft[i];
+				//if (leftCol->GetState() == eColliderState::NoneActive)
+				//	continue;
+				if (leftCol == nullptr)
 					continue;
 				if (leftObj->GetState()
 					!= GameObject::eState::Active)
@@ -59,8 +61,10 @@ namespace ya
 
 					for (size_t j = 0; j < compsRight.size(); j++)
 					{
-						auto rightCol = compsRight[j]->GetOwner()->GetComponents<Collider2D>();
-						if (rightCol[i] == nullptr)
+						auto rightCol = compsRight[j];
+						//if (rightCol->GetState() == eColliderState::NoneActive)
+						//	continue;
+						if (rightCol == nullptr)
 							continue;
 						if (leftObj == rightObj)
 						{
@@ -133,9 +137,6 @@ namespace ya
 				left->OnCollisionEnter(right);
 				right->OnCollisionEnter(left);
 
-				left->SetState(eColliderState::OnCollsion);
-				right->SetState(eColliderState::OnCollsion);
-
 				iter->second = true;
 			}
 			else
@@ -143,9 +144,6 @@ namespace ya
 				// 충돌 중
 				left->OnCollisionStay(right);
 				right->OnCollisionStay(left);
-
-				left->SetState(eColliderState::OnCollsion);
-				right->SetState(eColliderState::OnCollsion);
 
 				iter->second = true;
 			}
@@ -158,9 +156,6 @@ namespace ya
 				// 충돌하고 있다가 나갈떄
 				left->OnCollisionExit(right);
 				right->OnCollisionExit(left);
-
-				left->SetState(eColliderState::Active);
-				right->SetState(eColliderState::Active);
 
 				iter->second = false;
 			}
@@ -183,24 +178,27 @@ namespace ya
 		   ,Vector3{-0.5f, -0.5f, 0.0f}
 		};
 
+		// 생각한 방법 1
 		//Vector3 leftPos = left->GetOwner()->GetComponent<Collider2D>()->GetPosition();
 		//Vector3 rightPos = right->GetOwner()->GetComponent<Collider2D>()->GetPosition();
 		//Matrix leftMatrix = Matrix::CreateTranslation(leftPos);
 		//Matrix rightMatrix = Matrix::CreateTranslation(rightPos);
-
-		//Vector3 leftCenter = Vector3(left->GetCenter().x, left->GetCenter().y, 0.0f);
-		//Matrix CenterLeft = Matrix::CreateTranslation(leftCenter);
-		//leftMatrix += CenterLeft;
-
-		//Vector3 rightCenter = Vector3(right->GetCenter().x, right->GetCenter().y, 0.0f);
-		//Matrix CenterRight = Matrix::CreateTranslation(rightCenter);
-		//leftMatrix += CenterRight;
+		// 밑에 4줄은 지워야 함
 
 		Transform* leftTr = left->GetOwner()->GetComponent<Transform>();
 		Transform* rightTr = right->GetOwner()->GetComponent<Transform>();
 
 		Matrix leftMatrix = leftTr->GetMatrix();
 		Matrix rightMatrix = rightTr->GetMatrix();
+
+		//// 생각한 방법 2
+		//Vector3 leftCenter = Vector3(left->GetCenter().x, left->GetCenter().y, 0.0f);
+		//Matrix CenterLeft = Matrix::CreateTranslation(leftCenter);
+		//leftMatrix += CenterLeft;
+
+		//Vector3 rightCenter = Vector3(right->GetCenter().x, right->GetCenter().y, 1.0f);
+		//Matrix CenterRight = Matrix::CreateTranslation(rightCenter);
+		//leftMatrix += CenterRight;
 
 		Vector3 Axis[4] = {};
 
@@ -226,6 +224,7 @@ namespace ya
 			Axis[i].z = 0.0f;
 
 		Vector3 vc = leftTr->GetPosition() - rightTr->GetPosition();
+		//Vector3 vc = leftPos - rightPos;
 		vc.z = 0.0f;
 
 		Vector3 centerDir = vc;

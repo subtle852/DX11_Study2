@@ -28,6 +28,7 @@ namespace ya
 {
 	GameObject* PlayScene::mRamona = nullptr;
 	Vector3 PlayScene::mRamonaPos = Vector3::Zero;
+	eDirection PlayScene::mRamonaDir = eDirection::R;
 
 	PlayScene::PlayScene()
 	{
@@ -207,6 +208,8 @@ namespace ya
 			Transform* tr = mRamona->GetComponent<Transform>();
 			Vector3 pos = tr->GetPosition();
 			mRamonaPos = pos;
+
+			mRamonaDir = mRamona->GetComponent<RamonaScript>()->GetDirection();
 		}
 
 		if (Input::GetKeyDown(eKeyCode::ENTER))

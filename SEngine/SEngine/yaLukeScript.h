@@ -50,6 +50,18 @@ namespace ya
 			R_Raiding,
 		};
 
+		enum class eLukeCombatState
+		{
+			ArmAttack,
+			KickAttack,
+			SideKickAttack,
+			UpperAttack,
+
+			Guard,
+
+			End,
+		};
+
 	public:
 		LukeScript();
 		~LukeScript();
@@ -59,6 +71,7 @@ namespace ya
 
 		void JumpStart();
 		void Attacked1Complete();
+		void CombatComplete();
 
 		virtual void OnCollisionEnter(Collider2D* other) override;
 		virtual void OnCollisionStay(Collider2D* other) override;
@@ -66,20 +79,12 @@ namespace ya
 
 	private:
 		//bool NoneAnimationCondition();
+		eDirection GetDirection() { return mDirection; }
+		void SetDirection(eDirection dir) { mDirection = dir; }
+		eLukeState GetState() { return mState; }
+		void ChangeState(eLukeState newState) { mState = newState; }
 
-		void ChangeState(eLukeState newState) 
-		{
-			mState = newState;
-		}
-
-		void SetPlayerPosition(float playerX, float playerY) 
-		{
-			mPlayerPos.x = playerX;
-			mPlayerPos.y = playerY;
-		}
-
-		bool IsPlayerInDetectionRange()
-			// 탐지되면 계속 추적상태로 전환되어서 따라 다니고 거리 더 가까워지면 IsPlayerInAttacRange를 체크하고 공격하도록 만들어야 함
+		bool IsPlayerInDetectionRange()// 플레이어 인식 감지 함수: 대기 상태로 돌입 조건
 		{
 			// 적과 플레이어 사이의 거리 계산
 			float distanceX = mPlayerPos.x - mPos.x;
@@ -89,6 +94,23 @@ namespace ya
 
 			// 플레이어가 감지 범위 내에 있는지 확인
 			return distanceSquared <= detectionRangeSquared;
+		}
+
+		bool IsPlayerInCombatRange()// 플레이어 전투 감지 함수: 전투 상태로 돌입 조건
+		{
+			// 적과 플레이어 사이의 거리 계산
+			float distanceX = mPlayerPos.x - mPos.x;
+			float distanceY = mPlayerPos.y - mPos.y;
+			float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+			float detectionRangeSquared = mCombatRange * mCombatRange;
+
+			// 플레이어가 감지 범위 내에 있는지 확인
+			return distanceSquared <= detectionRangeSquared;
+		}
+
+		float GetRandomMoveDistance() 
+		{
+			return baseMoveDistance + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / maxMoveRange));
 		}
 
 		void L_idle();
@@ -137,21 +159,43 @@ namespace ya
 
 
 	private:
+		// 어빌리티
 		float mHp = 100.0f;
 
+		// 주요 상태
 		eLukeState mState = eLukeState::R_Idle;
 		eLukeState mPreviousState = eLukeState::R_Idle;
 
 		eDirection mDirection = eDirection::R;
+		int mDirectionInt = 0;// Direction L은 -1 R은 +1
 
 		Vector3 mPos;
 
+		// Player 상태 (PlayScene의 static 변수를 업데이트 계속 해줌)
 		Vector3 mPlayerPos;
+		eDirection mPlayerDir;
 
+		// 플레이어 인식 감지 (단순)
 		float mDetectionRange = 1.5f;
+		bool mDetected = false;
 
-		bool mDectected = false;// 플레이어 감지
+		// 플레이어 전투 감지 (공격, 방어...)
+		float mCombatRange = 1.0f;
+		bool mCombated = false;
 
+		// AI 기본 이동 거리와 이동 범위 제한 값
+		float baseMoveDistance = 0.1f;
+		float maxMoveRange = 0.3f;
+
+		// AI 이동 방향 변경을 위한 타이머 변수
+		float mMoveTimer;
+		const float mMoveInterval = 2.0f; // 2초마다 랜덤으로 방향 변경
+
+		// AI 전투 변경을 위한 타이머 변수
+		float mCombatTimer = 0.0f;
+		const float mCombatInterval = 3.0f;
+
+		// State 변수
 		bool mIsIdle = false;
 		bool mIsAngry = false;
 		bool mIsWalk = false;

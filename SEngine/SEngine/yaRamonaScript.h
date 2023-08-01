@@ -18,13 +18,14 @@ namespace ya
 		RamonaScript();
 		~RamonaScript();
 
-
 		virtual void Initialize() override;
 		virtual void Update() override;
 
+		eDirection GetDirection() {	return mDirection; }
+
+		// 이벤트 함수
 		void JumpStart();
 		void JumpComplete();
-		//void DJumpComplete();
 
 		void EvadeComplete();
 
@@ -38,14 +39,17 @@ namespace ya
 		void FireBallComplete();
 		void SuperComplete();
 
-
+		// 충돌 함수
 		virtual void OnCollisionEnter(Collider2D* other) override;
 		virtual void OnCollisionStay(Collider2D* other) override;
 		virtual void OnCollisionExit(Collider2D* other) override;
 
 	private:
-		bool NoneAnimationCondition();
+		// 기존 애니메이션이 동작되면 안되는 조건 
+		// ex. 점프 도중 키입력이 있다고 해서 다른 애니메이션이 진행되면 안됨
+		bool NoneAnimationCondition(); 
 
+		// State 함수
 		void L_idle();
 		void R_idle();
 
@@ -108,18 +112,21 @@ namespace ya
 		void R_super();
 
 	private:
+		// 어빌리티
 		RamonaAbility mAbilty;
 
+		// 주요 상태
 		ePlayerState mState = ePlayerState::R_Idle;
 		ePlayerState mPreviousState = ePlayerState::R_Idle;
 
 		eDirection mDirection = eDirection::R;
 
+		// State 변수
+		// 점프 관련 변수
 		bool mIsJump = false;
-		float mJumpTime = 0.0f;
-		float mJumpStartPosY = -100.0f;
+		float mJumpTime = 0.0f;// 점프 체공 시간 측정
+		float mJumpStartPosY = -100.0f;// 점프 시작 위치 (불가능한 -100.0f로 초기화)
 		bool mIsDJump = false;
-
 		float mJumpHalfTime = 0.3f;// 점프 체공시간의 절반
 		float mJumpHeight = 1.8f;// 점프 높이
 
@@ -127,12 +134,13 @@ namespace ya
 
 		bool mIsEvade = false;
 
+		// 콤보 공격 변수
 		bool mIsNormalAttack1 = false;
 		bool mIsNormalAttack2 = false;
 		bool mIsNormalAttack3 = false;
 		bool mCanNormalAttack2 = false;
 		bool mCanNormalAttack3 = false;
-		float mNormalAttack2Time = 0.0f;
+		float mNormalAttack2Time = 0.0f;// NormalAttack2 실행 시간 측정
 
 		bool mIsKick = false;
 		bool mIsRoundKick = false;
@@ -153,12 +161,11 @@ namespace ya
 		bool mIsFireBall = false;
 		bool mIsSuper = false;
 
-		/////////////////////////////////
+		// 충돌체
 		Collider2D* mBodyCd = nullptr;
 		Collider2D* mUpperCd = nullptr;
 		Collider2D* mLowerCd = nullptr;
 		Collider2D* mBothCd = nullptr;
-
-		//Collider2D* mAllCd = nullptr;
+		Collider2D* mAllCd = nullptr;
 	};
 }

@@ -18,6 +18,10 @@ namespace ya
 	}
 	void LukeScript::Initialize()
 	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 애니메이션
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		std::shared_ptr<Texture> atlas
 			= Resources::Load<Texture>(L"Luke_Idle", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_IDLE.png");
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
@@ -61,8 +65,8 @@ namespace ya
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Guard", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_GUARD.png");
-		at->Create(L"R_Guard", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(347.0f / 3.0f, 116.0f), 3);
-		at->Create(L"L_Guard", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(347.0f / 3.0f, 116.0f), 3);
+		at->Create(L"R_Guard", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(693.0f / 6.0f, 116.0f), 6);
+		at->Create(L"L_Guard", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(693.0f / 6.0f, 116.0f), 6);
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Attacked1", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_ATTACKED1.png");
@@ -104,14 +108,43 @@ namespace ya
 		at->Create(L"R_Raiding", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 		at->Create(L"L_Raiding", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 이벤트 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		at = GetOwner()->GetComponent<Animator>();
 
 		at->CompleteEvent(L"L_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
 		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
+
+		at->CompleteEvent(L"L_ArmAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"L_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"L_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"L_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"L_Guard") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_Guard") = std::bind(&LukeScript::CombatComplete, this);
+
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 초기화 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		mMoveTimer = 0.0f;
+
+		if (rand() % 2 == 0)
+		{
+			mDirection = eDirection::L;
+			mDirectionInt = -1;
+		}
+		else
+		{
+			mDirection = eDirection::R;
+			mDirectionInt = +1;
+		}
 	}
 	void LukeScript::Update()
 	{
@@ -238,49 +271,265 @@ namespace ya
 
 		mPreviousState = mState;
 
+		// 본인 위치 업데이트
 		Transform* tr = this->GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 		mPos = pos;
 
+		// 플레이어 위치, 방향 업데이트
 		if (PlayScene::IsPlayerExist())
+		{
 			mPlayerPos = PlayScene::GetPlayerPosition();
+			mPlayerDir = PlayScene::GetPlayerDirection();
+		}
 
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// AI
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// 공격을 당하고 있을 때는 아래의 상태 변화가 있으면 안됨
+		// 추후 공격을 당하는 변수들 합쳐서 함수로 대체 예정
 		if (mIsAttacked1 == false)
 		{
-			if (IsPlayerInDetectionRange())
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 탐지거리 내 플레이어 O
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			if (IsPlayerInDetectionRange())// 탐지거리 내 플레이어 O
 			{
-				mDirection = eDirection::L;
-				ChangeState(eLukeState::L_Angry);
+				if (mDetected == false)// 처음 감지했을 때만
+				{
+					// 플레이어 쪽 방향으로 설정 해줘야 함
+					if (mPlayerPos.x < mPos.x)
+					{
+						mDetected = true;
+						mDirection = eDirection::L;
+						ChangeState(eLukeState::L_Idle);
+					}
+					else
+					{
+						mDetected = true;
+
+						mDirection = eDirection::R;
+						ChangeState(eLukeState::R_Idle);
+					}
+				}
+
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 전투거리 내 플레이어 O
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				if (IsPlayerInCombatRange())
+				{
+					mCombated = true;
+
+					mCombatTimer -= Time::DeltaTime();
+
+					if (mCombatTimer <= 0.0f)
+					{
+						// 공격 방어 스킬들 중 하나를 랜덤으로 실행
+						//std::mt19937 mt(1234);// 동일한 시드를 넣으면 다른 머신에서도 동일한 랜덤숫자가 뽑힘
+						//std::uniform_int_distribution<int> dist(0, 4);
+						//int randStateNum = dist(mt);
+						int randStateNum = rand() % (int)eLukeCombatState::End;
+
+						switch (static_cast<eLukeCombatState>(randStateNum))
+						{
+						case eLukeCombatState::ArmAttack:
+							if (mPlayerPos.x < mPos.x)
+								ChangeState(eLukeState::L_ArmAttack);
+							else
+								ChangeState(eLukeState::R_ArmAttack);
+							break;
+
+						case eLukeCombatState::KickAttack:
+							if (mPlayerPos.x < mPos.x)
+								ChangeState(eLukeState::L_KickAttack);
+							else
+								ChangeState(eLukeState::L_KickAttack);
+							break;
+
+						case eLukeCombatState::SideKickAttack:
+							if (mPlayerPos.x < mPos.x)
+								ChangeState(eLukeState::L_SideKickAttack);
+							else
+								ChangeState(eLukeState::R_SideKickAttack);
+							break;
+
+						case eLukeCombatState::UpperAttack:
+							if (mPlayerPos.x < mPos.x)
+								ChangeState(eLukeState::L_UpperAttack);
+							else
+								ChangeState(eLukeState::R_UpperAttack);
+							break;
+
+						case eLukeCombatState::Guard:
+							if (mPlayerPos.x < mPos.x)
+								ChangeState(eLukeState::L_Guard);
+							else
+								ChangeState(eLukeState::R_Guard);
+							break;
+							break;
+
+						default:
+							break;
+						}
+
+						mCombatTimer = mCombatInterval;
+					}
+				}
+
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 전투거리 내 플레이어 X
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				else
+				{
+					mDetected = false;// 플레이어 쪽 방향으로 설정 해주기 위해 처음 Detect 되는 상태로 전환
+					mCombated = false;
+
+					mCombatTimer = 0.0f;
+				}
 			}
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 탐지거리 내 플레이어 X
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			else if (!IsPlayerInDetectionRange())
 			{
-				mDirection = eDirection::L;
-				ChangeState(eLukeState::L_Idle);
+				mDetected = false;
+
+				// 이동 타이머 감소
+				mMoveTimer -= Time::DeltaTime();
+
+				if (mMoveTimer <= 0.0f) 
+				{
+					// 랜덤하게 이동 방향 변경
+					if (rand() % 2 == 0)
+					{
+						mDirection = eDirection::L;
+						mDirectionInt = -1;
+					}
+					else
+					{
+						mDirection = eDirection::R;
+						mDirectionInt = +1;
+					} // -1 또는 1로 랜덤하게 설정
+
+					// 타이머 초기화
+					mMoveTimer = mMoveInterval;
+				}
+
+				// 랜덤 이동 로직
+				float moveDistance = GetRandomMoveDistance();
+				Transform* tr = this->GetOwner()->GetComponent<Transform>();
+				Vector3 pos = tr->GetPosition();
+				pos.x += mDirectionInt * moveDistance * Time::DeltaTime();
+				tr->SetPosition(pos);
+
+				if (mDirectionInt == -1)
+				{
+					mDirection = eDirection::L;
+					ChangeState(eLukeState::L_Walk);
+				}
+				else
+				{
+					mDirection = eDirection::R;
+					ChangeState(eLukeState::R_Walk);
+				}
+				
+				// 화면 좌측 끝과 우측 끝을 벗어나지 않도록 처리
+				if (mPos.x < -2.8f)////////////////////////////////////////////////////////////////////////// 수정 예정 CameraPos로
+				{
+					//mPos.x = 0;
+					mDirectionInt = 1; // 우측으로 방향 전환
+					mDirection = eDirection::R;
+					ChangeState(eLukeState::R_Walk);
+				}
+				else if (mPos.x > 2.8f) 
+				{
+					//mPos.x = screenWidth;
+					mDirectionInt = -1; // 좌측으로 방향 전환
+					mDirection = eDirection::L;
+					ChangeState(eLukeState::L_Walk);
+				}
 			}
 		}
 
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 이벤트
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void LukeScript::JumpStart()
 	{
 	}
+
 	void LukeScript::Attacked1Complete()
 	{
-		mIsAttacked1 = true;
+		mIsAttacked1 = true;// 오류 방지용
 		ChangeState(eLukeState::L_Angry);
 	}
+
+	void LukeScript::CombatComplete()
+	{
+		// 아래의 상태 변환 변수를 해당 애니메이션이나 해당 상태로 변환 시, 켜주고 
+		// 여기서, 꺼줘야 함
+		//if (mIsArm == true) mIsKick mIsSideKick mIsUpper mIsGuard
+		//	mIsArm = false;
+
+		if (mPlayerPos.x < mPos.x)
+			ChangeState(eLukeState::L_Idle);
+		else
+			ChangeState(eLukeState::R_Idle);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 충돌
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void LukeScript::OnCollisionEnter(Collider2D* other)
 	{
 	
 	}
+
 	void LukeScript::OnCollisionStay(Collider2D* other)
 	{
-		if (other->GetOwner()->GetName() == L"Ramona")
+		if (other->GetState() == eColliderState::Active)
 		{
-			if (mIsAttacked1 == false)
+			if (other->GetOwner()->GetName() == L"Ramona")
 			{
-				ChangeState(eLukeState::L_Attacked1);
-				mIsAttacked1 = true;
+				if (mPlayerDir == eDirection::L)
+				{
+					if (mPos.x < mPlayerPos.x)// 캐릭터가 좌측 방향이니 적(본인)이 우측에 있다면 공격 당하지 않음
+					{
+						if (mIsAttacked1 == false)
+						{
+							ChangeState(eLukeState::L_Attacked1);
+							mIsAttacked1 = true;
+						}
+					}
+				}
+				else
+				{
+					if (mPos.x > mPlayerPos.x)// 캐릭터가 우측 방향이니 적(본인)이 좌측에 있다면 공격 당하지 않음
+					{
+						if (mIsAttacked1 == false)
+						{
+							ChangeState(eLukeState::L_Attacked1);
+							mIsAttacked1 = true;
+						}
+					}
+
+				}
+			}
+		}
+		if (other->GetState() == eColliderState::NoneActive)
+		{
+			if (other->GetOwner()->GetName() == L"Ramona")
+			{
+				// OnCollsionExit 상태로 충돌이 끝나는 것이 아닌 
+				// 플레이어의 공격이 끝나고 플레이어의 콜라이더가 NoneActive로 변경되는 경우
+				mIsAttacked1 = false;
 			}
 		}
 	}
@@ -289,9 +538,15 @@ namespace ya
 	{
 		if (other->GetOwner()->GetName() == L"Ramona")
 		{
+			// OnCollsionExit 상태로 충돌이 끝나면 false로 변경
 			mIsAttacked1 = false;
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 상태 애니메이션 함수
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	void LukeScript::L_idle()
 	{
 		Animator* at = this->GetOwner()->GetComponent<Animator>();

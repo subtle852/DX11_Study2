@@ -25,12 +25,13 @@ cbuffer Animator : register(b3)
     float2 SpriteOffset;
     float2 AtlasSize;
     uint animationType;
-    float3 pad;
+    float2 Padding1;
 }
 
 cbuffer Collider : register(b4)
 {
     uint colliderState;
+    uint Padding2[3];
 }
 
 Texture2D albedoTexture : register(t0);
