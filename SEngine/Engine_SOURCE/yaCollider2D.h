@@ -27,10 +27,11 @@ namespace ya
 		Vector2 GetCenter() { return mCenter; }
 		void SetCenter(Vector2 size) { mCenter = size; }
 		UINT GetColliderID() { return mColliderID; }
+
+		eColliderActivation GetActivation() { return mActivation; }
+		void SetActivation(eColliderActivation activation) { mActivation = activation; }
 		eColliderState GetState() { return mState; }
 		void SetState(eColliderState state) { mState = state; }
-
-		void BindConstantBuffer();
 
 	private:
 		static UINT mColliderNumber;
@@ -42,6 +43,7 @@ namespace ya
 		Vector2 mSize;
 		Vector2 mCenter;
 
-		eColliderState mState = eColliderState::Active;
+		eColliderActivation mActivation = eColliderActivation::Active;
+		eColliderState mState = eColliderState::NotColliding;
 	};
 }

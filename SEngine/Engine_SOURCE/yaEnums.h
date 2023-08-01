@@ -48,11 +48,17 @@ namespace ya::enums
 		End,
 	};
 
-	enum class eColliderState
+	enum class eColliderActivation
 	{
 		Active,
-		NoneActive,
-		OnCollsion,// Active는 전제 조건
+		InActive,
+		End,
+	};
+
+	enum class eColliderState
+	{
+		NotColliding,
+		IsColliding,
 		End,
 	};
 

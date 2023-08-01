@@ -50,6 +50,7 @@ namespace ya
 		mesh.scale = scale;
 		mesh.rotation = tr->GetRotation();
 		mesh.type = eColliderType::Rect;
+		mesh.state = mState;
 
 		renderer::PushDebugMeshAttribute(mesh);
 	}
@@ -61,8 +62,6 @@ namespace ya
 
 	void Collider2D::OnCollisionEnter(Collider2D* other)
 	{
-		mState = eColliderState::OnCollsion;
-
 		const std::vector<Script*>& scripts
 			= GetOwner()->GetComponents<Script>();
 
@@ -92,14 +91,5 @@ namespace ya
 		{
 			script->OnCollisionExit(other);
 		}
-	}
-	void Collider2D::BindConstantBuffer()
-	{
-		renderer::ColliderCB cdCB = {};
-		cdCB.colliderState = (UINT)mState;
-
-		ConstantBuffer* cb = renderer::constantBuffer[(UINT)eCBType::Collider];
-		cb->SetData(&cdCB);
-		cb->Bind(eShaderStage::PS);
 	}
 }

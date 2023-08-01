@@ -265,7 +265,7 @@ namespace ya
 				break;
 
 			default:
-					break;
+				break;
 			}
 		}
 
@@ -345,7 +345,7 @@ namespace ya
 							if (mPlayerPos.x < mPos.x)
 								ChangeState(eLukeState::L_KickAttack);
 							else
-								ChangeState(eLukeState::L_KickAttack);
+								ChangeState(eLukeState::R_KickAttack);
 							break;
 
 						case eLukeCombatState::SideKickAttack:
@@ -400,7 +400,7 @@ namespace ya
 				// 이동 타이머 감소
 				mMoveTimer -= Time::DeltaTime();
 
-				if (mMoveTimer <= 0.0f) 
+				if (mMoveTimer <= 0.0f)
 				{
 					// 랜덤하게 이동 방향 변경
 					if (rand() % 2 == 0)
@@ -435,7 +435,7 @@ namespace ya
 					mDirection = eDirection::R;
 					ChangeState(eLukeState::R_Walk);
 				}
-				
+
 				// 화면 좌측 끝과 우측 끝을 벗어나지 않도록 처리
 				if (mPos.x < -2.8f)////////////////////////////////////////////////////////////////////////// 수정 예정 CameraPos로
 				{
@@ -444,7 +444,7 @@ namespace ya
 					mDirection = eDirection::R;
 					ChangeState(eLukeState::R_Walk);
 				}
-				else if (mPos.x > 2.8f) 
+				else if (mPos.x > 2.8f)
 				{
 					//mPos.x = screenWidth;
 					mDirectionInt = -1; // 좌측으로 방향 전환
@@ -454,6 +454,11 @@ namespace ya
 			}
 		}
 
+
+		if (this->GetOwner()->GetComponent<Collider2D>()->GetState() == eColliderState::NotColliding)
+		{
+			mIsAttacked1 = false;
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -494,44 +499,43 @@ namespace ya
 
 	void LukeScript::OnCollisionStay(Collider2D* other)
 	{
-		if (other->GetState() == eColliderState::Active)
+		if (other->GetOwner()->GetName() == L"Ramona")
 		{
-			if (other->GetOwner()->GetName() == L"Ramona")
+			if (mPlayerDir == eDirection::L)
 			{
-				if (mPlayerDir == eDirection::L)
+				if (mPos.x < mPlayerPos.x)// 캐릭터가 좌측 방향이니 적(본인)이 우측에 있다면 공격 당하지 않음
 				{
-					if (mPos.x < mPlayerPos.x)// 캐릭터가 좌측 방향이니 적(본인)이 우측에 있다면 공격 당하지 않음
+					if (mIsAttacked1 == false)
 					{
-						if (mIsAttacked1 == false)
-						{
-							ChangeState(eLukeState::L_Attacked1);
-							mIsAttacked1 = true;
-						}
+						ChangeState(eLukeState::L_Attacked1);
+						mIsAttacked1 = true;
 					}
 				}
-				else
+			}
+			else
+			{
+				if (mPos.x > mPlayerPos.x)// 캐릭터가 우측 방향이니 적(본인)이 좌측에 있다면 공격 당하지 않음
 				{
-					if (mPos.x > mPlayerPos.x)// 캐릭터가 우측 방향이니 적(본인)이 좌측에 있다면 공격 당하지 않음
+					if (mIsAttacked1 == false)
 					{
-						if (mIsAttacked1 == false)
-						{
-							ChangeState(eLukeState::L_Attacked1);
-							mIsAttacked1 = true;
-						}
+						ChangeState(eLukeState::L_Attacked1);
+						mIsAttacked1 = true;
 					}
+				}
 
-				}
 			}
 		}
-		if (other->GetState() == eColliderState::NoneActive)
-		{
-			if (other->GetOwner()->GetName() == L"Ramona")
-			{
-				// OnCollsionExit 상태로 충돌이 끝나는 것이 아닌 
-				// 플레이어의 공격이 끝나고 플레이어의 콜라이더가 NoneActive로 변경되는 경우
-				mIsAttacked1 = false;
-			}
-		}
+
+		//if (other->GetState() == eColliderState::InActive)// 이제 여기 조건은 절대 걸리지 않음
+		//{
+		//	if (other->GetOwner()->GetName() == L"Ramona")
+		//	{
+		//		// OnCollsionExit 상태로 충돌이 끝나는 것이 아닌 
+		//		// 플레이어의 공격이 끝나고 플레이어의 콜라이더가 NoneActive로 변경되는 경우
+		//		this->GetOwner()->GetComponent<Collider2D>()->SetState(eColliderState::NotColliding);
+		//		mIsAttacked1 = false;
+		//	}
+		//}
 	}
 
 	void LukeScript::OnCollisionExit(Collider2D* other)
@@ -539,6 +543,7 @@ namespace ya
 		if (other->GetOwner()->GetName() == L"Ramona")
 		{
 			// OnCollsionExit 상태로 충돌이 끝나면 false로 변경
+			this->GetOwner()->GetComponent<Collider2D>()->SetState(eColliderState::NotColliding);// 이것도 해줄 필요 없지않은가???
 			mIsAttacked1 = false;
 		}
 	}

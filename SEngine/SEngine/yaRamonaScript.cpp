@@ -472,6 +472,7 @@ namespace ya
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
 		mBodyCd->SetCenter(Vector2(0.0f, 0.0f));
+		mBodyCd->SetActivation(eColliderActivation::Active);
 
 		//mUpperCd = this->GetOwner()->AddComponent<Collider2D>();
 		//mUpperCd->SetSize(Vector2(0.2f, 0.08f));
@@ -484,7 +485,7 @@ namespace ya
 		mBothCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBothCd->SetSize(Vector2(0.3f, 0.3f));
 		mBothCd->SetCenter(Vector2(0.0f, -0.0f));
-		mBothCd->SetState(eColliderState::NoneActive);
+		mBothCd->SetActivation(eColliderActivation::InActive);
 	}
 
 	void RamonaScript::Update()
@@ -1665,11 +1666,13 @@ namespace ya
 				mIsFireBall ||mIsSuper
 			)
 		{
-			mBothCd->SetState(eColliderState::Active);
+
+			mBothCd->SetActivation(eColliderActivation::Active);
 		}
 		else
 		{
-			mBothCd->SetState(eColliderState::NoneActive);
+			mBothCd->SetActivation(eColliderActivation::InActive);
+			mBothCd->SetState(eColliderState::NotColliding);
 		}
 	}
 

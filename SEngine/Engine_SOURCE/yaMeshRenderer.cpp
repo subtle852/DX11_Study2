@@ -35,10 +35,6 @@ namespace ya
 		if (animator)
 			animator->Binds();
 
-		/*Collider2D* cd = GetOwner()->GetComponent<Collider2D>();
-		if (cd)
-			cd->BindConstantBuffer();*/
-
 		mMesh->Render();
 
 		mMaterial->Clear();

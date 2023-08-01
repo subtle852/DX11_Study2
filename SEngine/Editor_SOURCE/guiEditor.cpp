@@ -8,6 +8,7 @@
 #include "..\\Engine_SOURCE\\yaRenderer.h"
 
 #include "SEngine/yaGridScript.h"
+#include "Engine_SOURCE/yaCollider2D.h"
 
 namespace gui
 {
@@ -128,6 +129,7 @@ namespace gui
 		ya::Camera::SetGpuViewMatrix(mainCamara->GetViewMatrix());
 		ya::Camera::SetGpuProjectionMatrix(mainCamara->GetProjectionMatrix());
 
+		debugObj->BindConstantBuffer(mesh.state);
 		debugObj->Render();
 	}
 }

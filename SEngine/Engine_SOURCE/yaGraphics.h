@@ -105,6 +105,7 @@ namespace ya::graphics
 	struct DebugMesh
 	{
 		enums::eColliderType type;
+		enums::eColliderState state;
 		math::Vector3 position;
 		math::Vector3 rotation;
 		math::Vector3 scale;

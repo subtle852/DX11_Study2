@@ -46,8 +46,8 @@ namespace ya
 			for (size_t i = 0; i < compsLeft.size(); i++)
 			{
 				auto leftCol = compsLeft[i];
-				//if (leftCol->GetState() == eColliderState::NoneActive)
-				//	continue;
+				if (leftCol->GetActivation() == eColliderActivation::InActive)
+					continue;
 				if (leftCol == nullptr)
 					continue;
 				if (leftObj->GetState()
@@ -62,8 +62,8 @@ namespace ya
 					for (size_t j = 0; j < compsRight.size(); j++)
 					{
 						auto rightCol = compsRight[j];
-						//if (rightCol->GetState() == eColliderState::NoneActive)
-						//	continue;
+						if (rightCol->GetActivation() == eColliderActivation::InActive)
+							continue;
 						if (rightCol == nullptr)
 							continue;
 						if (leftObj == rightObj)
@@ -137,6 +137,9 @@ namespace ya
 				left->OnCollisionEnter(right);
 				right->OnCollisionEnter(left);
 
+				left->SetState(eColliderState::IsColliding);
+				right->SetState(eColliderState::IsColliding);
+
 				iter->second = true;
 			}
 			else
@@ -144,6 +147,9 @@ namespace ya
 				// 面倒 吝
 				left->OnCollisionStay(right);
 				right->OnCollisionStay(left);
+
+				left->SetState(eColliderState::IsColliding);
+				right->SetState(eColliderState::IsColliding);
 
 				iter->second = true;
 			}
@@ -157,8 +163,14 @@ namespace ya
 				left->OnCollisionExit(right);
 				right->OnCollisionExit(left);
 
+				left->SetState(eColliderState::NotColliding);
+				right->SetState(eColliderState::NotColliding);
+
 				iter->second = false;
 			}
+
+			left->SetState(eColliderState::NotColliding);
+			right->SetState(eColliderState::NotColliding);
 		}
 	}
 
@@ -178,27 +190,11 @@ namespace ya
 		   ,Vector3{-0.5f, -0.5f, 0.0f}
 		};
 
-		// 积阿茄 规过 1
-		//Vector3 leftPos = left->GetOwner()->GetComponent<Collider2D>()->GetPosition();
-		//Vector3 rightPos = right->GetOwner()->GetComponent<Collider2D>()->GetPosition();
-		//Matrix leftMatrix = Matrix::CreateTranslation(leftPos);
-		//Matrix rightMatrix = Matrix::CreateTranslation(rightPos);
-		// 关俊 4临篮 瘤况具 窃
-
 		Transform* leftTr = left->GetOwner()->GetComponent<Transform>();
 		Transform* rightTr = right->GetOwner()->GetComponent<Transform>();
 
 		Matrix leftMatrix = leftTr->GetMatrix();
 		Matrix rightMatrix = rightTr->GetMatrix();
-
-		//// 积阿茄 规过 2
-		//Vector3 leftCenter = Vector3(left->GetCenter().x, left->GetCenter().y, 0.0f);
-		//Matrix CenterLeft = Matrix::CreateTranslation(leftCenter);
-		//leftMatrix += CenterLeft;
-
-		//Vector3 rightCenter = Vector3(right->GetCenter().x, right->GetCenter().y, 1.0f);
-		//Matrix CenterRight = Matrix::CreateTranslation(rightCenter);
-		//leftMatrix += CenterRight;
 
 		Vector3 Axis[4] = {};
 
@@ -223,8 +219,7 @@ namespace ya
 		for (size_t i = 0; i < 4; i++)
 			Axis[i].z = 0.0f;
 
-		Vector3 vc = leftTr->GetPosition() - rightTr->GetPosition();
-		//Vector3 vc = leftPos - rightPos;
+		Vector3 vc = left->GetPosition() - right->GetPosition();
 		vc.z = 0.0f;
 
 		Vector3 centerDir = vc;
