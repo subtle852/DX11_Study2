@@ -390,20 +390,28 @@ namespace renderer
 
 		{
 			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"BG_TITLE_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_01.png");
+				= Resources::Load<Texture>(L"BG_TITLE01_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE01_01.png");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
 			//spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);// eRenderingMode ¼³Á¤
-			Resources::Insert(L"SpriteMaterial_BG_TITLE_01", spriteMaterial);
+			Resources::Insert(L"SpriteMaterial_BG_TITLE01_01", spriteMaterial);
 		}
 		{
 			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"BG_TITLE_02", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE_02.png");
+				= Resources::Load<Texture>(L"BG_TITLE02_01", L"..\\Resources\\SCENE\\01_TITLE\\BG_TITLE02_01.png");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
-			Resources::Insert(L"SpriteMaterial_BG_TITLE_02", spriteMaterial);
+			Resources::Insert(L"SpriteMaterial_BG_TITLE02_01", spriteMaterial);
+		}
+		{
+			std::shared_ptr<Texture> texture
+				= Resources::Load<Texture>(L"UI_TITLE02_ENTER", L"..\\Resources\\SCENE\\01_TITLE\\UI_TITLE02_ENTER.png");
+			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
+			spriteMaterial->SetShader(spriteShader);
+			spriteMaterial->SetTexture(texture);
+			Resources::Insert(L"SpriteMaterial_UI_TITLE02_ENTER", spriteMaterial);
 		}
 
 		//////////////////////////////////////////////////////////// MAIN
@@ -414,14 +422,6 @@ namespace renderer
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
 			Resources::Insert(L"SpriteMaterial_BG_MAIN_01", spriteMaterial);
-		}
-		{
-			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"BG_MAIN_02", L"..\\Resources\\SCENE\\02_MAIN\\\\BG_MAIN_02.png");
-			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
-			spriteMaterial->SetShader(spriteShader);
-			spriteMaterial->SetTexture(texture);
-			Resources::Insert(L"SpriteMaterial_BG_MAIN_02", spriteMaterial);
 		}
 
 		{
@@ -434,19 +434,11 @@ namespace renderer
 		}
 		{
 			std::shared_ptr<Texture> texture
-				= Resources::Load<Texture>(L"UI_MAIN_ENTER", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_ENTER.png");
-			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
-			spriteMaterial->SetShader(spriteShader);
-			spriteMaterial->SetTexture(texture);
-			Resources::Insert(L"SpriteMaterial_UI_MAIN_ENTER", spriteMaterial);
-		}
-		{
-			std::shared_ptr<Texture> texture
 				= Resources::Load<Texture>(L"UI_MAIN_MENU", L"..\\Resources\\SCENE\\02_MAIN\\UI_MAIN_MENU.png");
 			std::shared_ptr<Material> spriteMaterial = std::make_shared<Material>();
 			spriteMaterial->SetShader(spriteShader);
 			spriteMaterial->SetTexture(texture);
-			//spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
+			spriteMaterial->SetRenderingMode(eRenderingMode::Transparent);
 			Resources::Insert(L"SpriteMaterial_UI_MAIN_MENU", spriteMaterial);
 		}
 		{

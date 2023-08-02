@@ -168,7 +168,8 @@
     <ClInclude Include="yaShopScene.h" />
     <ClInclude Include="yaSubspace01Scene.h" />
     <ClInclude Include="yaSubspace02Scene.h" />
-    <ClInclude Include="yaTitleScene.h" />
+    <ClInclude Include="yaTitle01Scene.h" />
+    <ClInclude Include="yaTitle02Scene.h" />
     <ClInclude Include="yaTownScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -189,7 +190,8 @@
     <ClCompile Include="yaShopScene.cpp" />
     <ClCompile Include="yaSubspace01Scene.cpp" />
     <ClCompile Include="yaSubspace02Scene.cpp" />
-    <ClCompile Include="yaTitleScene.cpp" />
+    <ClCompile Include="yaTitle01Scene.cpp" />
+    <ClCompile Include="yaTitle02Scene.cpp" />
     <ClCompile Include="yaTownScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

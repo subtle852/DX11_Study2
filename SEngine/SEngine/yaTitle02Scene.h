@@ -3,11 +3,11 @@
 
 namespace ya
 {
-	class TitleScene : public Scene
+	class Title02Scene : public Scene
 	{
 	public:
-		TitleScene();
-		virtual ~TitleScene();
+		Title02Scene();
+		virtual ~Title02Scene();
 
 		virtual void Initialize() override;
 		virtual void Update() override;
@@ -18,9 +18,8 @@ namespace ya
 		virtual void OnExit() override;
 
 	private:
-		int mTitleEnterCount = 0;
-
-		GameObject* mBG_TITLE_01;
-		GameObject* mBG_TITLE_02;
+		GameObject* mBG_TITLE02_01 = nullptr;
+		GameObject* mUI_TITLE02_ENTER = nullptr;
+		bool mUI_TITLE02_ENTER_SizeState = true;// false 감소, true 증가
 	};
 }

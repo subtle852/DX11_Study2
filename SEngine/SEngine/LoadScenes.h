@@ -1,7 +1,8 @@
 #pragma once
 #include "..\Engine_SOURCE\yaSceneManager.h"
 
-#include "yaTitleScene.h"
+#include "yaTitle01Scene.h"
+#include "yaTitle02Scene.h"
 #include "yaMainScene.h"
 #include "yaSelectScene.h"
 #include "yaTownScene.h"
@@ -27,7 +28,8 @@ namespace ya
 {
 	void InitializeScenes()
 	{
-		SceneManager::CreateScene<TitleScene>(L"TitleScene");
+		SceneManager::CreateScene<Title01Scene>(L"Title01Scene");
+		SceneManager::CreateScene<Title02Scene>(L"Title02Scene");
 		SceneManager::CreateScene<MainScene>(L"MainScene");
 		SceneManager::CreateScene<SelectScene>(L"SelectScene");
 		SceneManager::CreateScene<TownScene>(L"TownScene");
@@ -38,6 +40,6 @@ namespace ya
 		SceneManager::CreateScene<Boss01Scene>(L"Boss01Scene");
 		SceneManager::CreateScene<EndingScene>(L"EndingScene");
 
-		SceneManager::SetActiveScene(L"PlayScene");
+		SceneManager::SetActiveScene(L"Title01Scene");
 	}
 }

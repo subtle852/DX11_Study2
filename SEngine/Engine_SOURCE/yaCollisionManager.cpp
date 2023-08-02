@@ -47,7 +47,11 @@ namespace ya
 			{
 				auto leftCol = compsLeft[i];
 				if (leftCol->GetActivation() == eColliderActivation::InActive)
+				{
+					// 오류 발생을 막기위해 InActive는 당연히 NotColliding 상태로 만들어 줌
+					leftCol->SetState(eColliderState::NotColliding);
 					continue;
+				}
 				if (leftCol == nullptr)
 					continue;
 				if (leftObj->GetState()
@@ -63,7 +67,11 @@ namespace ya
 					{
 						auto rightCol = compsRight[j];
 						if (rightCol->GetActivation() == eColliderActivation::InActive)
+						{
+							// 오류 발생을 막기위해 InActive는 당연히 NotColliding 상태로 만들어 줌
+							rightCol->SetState(eColliderState::NotColliding);
 							continue;
+						}
 						if (rightCol == nullptr)
 							continue;
 						if (leftObj == rightObj)

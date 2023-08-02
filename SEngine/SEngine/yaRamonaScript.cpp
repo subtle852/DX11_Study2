@@ -1671,8 +1671,15 @@ namespace ya
 		}
 		else
 		{
+			// 이처럼 SetActivation으로 껐다 켰다를 할 수 있으며
 			mBothCd->SetActivation(eColliderActivation::InActive);
-			mBothCd->SetState(eColliderState::NotColliding);
+
+			// 현재 충돌 유무를 GetState로 받아와 조건으로 사용을 할 수 있게 됨 ex. 충돌 O, A해라 충돌 X, B해라
+			//if(mBothCd->GetState() == eColliderState::NotColliding)
+
+			// 결론:
+			// Activation은 Set으로 설정하는 것이 일반적
+			// State는 Get으로 받아와 충돌 유무를 파악하는 것이 일반적
 		}
 	}
 

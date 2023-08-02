@@ -11,9 +11,6 @@
     <ClCompile Include="yaSelectScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="yaTitleScene.cpp">
-      <Filter>Contents\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="yaTownScene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
@@ -54,6 +51,12 @@
     <ClCompile Include="yaLukeScript.cpp">
       <Filter>Contents\Script\ENEMY\STAGE01</Filter>
     </ClCompile>
+    <ClCompile Include="yaTitle01Scene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="yaTitle02Scene.cpp">
+      <Filter>Contents\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -64,9 +67,6 @@
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaTownScene.h">
-      <Filter>Contents\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="yaTitleScene.h">
       <Filter>Contents\Scene</Filter>
     </ClInclude>
     <ClInclude Include="yaMainScene.h">
@@ -111,6 +111,12 @@
     </ClInclude>
     <ClInclude Include="yaLukeScript.h">
       <Filter>Contents\Script\ENEMY\STAGE01</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTitle01Scene.h">
+      <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaTitle02Scene.h">
+      <Filter>Contents\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
