@@ -297,7 +297,7 @@ namespace ya
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			if (IsPlayerInDetectionRange())// 탐지거리 내 플레이어 O
 			{
-				if (mDetected == false)// 처음 감지했을 때만
+				if (mDetected == false)// 처음 감지했을 때만 들어오는 조건문
 				{
 					// 플레이어 쪽 방향으로 설정 해줘야 함
 					if (mPlayerPos.x < mPos.x)
@@ -320,62 +320,7 @@ namespace ya
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				if (IsPlayerInCombatRange())
 				{
-					mCombated = true;
-
-					mCombatTimer -= Time::DeltaTime();
-
-					if (mCombatTimer <= 0.0f)
-					{
-						// 공격 방어 스킬들 중 하나를 랜덤으로 실행
-						//std::mt19937 mt(1234);// 동일한 시드를 넣으면 다른 머신에서도 동일한 랜덤숫자가 뽑힘
-						//std::uniform_int_distribution<int> dist(0, 4);
-						//int randStateNum = dist(mt);
-						int randStateNum = rand() % (int)eLukeCombatState::End;
-
-						switch (static_cast<eLukeCombatState>(randStateNum))
-						{
-						case eLukeCombatState::ArmAttack:
-							if (mPlayerPos.x < mPos.x)
-								ChangeState(eLukeState::L_ArmAttack);
-							else
-								ChangeState(eLukeState::R_ArmAttack);
-							break;
-
-						case eLukeCombatState::KickAttack:
-							if (mPlayerPos.x < mPos.x)
-								ChangeState(eLukeState::L_KickAttack);
-							else
-								ChangeState(eLukeState::R_KickAttack);
-							break;
-
-						case eLukeCombatState::SideKickAttack:
-							if (mPlayerPos.x < mPos.x)
-								ChangeState(eLukeState::L_SideKickAttack);
-							else
-								ChangeState(eLukeState::R_SideKickAttack);
-							break;
-
-						case eLukeCombatState::UpperAttack:
-							if (mPlayerPos.x < mPos.x)
-								ChangeState(eLukeState::L_UpperAttack);
-							else
-								ChangeState(eLukeState::R_UpperAttack);
-							break;
-
-						case eLukeCombatState::Guard:
-							if (mPlayerPos.x < mPos.x)
-								ChangeState(eLukeState::L_Guard);
-							else
-								ChangeState(eLukeState::R_Guard);
-							break;
-							break;
-
-						default:
-							break;
-						}
-
-						mCombatTimer = mCombatInterval;
-					}
+					Combat();
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -387,13 +332,43 @@ namespace ya
 					mCombated = false;
 
 					mCombatTimer = 0.0f;
+
+					if (mDirection == eDirection::L)
+					{
+						if (mPlayerDir == eDirection::L)
+						{
+							ChangeState(eLukeState::L_Walk);
+
+							float moveDistance = GetRandomMoveDistance();
+							mDirectionInt = -1;
+							Transform* tr = this->GetOwner()->GetComponent<Transform>();
+							Vector3 pos = tr->GetPosition();
+							pos.x += mDirectionInt * moveDistance * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+					else
+					{
+						if (mPlayerDir == eDirection::R)
+						{
+							ChangeState(eLukeState::R_Walk);
+
+							float moveDistance = GetRandomMoveDistance();
+							mDirectionInt = +1;
+							Transform* tr = this->GetOwner()->GetComponent<Transform>();
+							Vector3 pos = tr->GetPosition();
+							pos.x += mDirectionInt * moveDistance * Time::DeltaTime();
+							tr->SetPosition(pos);
+						}
+					}
+
 				}
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 탐지거리 내 플레이어 X
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			else if (!IsPlayerInDetectionRange())
+			else
 			{
 				mDetected = false;
 
@@ -471,8 +446,8 @@ namespace ya
 
 	void LukeScript::Attacked1Complete()
 	{
-		mIsAttacked1 = true;// 오류 방지용
-		ChangeState(eLukeState::L_Angry);
+		mIsAttacked1 = true;// mIsAttacked1을 true로 하면 공격당하는 애니메이션을 무한 호출하게 됨
+		ChangeState(eLukeState::L_Idle);
 	}
 
 	void LukeScript::CombatComplete()
@@ -501,41 +476,23 @@ namespace ya
 	{
 		if (other->GetOwner()->GetName() == L"Ramona")
 		{
-			if (mPlayerDir == eDirection::L)
+			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
 			{
-				if (mPos.x < mPlayerPos.x)// 캐릭터가 좌측 방향이니 적(본인)이 우측에 있다면 공격 당하지 않음
+				if (mIsAttacked1 == false)
 				{
-					if (mIsAttacked1 == false)
-					{
-						ChangeState(eLukeState::L_Attacked1);
-						mIsAttacked1 = true;
-					}
+					ChangeState(eLukeState::R_Attacked1);
+					mIsAttacked1 = true;
 				}
 			}
-			else
+			else// 플레이어 - 적
 			{
-				if (mPos.x > mPlayerPos.x)// 캐릭터가 우측 방향이니 적(본인)이 좌측에 있다면 공격 당하지 않음
+				if (mIsAttacked1 == false)
 				{
-					if (mIsAttacked1 == false)
-					{
-						ChangeState(eLukeState::L_Attacked1);
-						mIsAttacked1 = true;
-					}
+					ChangeState(eLukeState::L_Attacked1);
+					mIsAttacked1 = true;
 				}
-
 			}
 		}
-
-		//if (other->GetState() == eColliderState::InActive)// 이제 여기 조건은 절대 걸리지 않음
-		//{
-		//	if (other->GetOwner()->GetName() == L"Ramona")
-		//	{
-		//		// OnCollsionExit 상태로 충돌이 끝나는 것이 아닌 
-		//		// 플레이어의 공격이 끝나고 플레이어의 콜라이더가 NoneActive로 변경되는 경우
-		//		this->GetOwner()->GetComponent<Collider2D>()->SetState(eColliderState::NotColliding);
-		//		mIsAttacked1 = false;
-		//	}
-		//}
 	}
 
 	void LukeScript::OnCollisionExit(Collider2D* other)
@@ -551,6 +508,66 @@ namespace ya
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 상태 애니메이션 함수
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	void LukeScript::Combat()
+	{
+		mCombated = true;
+
+		mCombatTimer -= Time::DeltaTime();
+
+		if (mCombatTimer <= 0.0f)
+		{
+			// 공격 방어 스킬들 중 하나를 랜덤으로 실행
+			//std::mt19937 mt(1234);// 동일한 시드를 넣으면 다른 머신에서도 동일한 랜덤숫자가 뽑힘
+			//std::uniform_int_distribution<int> dist(0, 4);
+			//int randStateNum = dist(mt);
+			int randStateNum = rand() % (int)eLukeCombatState::End;
+
+			switch (static_cast<eLukeCombatState>(randStateNum))
+			{
+			case eLukeCombatState::ArmAttack:
+				if (mPlayerPos.x < mPos.x)
+					ChangeState(eLukeState::L_ArmAttack);
+				else
+					ChangeState(eLukeState::R_ArmAttack);
+				break;
+
+			case eLukeCombatState::KickAttack:
+				if (mPlayerPos.x < mPos.x)
+					ChangeState(eLukeState::L_KickAttack);
+				else
+					ChangeState(eLukeState::R_KickAttack);
+				break;
+
+			case eLukeCombatState::SideKickAttack:
+				if (mPlayerPos.x < mPos.x)
+					ChangeState(eLukeState::L_SideKickAttack);
+				else
+					ChangeState(eLukeState::R_SideKickAttack);
+				break;
+
+			case eLukeCombatState::UpperAttack:
+				if (mPlayerPos.x < mPos.x)
+					ChangeState(eLukeState::L_UpperAttack);
+				else
+					ChangeState(eLukeState::R_UpperAttack);
+				break;
+
+			case eLukeCombatState::Guard:
+				if (mPlayerPos.x < mPos.x)
+					ChangeState(eLukeState::L_Guard);
+				else
+					ChangeState(eLukeState::R_Guard);
+				break;
+				break;
+
+			default:
+				break;
+			}
+
+			mCombatTimer = mCombatInterval;
+		}
+	}
 
 	void LukeScript::L_idle()
 	{

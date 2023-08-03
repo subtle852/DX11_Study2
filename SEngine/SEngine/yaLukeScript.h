@@ -69,10 +69,12 @@ namespace ya
 		virtual void Initialize() override;
 		virtual void Update() override;
 
+		// 이벤트 함수
 		void JumpStart();
 		void Attacked1Complete();
 		void CombatComplete();
 
+		// 충돌 함수
 		virtual void OnCollisionEnter(Collider2D* other) override;
 		virtual void OnCollisionStay(Collider2D* other) override;
 		virtual void OnCollisionExit(Collider2D* other) override;
@@ -84,6 +86,7 @@ namespace ya
 		eLukeState GetState() { return mState; }
 		void ChangeState(eLukeState newState) { mState = newState; }
 
+		// 플레이어 감지 함수
 		bool IsPlayerInDetectionRange()// 플레이어 인식 감지 함수: 대기 상태로 돌입 조건
 		{
 			// 적과 플레이어 사이의 거리 계산
@@ -108,11 +111,16 @@ namespace ya
 			return distanceSquared <= detectionRangeSquared;
 		}
 
+		// 랜덤 거리 추출 함수
 		float GetRandomMoveDistance() 
 		{
 			return baseMoveDistance + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / maxMoveRange));
 		}
 
+		// 동작 내부 함수
+		void Combat();
+
+		// State 함수
 		void L_idle();
 		void R_idle();
 
@@ -180,7 +188,7 @@ namespace ya
 		bool mDetected = false;
 
 		// 플레이어 전투 감지 (공격, 방어...)
-		float mCombatRange = 1.0f;
+		float mCombatRange = 0.65f;
 		bool mCombated = false;
 
 		// AI 기본 이동 거리와 이동 범위 제한 값
@@ -194,7 +202,7 @@ namespace ya
 		// AI 전투 변경을 위한 타이머 변수
 		float mCombatTimer = 0.0f;
 		const float mCombatInterval = 3.0f;
-
+		
 		// State 변수
 		bool mIsIdle = false;
 		bool mIsAngry = false;
