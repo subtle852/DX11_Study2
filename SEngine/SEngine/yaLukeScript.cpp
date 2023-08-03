@@ -145,6 +145,8 @@ namespace ya
 			mDirection = eDirection::R;
 			mDirectionInt = +1;
 		}
+
+		rd();
 	}
 	void LukeScript::Update()
 	{
@@ -461,6 +463,11 @@ namespace ya
 			ChangeState(eLukeState::L_Idle);
 		else
 			ChangeState(eLukeState::R_Idle);
+
+		//mCombatInterval = float(rand() % 7 + 2);// 2 ~ 8
+		std::mt19937 mt(rd());
+		std::uniform_int_distribution<int> dist(2, 5);
+		mCombatInterval = dist(mt);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -518,10 +525,10 @@ namespace ya
 		if (mCombatTimer <= 0.0f)
 		{
 			// 공격 방어 스킬들 중 하나를 랜덤으로 실행
-			//std::mt19937 mt(1234);// 동일한 시드를 넣으면 다른 머신에서도 동일한 랜덤숫자가 뽑힘
-			//std::uniform_int_distribution<int> dist(0, 4);
-			//int randStateNum = dist(mt);
-			int randStateNum = rand() % (int)eLukeCombatState::End;
+			std::mt19937 mt(rd());
+			std::uniform_int_distribution<int> dist(0, (int)eLukeCombatState::End);
+			int randStateNum = dist(mt);
+			//int randStateNum = rand() % (int)eLukeCombatState::End;
 
 			switch (static_cast<eLukeCombatState>(randStateNum))
 			{

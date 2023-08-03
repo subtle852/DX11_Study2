@@ -184,11 +184,11 @@ namespace ya
 		eDirection mPlayerDir;
 
 		// 플레이어 인식 감지 (단순)
-		float mDetectionRange = 1.5f;
+		const float mDetectionRange = 1.5f;
 		bool mDetected = false;
 
 		// 플레이어 전투 감지 (공격, 방어...)
-		float mCombatRange = 0.65f;
+		const float mCombatRange = 0.65f;
 		bool mCombated = false;
 
 		// AI 기본 이동 거리와 이동 범위 제한 값
@@ -201,8 +201,11 @@ namespace ya
 
 		// AI 전투 변경을 위한 타이머 변수
 		float mCombatTimer = 0.0f;
-		const float mCombatInterval = 3.0f;
+		float mCombatInterval = 3.0f;
 		
+		// 랜덤 함수 이용을 위한 변수
+		std::random_device rd;
+
 		// State 변수
 		bool mIsIdle = false;
 		bool mIsAngry = false;
