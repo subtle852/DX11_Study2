@@ -35,6 +35,11 @@ namespace ya
 			if (mRamona != nullptr)
 				return mRamonaDir;
 		}
+		static ePlayerState GetPlayerState()
+		{
+			if (mRamona != nullptr)
+				return mRamonaState;
+		}
 
 	private:
 		GameObject* mBG_STAGE01_01 = nullptr;
@@ -43,6 +48,7 @@ namespace ya
 		static GameObject* mRamona;
 		static Vector3 mRamonaPos;
 		static eDirection mRamonaDir;
+		static ePlayerState mRamonaState;
 
 		GameObject* mLuke = nullptr;
 	};

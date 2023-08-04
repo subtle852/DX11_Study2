@@ -7,6 +7,7 @@
 #include "yaAnimator.h"
 #include "yaResources.h"
 #include "yaPlayScene.h"
+#include "yaCollider2D.h"
 
 namespace ya
 {
@@ -128,6 +129,12 @@ namespace ya
 		at->CompleteEvent(L"L_Guard") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"R_Guard") = std::bind(&LukeScript::CombatComplete, this);
 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 콜라이더
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
+		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 초기화 
@@ -135,6 +142,7 @@ namespace ya
 
 		mMoveTimer = 0.0f;
 
+		// 처음 시작하는 방향 랜덤
 		if (rand() % 2 == 0)
 		{
 			mDirection = eDirection::L;
@@ -146,7 +154,9 @@ namespace ya
 			mDirectionInt = +1;
 		}
 
-		rd();
+		// 랜덤 함수를 위한 함수 실행
+		rd();// 반환 값 무시된 상태
+
 	}
 	void LukeScript::Update()
 	{
@@ -292,7 +302,7 @@ namespace ya
 
 		// 공격을 당하고 있을 때는 아래의 상태 변화가 있으면 안됨
 		// 추후 공격을 당하는 변수들 합쳐서 함수로 대체 예정
-		if (mIsAttacked1 == false)
+		if (mIsAttacked1 == false && mBodyCd->GetState() == eColliderState::NotColliding)
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 탐지거리 내 플레이어 O
@@ -435,7 +445,57 @@ namespace ya
 		if (this->GetOwner()->GetComponent<Collider2D>()->GetState() == eColliderState::NotColliding)
 		{
 			mIsAttacked1 = false;
+			mIsCollidingFirst = false;
 		}
+
+		// 충돌이 처음일 때
+		if (mIsCollidingFirst == 1)
+		{
+			// 방어 스킬 사용할지 안할지 랜덤으로 실행
+			std::mt19937 mt(rd());
+			std::uniform_int_distribution<int> dist(0, 1);
+			int randGuard = dist(mt);
+
+			if ((bool)randGuard == true)
+			{
+				if (mPlayerPos.x < mPos.x)
+				{
+					mDirection = eDirection::L;
+					ChangeState(eLukeState::L_Guard);
+
+					mIsCollidingFirst = 2;
+				}
+				else
+				{
+					mDirection = eDirection::R;
+					ChangeState(eLukeState::R_Guard);
+
+					mIsCollidingFirst = 2;
+				}
+			}
+			else
+			{
+				mIsCollidingFirst = 2;
+			}
+		}
+
+		// 충돌하지 않는 상태일 때
+		if (mBodyCd->GetState() == eColliderState::NotColliding)
+		{
+			mIsCollidingFirst = 0;
+		}
+
+		if (mState == eLukeState::L_Guard || mState == eLukeState::R_Guard)
+		{
+			mBodyCd->SetActivation(eColliderActivation::InActive);
+		}
+		else
+		{
+			mBodyCd->SetActivation(eColliderActivation::Active);
+		}
+
+		// 플레이어 애니메이션 동작 중에 계속 방어 해줘야 함
+
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -464,10 +524,10 @@ namespace ya
 		else
 			ChangeState(eLukeState::R_Idle);
 
-		//mCombatInterval = float(rand() % 7 + 2);// 2 ~ 8
+		//mCombatInterval = float(rand() % 4 + 1.5f);// 0 ~ 3// 1.5f ~ 4.5f 
 		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(2, 5);
-		mCombatInterval = dist(mt);
+		std::uniform_int_distribution<int> dist(0, 3);
+		mCombatInterval = (float)(dist(mt) + 1.5f);
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,13 +536,25 @@ namespace ya
 
 	void LukeScript::OnCollisionEnter(Collider2D* other)
 	{
-	
+		
 	}
 
 	void LukeScript::OnCollisionStay(Collider2D* other)
 	{
 		if (other->GetOwner()->GetName() == L"Ramona")
 		{
+
+			//if (GetState() == eLukeState::L_Guard || GetState() == eLukeState::R_Guard)
+			//{
+			//	// 가드 상태가 아니여야 충돌이 가능함
+			//	// 이 방식이 아니라면
+			//	// Update에서 가드 상태 변수 mIsGuard 만들어서, true 일때는 콜라이더를 InActive로 바꿔놓으면 될듯
+			//}
+
+			// 
+			if (mIsCollidingFirst == 0)
+				mIsCollidingFirst = 1;
+
 			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
 			{
 				if (mIsAttacked1 == false)
@@ -526,7 +598,7 @@ namespace ya
 		{
 			// 공격 방어 스킬들 중 하나를 랜덤으로 실행
 			std::mt19937 mt(rd());
-			std::uniform_int_distribution<int> dist(0, (int)eLukeCombatState::End);
+			std::uniform_int_distribution<int> dist(0, (int)eLukeCombatState::End - 1);
 			int randStateNum = dist(mt);
 			//int randStateNum = rand() % (int)eLukeCombatState::End;
 
@@ -558,14 +630,6 @@ namespace ya
 					ChangeState(eLukeState::L_UpperAttack);
 				else
 					ChangeState(eLukeState::R_UpperAttack);
-				break;
-
-			case eLukeCombatState::Guard:
-				if (mPlayerPos.x < mPos.x)
-					ChangeState(eLukeState::L_Guard);
-				else
-					ChangeState(eLukeState::R_Guard);
-				break;
 				break;
 
 			default:

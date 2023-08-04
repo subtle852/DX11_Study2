@@ -29,6 +29,8 @@ namespace ya
 	GameObject* PlayScene::mRamona = nullptr;
 	Vector3 PlayScene::mRamonaPos = Vector3::Zero;
 	eDirection PlayScene::mRamonaDir = eDirection::R;
+	ePlayerState PlayScene::mRamonaState = ePlayerState::R_Idle;
+
 
 	PlayScene::PlayScene()
 	{
@@ -129,8 +131,8 @@ namespace ya
 					, eLayerType::Enemy);
 			mLuke->SetName(L"Luke");
 
-			Collider2D* cd2 = mLuke->AddComponent<Collider2D>();
-			cd2->SetSize(Vector2(0.15f, 0.15f));
+			//Collider2D* cd2 = mLuke->AddComponent<Collider2D>();
+			//cd2->SetSize(Vector2(0.15f, 0.15f));
 
 			MeshRenderer* mr = mLuke->AddComponent<MeshRenderer>();
 			mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
@@ -210,6 +212,8 @@ namespace ya
 			mRamonaPos = pos;
 
 			mRamonaDir = mRamona->GetComponent<RamonaScript>()->GetDirection();
+
+			mRamonaState = mRamona->GetComponent<RamonaScript>()->GetState();
 		}
 
 		if (Input::GetKeyDown(eKeyCode::ENTER))

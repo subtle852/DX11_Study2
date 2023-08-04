@@ -22,6 +22,7 @@ namespace ya
 		virtual void Update() override;
 
 		eDirection GetDirection() {	return mDirection; }
+		ePlayerState GetState() { return mState; }
 
 		// 이벤트 함수
 		void JumpStart();

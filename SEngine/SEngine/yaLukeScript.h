@@ -57,7 +57,7 @@ namespace ya
 			SideKickAttack,
 			UpperAttack,
 
-			Guard,
+			//Guard,
 
 			End,
 		};
@@ -203,8 +203,14 @@ namespace ya
 		float mCombatTimer = 0.0f;
 		float mCombatInterval = 3.0f;
 		
+		// 충돌 상태가 처음인지 확인하기 위한 변수
+		int mIsCollidingFirst = 0;
+
 		// 랜덤 함수 이용을 위한 변수
 		std::random_device rd;
+
+		// 콜라이더
+		Collider2D* mBodyCd = nullptr;
 
 		// State 변수
 		bool mIsIdle = false;
