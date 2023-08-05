@@ -188,7 +188,7 @@ namespace ya
 		bool mDetected = false;
 
 		// 플레이어 전투 감지 (공격, 방어...)
-		const float mCombatRange = 0.65f;
+		const float mCombatRange = 0.7f;
 		bool mCombated = false;
 
 		// AI 기본 이동 거리와 이동 범위 제한 값

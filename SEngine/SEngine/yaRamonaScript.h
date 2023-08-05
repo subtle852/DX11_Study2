@@ -43,11 +43,26 @@ namespace ya
 		virtual void OnCollisionExit(Collider2D* other) override;
 
 	private:
-		// 기존 애니메이션이 동작되면 안되는 조건 
-		// ex. 점프 도중 키입력이 있다고 해서 다른 애니메이션이 진행되면 안됨
+
+		//// 조건 함수
+
+		// 다른 애니메이션 진행중인데 좌우상하 키가 눌린다고 해서 
+		// 특정 애니메이션(ex. Walk)이 진행되면 안되기에 다른 애니메이션이 진행중인지 확인하는 조건
 		bool NoneAnimationCondition(); 
 
-		// State 함수
+		// 좌우상하 이동을 막아야하는 경우 ex. FireBall
+		bool CanMoveCondition();
+
+		// 점프를 막아야하는 경우
+		bool CanJumpCondition();
+
+		// 공격 스킬 도중에는 다른 공격 스킬이 실행되지 않기위한 조건
+		// 콤보 스킬이나 연계 스킬(ex. D + down)은 이 조건을 사용해서는 안됨
+		// 기존 스킬이 true인 상태에서 연계 스킬이 진행 되기 때문
+		bool CanAttackCondition();
+
+		
+		//// State 함수
 		void L_idle();
 		void R_idle();
 
@@ -121,8 +136,12 @@ namespace ya
 
 		//// State 변수
 
+		float mWalkSpeed = 0.7f;
+
 		bool mIsRun = false;
-		
+		float mRunSpeed1 = 0.4f;// 좌우 이동
+		float mRunSpeed2 = 0.3f;// 상하 이동
+
 		// 점프 관련 변수
 		bool mIsJump = false;
 		float mJumpTime = 0.0f;// 점프 체공 시간 측정
@@ -130,6 +149,7 @@ namespace ya
 		bool mIsDJump = false;
 		float mJumpHalfTime = 0.3f;// 점프 체공시간의 절반
 		float mJumpHeight = 1.8f;// 점프 높이
+		float mDJumpHeight = 2.3f;// 더블점프 높이
 
 		bool mIsGuard = false;
 
@@ -167,6 +187,7 @@ namespace ya
 		Collider2D* mUpperCd = nullptr;
 		Collider2D* mLowerCd = nullptr;
 		Collider2D* mBothCd = nullptr;
+		Collider2D* mBackCd = nullptr;
 		Collider2D* mAllCd = nullptr;
 	};
 }
