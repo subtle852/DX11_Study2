@@ -418,9 +418,6 @@ namespace ya
 		//at->StartEvent(L"L_Jump") = std::bind(&RamonaScript::JumpStart, this);
 		//at->StartEvent(L"R_Jump") = std::bind(&RamonaScript::JumpStart, this);
 
-		at->CompleteEvent(L"L_Jump") = std::bind(&RamonaScript::JumpComplete, this);
-		at->CompleteEvent(L"R_Jump") = std::bind(&RamonaScript::JumpComplete, this);
-
 		at->CompleteEvent(L"L_Evade") = std::bind(&RamonaScript::EvadeComplete, this);
 		at->CompleteEvent(L"R_Evade") = std::bind(&RamonaScript::EvadeComplete, this);
 
@@ -470,23 +467,30 @@ namespace ya
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
-		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
+		mBodyCd->SetSize(Vector2(0.2f, 0.2f));
 		mBodyCd->SetCenter(Vector2(0.0f, 0.0f));
 		mBodyCd->SetActivation(eColliderActivation::Active);
 
-		//mUpperCd = this->GetOwner()->AddComponent<Collider2D>();
-		//mUpperCd->SetSize(Vector2(0.2f, 0.08f));
-		//mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
+		mUpperCd = this->GetOwner()->AddComponent<Collider2D>();
+		mUpperCd->SetSize(Vector2(0.2f, 0.1f));
+		mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
+		mUpperCd->SetActivation(eColliderActivation::InActive);
 
-		//mLowerCd = this->GetOwner()->AddComponent<Collider2D>();
-		//mLowerCd->SetSize(Vector2(0.2f, 0.08f));
-		//mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
+		mLowerCd = this->GetOwner()->AddComponent<Collider2D>();
+		mLowerCd->SetSize(Vector2(0.2f, 0.1f));
+		mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
+		mLowerCd->SetActivation(eColliderActivation::InActive);
 
 		mBothCd = this->GetOwner()->AddComponent<Collider2D>();
-		mBothCd->SetSize(Vector2(0.3f, 0.3f));
-		mBothCd->SetCenter(Vector2(0.0f, -0.0f));
+		mBothCd->SetSize(Vector2(0.2f, 0.3f));
+		mBothCd->SetCenter(Vector2(0.3f, 0.0f));
 		mBothCd->SetActivation(eColliderActivation::InActive);
-	}
+	
+		mAllCd = this->GetOwner()->AddComponent<Collider2D>();
+		mAllCd->SetSize(Vector2(0.35f, 0.25f));
+		mAllCd->SetCenter(Vector2(0.0f, -0.0f));
+		mAllCd->SetActivation(eColliderActivation::InActive);
+}
 
 	void RamonaScript::Update()
 	{
@@ -663,34 +667,34 @@ namespace ya
 															// 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		//if (mDirection == eDirection::L)
-		//{
-		//	//std::vector<Collider2D*> comps
-		//	//	= this->GetOwner()->GetComponents<Collider2D>();
+		if (mDirection == eDirection::L)
+		{
+			//std::vector<Collider2D*> comps
+			//	= this->GetOwner()->GetComponents<Collider2D>();
 
-		//	//mUpperCd = comps[1];
-		//	mUpperCd->SetCenter(Vector2(-0.2f, 0.08f));
+			//mUpperCd = comps[1];
+			mUpperCd->SetCenter(Vector2(-0.2f, 0.08f));
 
-		//	//mLowerCd = comps[2];
-		//	mLowerCd->SetCenter(Vector2(-0.2f, -0.2f));
+			//mLowerCd = comps[2];
+			mLowerCd->SetCenter(Vector2(-0.2f, -0.2f));
 
-		//	//mBothCd = comps[3];
-		//	//mBothCd->SetCenter(Vector2(-0.22f, -0.05f));
-		//}
-		//else
-		//{
-		//	//std::vector<Collider2D*> comps
-		//	//	= this->GetOwner()->GetComponents<Collider2D>();
+			//mBothCd = comps[3];
+			mBothCd->SetCenter(Vector2(-0.3f, 0.0f));
+		}
+		else
+		{
+			//std::vector<Collider2D*> comps
+			//	= this->GetOwner()->GetComponents<Collider2D>();
 
-		//	//mUpperCd = comps[1];
-		//	mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
+			//mUpperCd = comps[1];
+			mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
 
-		//	//mLowerCd = comps[2];
-		//	mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
+			//mLowerCd = comps[2];
+			mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
 
-		//	//mBothCd = comps[3];
-		//	//mBothCd->SetCenter(Vector2(0.22f, -0.05f));
-		//}
+			//mBothCd = comps[3];
+			mBothCd->SetCenter(Vector2(0.3f, 0.0f));
+		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 위치
@@ -971,9 +975,9 @@ namespace ya
 			if (mJumpStartPosY == -100.0f)// 점프 애니메이션 첫 시작할 때만 불러오는 조건
 			{
 				// 점프 관련 기술 상태 변수들 초기화를 통한 오류 방지
-				mIsJumpDown = false;
-				mIsJumpSlide = false;
-				mIsRunJump = false;
+				mIsJumpDownAttack = false;
+				mIsJumpSlideAttack = false;
+				mIsRunJumpAttack = false;
 
 				Transform* tr = GetOwner()->GetComponent<Transform>();
 				Vector3 pos = tr->GetPosition();
@@ -1041,9 +1045,9 @@ namespace ya
 				}
 
 				// JumpDownAttack: 점프 중 + W (공격 성공 시, JumpDownHit 애니메이션 실행 후 마저 착지)
-				if (Input::GetKeyDown(eKeyCode::W) && mIsJumpDown == false)
+				if (Input::GetKeyDown(eKeyCode::W) && mIsJumpDownAttack == false)
 				{
-					mIsJumpDown = true;
+					mIsJumpDownAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1055,9 +1059,9 @@ namespace ya
 					}
 				}
 				// JumpSlideAttack: 점프 중 + E
-				if (Input::GetKeyDown(eKeyCode::E) && mIsJumpSlide == false)
+				if (Input::GetKeyDown(eKeyCode::E) && mIsJumpSlideAttack == false)
 				{
-					mIsJumpSlide = true;
+					mIsJumpSlideAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1069,9 +1073,9 @@ namespace ya
 					}
 				}
 				// JumpSlideAttack: 점프 중 + D
-				if (Input::GetKey(eKeyCode::LSHIFT) && Input::GetKeyDown(eKeyCode::D) && mIsJumpSlide == false)
+				if (Input::GetKey(eKeyCode::LSHIFT) && Input::GetKeyDown(eKeyCode::D) && mIsJumpSlideAttack == false)
 				{
-					mIsJumpSlide = true;
+					mIsJumpSlideAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1106,9 +1110,9 @@ namespace ya
 					mIsDJump = false;
 
 					// 점프 관련 기술들도 착지하면 초기화 해줘야 함
-					mIsJumpDown = false;
-					mIsJumpSlide = false;
-					mIsRunJump = false;
+					mIsJumpDownAttack = false;
+					mIsJumpSlideAttack = false;
+					mIsRunJumpAttack = false;
 
 					// 점프 끝난 직후 이동이 있다면 mState가 알아서 바뀌지만
 					// 점프 끝난 직후 이동이 없다면 mState를 아래와 같이 Jump에서 Idle로 전환 
@@ -1168,9 +1172,9 @@ namespace ya
 				}
 
 				// JumpDownAttack: 점프 중 + W (공격 성공 시, JumpDownHit 애니메이션 실행 후 마저 착지)
-				if (Input::GetKeyDown(eKeyCode::W) && mIsJumpDown == false && mIsJump == true && mIsDJump == true)
+				if (Input::GetKeyDown(eKeyCode::W) && mIsJumpDownAttack == false && mIsJump == true && mIsDJump == true)
 				{
-					mIsJumpDown = true;
+					mIsJumpDownAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1182,9 +1186,9 @@ namespace ya
 					}
 				}
 				// JumpSlideAttack: 점프 중 + E
-				if (Input::GetKeyDown(eKeyCode::E) && mIsJumpSlide == false && mIsJump == true && mIsDJump == true)
+				if (Input::GetKeyDown(eKeyCode::E) && mIsJumpSlideAttack == false && mIsJump == true && mIsDJump == true)
 				{
-					mIsJumpSlide = true;
+					mIsJumpSlideAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1196,9 +1200,9 @@ namespace ya
 					}
 				}
 				// JumpSlideAttack: 점프 중 + D
-				if (Input::GetKey(eKeyCode::LSHIFT) && Input::GetKeyDown(eKeyCode::D) && mIsJumpSlide == false && mIsJump == true && mIsDJump == true)
+				if (Input::GetKey(eKeyCode::LSHIFT) && Input::GetKeyDown(eKeyCode::D) && mIsJumpSlideAttack == false && mIsJump == true && mIsDJump == true)
 				{
-					mIsJumpSlide = true;
+					mIsJumpSlideAttack = true;
 
 					if (mDirection == eDirection::L)
 					{
@@ -1390,9 +1394,9 @@ namespace ya
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		// Kick: E
-		if (Input::GetKeyDown(eKeyCode::E) && mIsKick == false && mIsRoundKick == false && mIsBehindKick == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKeyDown(eKeyCode::E) && mIsKickAttack == false && mIsRoundKickAttack == false && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsKick = true;
+			mIsKickAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1406,14 +1410,14 @@ namespace ya
 		// Kick 오류 방지
 		if (!(mState == ePlayerState::L_Kick || mState == ePlayerState::R_Kick))
 		{
-			mIsKick = false;
+			mIsKickAttack = false;
 		}
 
 		// Round Kick: UP + E
-		if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::E) && mIsRoundKick == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::E) && mIsRoundKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsKick = false;
-			mIsRoundKick = true;
+			mIsKickAttack = false;
+			mIsRoundKickAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1427,14 +1431,14 @@ namespace ya
 		// Round Kick 오류 방지
 		if (!(mState == ePlayerState::L_RoundKick || mState == ePlayerState::R_RoundKick))
 		{
-			mIsRoundKick = false;
+			mIsRoundKickAttack = false;
 		}
 
 		// Behind Kick: DOWN + E
-		if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::E) && mIsBehindKick == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::E) && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsKick = false;
-			mIsBehindKick = true;
+			mIsKickAttack = false;
+			mIsBehindKickAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1448,7 +1452,7 @@ namespace ya
 		// Behind Kick 오류 방지
 		if (!(mState == ePlayerState::L_BehindKick || mState == ePlayerState::R_BehindKick))
 		{
-			mIsBehindKick = false;
+			mIsBehindKickAttack = false;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1456,9 +1460,9 @@ namespace ya
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		// WeaponNormalAttack: D
-		if (Input::GetKeyDown(eKeyCode::D) && mIsWeaponNormal == false && mIsWeaponDown == false && mIsWeaponSide == false && mIsWeaponStab == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKeyDown(eKeyCode::D) && mIsWeaponNormalAttack == false && mIsWeaponDownAttack == false && mIsWeaponSideAttack == false && mIsWeaponStabAttack == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsWeaponNormal = true;
+			mIsWeaponNormalAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1472,14 +1476,14 @@ namespace ya
 		// WeaponNormalAttack 오류 방지
 		if (!(mState == ePlayerState::L_WeaponNormalAttack || mState == ePlayerState::R_WeaponNormalAttack))
 		{
-			mIsWeaponNormal = false;
+			mIsWeaponNormalAttack = false;
 		}
 
 		// WeaponDownAttack: DOWN + D 
-		if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponDown == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponDownAttack == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsWeaponNormal = false;
-			mIsWeaponDown = true;
+			mIsWeaponNormalAttack = false;
+			mIsWeaponDownAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1493,14 +1497,14 @@ namespace ya
 		// WeaponDownAttack오류 방지
 		if (!(mState == ePlayerState::L_WeaponDownAttack || mState == ePlayerState::R_WeaponDownAttack))
 		{
-			mIsWeaponDown = false;
+			mIsWeaponDownAttack = false;
 		}
 
 		// WeaponSideAttack:LEFT OR RIGHT + D
-		if ((Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponSide == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if ((Input::GetKey(eKeyCode::LEFT) || Input::GetKey(eKeyCode::RIGHT)) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponSideAttack == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsWeaponNormal = false;
-			mIsWeaponSide = true;
+			mIsWeaponNormalAttack = false;
+			mIsWeaponSideAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1514,14 +1518,14 @@ namespace ya
 		// WeaponSideAttack 오류 방지
 		if (!(mState == ePlayerState::L_WeaponSideAttack || mState == ePlayerState::R_WeaponSideAttack))
 		{
-			mIsWeaponSide = false;
+			mIsWeaponSideAttack = false;
 		}
 
 		// WeaponStabAttack: D + UP
-		if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponStab == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+		if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::D) && mIsWeaponStabAttack == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 		{
-			mIsWeaponNormal = false;
-			mIsWeaponStab = true;
+			mIsWeaponNormalAttack = false;
+			mIsWeaponStabAttack = true;
 
 			if (mDirection == eDirection::L)
 			{
@@ -1535,7 +1539,7 @@ namespace ya
 		// WeaponStabAttack 오류 방지
 		if (!(mState == ePlayerState::L_WeaponStabAttack || mState == ePlayerState::R_WeaponStabAttack))
 		{
-			mIsWeaponStab = false;
+			mIsWeaponStabAttack = false;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1559,11 +1563,11 @@ namespace ya
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// RunWeaponAttack: 달리는 상태에서 + D
-		if (mIsRun == true && mIsRunWeapon == false && mIsJump == false && mIsDJump == false)// && 다른 동작을 더 추가시켜줘야 함(why? 이 애니메이션 덜끝났는데 다른 애니메이션 진행되면 mIsRunWeapon이 true가 유지됨)
+		if (mIsRun == true && mIsRunWeaponAttack == false && mIsJump == false && mIsDJump == false)// && 다른 동작을 더 추가시켜줘야 함(why? 이 애니메이션 덜끝났는데 다른 애니메이션 진행되면 mIsRunWeapon이 true가 유지됨)
 		{
 			if (Input::GetKeyDown(eKeyCode::D))
 			{
-				mIsRunWeapon = true;
+				mIsRunWeaponAttack = true;
 				
 				if (mDirection == eDirection::L)
 				{
@@ -1577,11 +1581,11 @@ namespace ya
 		}
 
 		// RunSlideAttack: 달리는 상태에서 + E
-		if (mIsRun == true && mIsRunSlide == false && mIsJump == false && mIsDJump == false)// && 다른 동작을 더 추가시켜줘야 함, NoneAnimationCondition 고민중
+		if (mIsRun == true && mIsRunSlideAttack == false && mIsJump == false && mIsDJump == false)// && 다른 동작을 더 추가시켜줘야 함, NoneAnimationCondition 고민중
 		{
 			if (Input::GetKeyDown(eKeyCode::E))
 			{
-				mIsRunSlide = true;
+				mIsRunSlideAttack = true;
 
 				if (mDirection == eDirection::L)
 				{
@@ -1659,10 +1663,10 @@ namespace ya
 
 		if (
 				mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3 ||
-				mIsKick || mIsRoundKick ||mIsBehindKick ||
-				mIsWeaponNormal ||mIsWeaponDown ||mIsWeaponSide ||mIsWeaponStab ||
-				mIsJumpDown ||mIsJumpSlide ||mIsRunJump ||
-				mIsRunWeapon ||mIsRunSlide ||
+				mIsKickAttack || mIsRoundKickAttack ||mIsBehindKickAttack ||
+				mIsWeaponNormalAttack ||mIsWeaponDownAttack ||mIsWeaponSideAttack ||mIsWeaponStabAttack ||
+				mIsJumpDownAttack ||mIsJumpSlideAttack ||mIsRunJumpAttack ||
+				mIsRunWeaponAttack ||mIsRunSlideAttack ||
 				mIsFireBall ||mIsSuper
 			)
 		{
@@ -1686,16 +1690,6 @@ namespace ya
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 이벤트 함수
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	void RamonaScript::JumpStart()
-	{
-
-	}
-
-	void RamonaScript::JumpComplete()
-	{
-
-	}
 
 	void RamonaScript::EvadeComplete()
 	{
@@ -1750,9 +1744,9 @@ namespace ya
 
 	void RamonaScript::KickComplete()
 	{
-		mIsKick = false;
-		mIsRoundKick = false;
-		mIsBehindKick = false;
+		mIsKickAttack = false;
+		mIsRoundKickAttack = false;
+		mIsBehindKickAttack = false;
 
 		if (mDirection == eDirection::L)
 		{
@@ -1766,10 +1760,10 @@ namespace ya
 
 	void RamonaScript::WeaponAttackComplete()
 	{
-		mIsWeaponNormal = false;
-		mIsWeaponDown = false;
-		mIsWeaponSide = false;
-		mIsWeaponStab = false;
+		mIsWeaponNormalAttack = false;
+		mIsWeaponDownAttack = false;
+		mIsWeaponSideAttack = false;
+		mIsWeaponStabAttack = false;
 
 		if (mDirection == eDirection::L)
 		{
@@ -1783,9 +1777,9 @@ namespace ya
 
 	void RamonaScript::JumpAttackComplete()
 	{
-		mIsJumpDown = false;
-		mIsJumpSlide = false;
-		mIsRunJump = false;
+		mIsJumpDownAttack = false;
+		mIsJumpSlideAttack = false;
+		mIsRunJumpAttack = false;
 
 		if (mDirection == eDirection::L)
 		{
@@ -1799,8 +1793,8 @@ namespace ya
 
 	void RamonaScript::RunAttackComplete()
 	{
-		mIsRunWeapon = false;
-		mIsRunSlide = false;
+		mIsRunWeaponAttack = false;
+		mIsRunSlideAttack = false;
 
 		if (mDirection == eDirection::L)
 		{
@@ -1871,10 +1865,10 @@ namespace ya
 		if (
 				mIsJump == false && mIsEvade == false 
 				&& mIsNormalAttack1 == false && mIsNormalAttack2 == false && mIsNormalAttack3 == false
-				&& mIsKick == false && mIsRoundKick == false && mIsBehindKick == false
-				&& mIsWeaponNormal == false && mIsWeaponDown == false && mIsWeaponSide == false && mIsWeaponStab == false
-				&& mIsJumpDown == false && mIsJumpSlide == false
-				&& mIsRunWeapon == false && mIsRunSlide == false
+				&& mIsKickAttack == false && mIsRoundKickAttack == false && mIsBehindKickAttack == false
+				&& mIsWeaponNormalAttack == false && mIsWeaponDownAttack == false && mIsWeaponSideAttack == false && mIsWeaponStabAttack == false
+				&& mIsJumpDownAttack == false && mIsJumpSlideAttack == false
+				&& mIsRunWeaponAttack == false && mIsRunSlideAttack == false
 				&& mIsFireBall == false && mIsSuper == false
 			)
 			return true;
@@ -2004,168 +1998,168 @@ namespace ya
 	}
 	void RamonaScript::L_kick()
 	{
-		mIsKick = true;
+		mIsKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_Kick", true);
 	}
 	void RamonaScript::R_kick()
 	{
-		mIsKick = true;
+		mIsKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_Kick", true);
 	}
 	void RamonaScript::L_roundkick()
 	{
-		mIsRoundKick = true;
+		mIsRoundKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_RoundKick", true);
 	}
 	void RamonaScript::R_roundkick()
 	{
-		mIsRoundKick = true;
+		mIsRoundKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_RoundKick", true);
 	}
 	void RamonaScript::L_behindkick()
 	{
-		mIsBehindKick = true;
+		mIsBehindKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_BehindKick", true);
 	}
 	void RamonaScript::R_behindkick()
 	{
-		mIsBehindKick = true;
+		mIsBehindKickAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_BehindKick", true);
 	}
 	void RamonaScript::L_weaponnormalattack()
 	{
-		mIsWeaponNormal = true;
+		mIsWeaponNormalAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_WeaponNormalAttack", true);
 	}
 	void RamonaScript::R_weaponnormalattack()
 	{
-		mIsWeaponNormal = true;
+		mIsWeaponNormalAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_WeaponNormalAttack", true);
 	}
 	void RamonaScript::L_weapondownattack()
 	{
-		mIsWeaponDown = true;
+		mIsWeaponDownAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_WeaponDownAttack", true);
 	}
 	void RamonaScript::R_weapondownattack()
 	{
-		mIsWeaponDown = true;
+		mIsWeaponDownAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_WeaponDownAttack", true);
 	}
 	void RamonaScript::L_weaponsideattack()
 	{
-		mIsWeaponSide = true;
+		mIsWeaponSideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_WeaponSideAttack", true);
 	}
 	void RamonaScript::R_weaponsideattack()
 	{
-		mIsWeaponSide = true;
+		mIsWeaponSideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_WeaponSideAttack", true);
 	}
 	void RamonaScript::L_weaponstabattack()
 	{
-		mIsWeaponStab = true;
+		mIsWeaponStabAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_WeaponStabAttack", true);
 	}
 	void RamonaScript::R_weaponstabattack()
 	{
-		mIsWeaponStab = true;
+		mIsWeaponStabAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_WeaponStabAttack", true);
 	}
 	void RamonaScript::L_jumpdownattack()
 	{
-		mIsJumpDown = true;
+		mIsJumpDownAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_JumpDownAttack", true);
 	}
 	void RamonaScript::R_jumpdownattack()
 	{
-		mIsJumpDown = true;
+		mIsJumpDownAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_JumpDownAttack", true);
 	}
 	void RamonaScript::L_jumpslideattack()
 	{
-		mIsJumpSlide = true;
+		mIsJumpSlideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_JumpSlideAttack", true);
 	}
 	void RamonaScript::R_jumpslideattack()
 	{
-		mIsJumpSlide = true;
+		mIsJumpSlideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_JumpSlideAttack", true);
 	}
 	void RamonaScript::L_runjumpattack()
 	{
-		mIsRunJump = true;
+		mIsRunJumpAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_RunJumpAttack", true);
 	}
 	void RamonaScript::R_runjumpattack()
 	{
-		mIsRunJump = true;
+		mIsRunJumpAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_RunJumpAttack", true);
 	}
 	void RamonaScript::L_runweaponattack()
 	{
-		mIsRunWeapon = true;
+		mIsRunWeaponAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_RunWeaponAttack", true);
 	}
 	void RamonaScript::R_runweaponattack()
 	{
-		mIsRunWeapon = true;
+		mIsRunWeaponAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_RunWeaponAttack", true);
 	}
 	void RamonaScript::L_runslideattack()
 	{
-		mIsRunSlide = true;
+		mIsRunSlideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"L_RunSlideAttack", true);
 	}
 	void RamonaScript::R_runslideattack()
 	{
-		mIsRunSlide = true;
+		mIsRunSlideAttack = true;
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_RunSlideAttack", true);

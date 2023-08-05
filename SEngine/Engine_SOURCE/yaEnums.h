@@ -50,8 +50,8 @@ namespace ya::enums
 
 	enum class eColliderActivation
 	{
-		Active,
 		InActive,
+		Active,
 		End,
 	};
 

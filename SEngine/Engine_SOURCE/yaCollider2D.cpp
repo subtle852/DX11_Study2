@@ -50,6 +50,7 @@ namespace ya
 		mesh.scale = scale;
 		mesh.rotation = tr->GetRotation();
 		mesh.type = eColliderType::Rect;
+		mesh.activation = mActivation;
 		mesh.state = mState;
 
 		renderer::PushDebugMeshAttribute(mesh);

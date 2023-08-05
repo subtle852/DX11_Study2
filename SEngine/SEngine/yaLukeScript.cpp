@@ -516,7 +516,7 @@ namespace ya
 	{
 		// 아래의 상태 변환 변수를 해당 애니메이션이나 해당 상태로 변환 시, 켜주고 
 		// 여기서, 꺼줘야 함
-		//if (mIsArm == true) mIsKick mIsSideKick mIsUpper mIsGuard
+		//if (mIsArm == true) mIsKickAttack mIsSideKick mIsUpper mIsGuard
 		//	mIsArm = false;
 
 		if (mPlayerPos.x < mPos.x)

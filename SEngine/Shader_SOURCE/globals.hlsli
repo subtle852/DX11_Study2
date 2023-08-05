@@ -30,8 +30,9 @@ cbuffer Animator : register(b3)
 
 cbuffer Collider : register(b4)
 {
+    uint colliderActivation;
     uint colliderState;
-    uint Padding2[3];
+    uint Padding2[2];
 }
 
 Texture2D albedoTexture : register(t0);

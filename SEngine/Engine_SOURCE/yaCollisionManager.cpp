@@ -69,6 +69,7 @@ namespace ya
 						if (rightCol->GetActivation() == eColliderActivation::InActive)
 						{
 							// 오류 발생을 막기위해 InActive는 당연히 NotColliding 상태로 만들어 줌
+							leftCol->SetState(eColliderState::NotColliding);
 							rightCol->SetState(eColliderState::NotColliding);
 							continue;
 						}

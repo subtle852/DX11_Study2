@@ -16,9 +16,10 @@ namespace gui
 		virtual void LateUpdate() override;
 		virtual void Render() override;
 
-		void BindConstantBuffer(ya::eColliderState state)
+		void BindConstantBuffer(ya::eColliderActivation activation, ya::eColliderState state)
 		{
 			renderer::ColliderCB cdCB = {};
+			cdCB.colliderActivation = (UINT)activation;
 			cdCB.colliderState = (UINT)state;
 
 			ConstantBuffer* cb = renderer::constantBuffer[(UINT)eCBType::Collider];

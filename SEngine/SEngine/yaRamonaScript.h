@@ -25,9 +25,6 @@ namespace ya
 		ePlayerState GetState() { return mState; }
 
 		// 이벤트 함수
-		void JumpStart();
-		void JumpComplete();
-
 		void EvadeComplete();
 
 		void NormalAttackComplete();
@@ -122,7 +119,10 @@ namespace ya
 
 		eDirection mDirection = eDirection::R;
 
-		// State 변수
+		//// State 변수
+
+		bool mIsRun = false;
+		
 		// 점프 관련 변수
 		bool mIsJump = false;
 		float mJumpTime = 0.0f;// 점프 체공 시간 측정
@@ -131,7 +131,7 @@ namespace ya
 		float mJumpHalfTime = 0.3f;// 점프 체공시간의 절반
 		float mJumpHeight = 1.8f;// 점프 높이
 
-		bool mIsRun = false;
+		bool mIsGuard = false;
 
 		bool mIsEvade = false;
 
@@ -143,21 +143,21 @@ namespace ya
 		bool mCanNormalAttack3 = false;
 		float mNormalAttack2Time = 0.0f;// NormalAttack2 실행 시간 측정
 
-		bool mIsKick = false;
-		bool mIsRoundKick = false;
-		bool mIsBehindKick = false;
+		bool mIsKickAttack = false;
+		bool mIsRoundKickAttack = false;
+		bool mIsBehindKickAttack = false;
 
-		bool mIsWeaponNormal = false;
-		bool mIsWeaponDown = false;
-		bool mIsWeaponSide = false;
-		bool mIsWeaponStab = false;
+		bool mIsWeaponNormalAttack = false;
+		bool mIsWeaponDownAttack = false;
+		bool mIsWeaponSideAttack = false;
+		bool mIsWeaponStabAttack = false;
 
-		bool mIsJumpDown = false;
-		bool mIsJumpSlide = false;
-		bool mIsRunJump = false;
+		bool mIsJumpDownAttack = false;
+		bool mIsJumpSlideAttack = false;
+		bool mIsRunJumpAttack = false;
 
-		bool mIsRunWeapon = false;
-		bool mIsRunSlide = false;
+		bool mIsRunWeaponAttack = false;
+		bool mIsRunSlideAttack = false;
 
 		bool mIsFireBall = false;
 		bool mIsSuper = false;

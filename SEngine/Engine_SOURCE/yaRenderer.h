@@ -43,6 +43,7 @@ namespace renderer
 
 	CBUFFER(ColliderCB, CBSLOT_COLLIDER)
 	{
+		UINT colliderActivation;
 		UINT colliderState;
 	};
 
