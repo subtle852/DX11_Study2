@@ -21,7 +21,7 @@ namespace ya
 		virtual void Initialize() override;
 		virtual void Update() override;
 
-		eDirection GetDirection() {	return mDirection; }
+		eDirection GetDirection() { return mDirection; }
 		ePlayerState GetState() { return mState; }
 
 		// 이벤트 함수
@@ -48,7 +48,7 @@ namespace ya
 
 		// 다른 애니메이션 진행중인데 좌우상하 키가 눌린다고 해서 
 		// 특정 애니메이션(ex. Walk)이 진행되면 안되기에 다른 애니메이션이 진행중인지 확인하는 조건
-		bool NoneAnimationCondition(); 
+		bool NoneAnimationCondition();
 
 		// 좌우상하 이동을 막아야하는 경우 ex. FireBall
 		bool CanMoveCondition();
@@ -61,7 +61,6 @@ namespace ya
 		// 기존 스킬이 true인 상태에서 연계 스킬이 진행 되기 때문
 		bool CanAttackCondition();
 
-		
 		//// State 함수
 		void L_idle();
 		void R_idle();
@@ -189,5 +188,8 @@ namespace ya
 		Collider2D* mBothCd = nullptr;
 		Collider2D* mBackCd = nullptr;
 		Collider2D* mAllCd = nullptr;
+
+	public:
+		bool mAttackState[20] = { false, };
 	};
 }

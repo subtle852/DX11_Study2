@@ -73,6 +73,10 @@ namespace ya
 		void JumpStart();
 		void Attacked1Complete();
 		void CombatComplete();
+		void GuardComplete();
+		void Attacked3Complete();
+		void DeadComplete();
+		void GetUpComplete();
 
 		// 충돌 함수
 		virtual void OnCollisionEnter(Collider2D* other) override;
@@ -119,6 +123,8 @@ namespace ya
 
 		// 동작 내부 함수
 		void Combat();
+
+		void SetAttackedState();
 
 		// State 함수
 		void L_idle();
@@ -182,6 +188,10 @@ namespace ya
 		// Player 상태 (PlayScene의 static 변수를 업데이트 계속 해줌)
 		Vector3 mPlayerPos;
 		eDirection mPlayerDir;
+		ePlayerState mPlayerPreState;
+		ePlayerState mPlayerCurState;
+
+		bool mPlayerAttackState[20] = { false, };
 
 		// 플레이어 인식 감지 (단순)
 		const float mDetectionRange = 1.5f;
@@ -203,6 +213,13 @@ namespace ya
 		float mCombatTimer = 0.0f;
 		float mCombatInterval = 3.0f;
 		
+		// AI 탐지 거리내에 플레이어 발견 시, 대기 or 달리기 관련 변수
+		int mRandWaitOrRun = -100;
+		float mRunSpeed = 0.4f;
+
+		// NormalAttack 콤보 시 충돌체는 항시 유지되어 있지만 강제로 충돌 초기화를 위한 변수
+		bool mIsNormalAttackComboInit = false;
+
 		// 충돌 상태가 처음인지 확인하기 위한 변수
 		int mIsCollidingFirst = 0;
 
@@ -232,7 +249,8 @@ namespace ya
 
 		bool mIsGetUp = false;
 
-		bool mIsDead = false;
+		bool mIsDowned = false;
+		//bool mIsDead = false;
 
 		bool mIsFlying = false;
 		bool mIsRaiding = false;

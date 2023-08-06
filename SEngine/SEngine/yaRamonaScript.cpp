@@ -1687,7 +1687,6 @@ namespace ya
 		// Upper
 		if (mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3)
 		{
-
 			mUpperCd->SetActivation(eColliderActivation::Active);
 		}
 		else
@@ -1738,6 +1737,28 @@ namespace ya
 			mAllCd->SetActivation(eColliderActivation::InActive);
 		}
 
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 스킬 상태 Update
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		mAttackState[0] = mIsNormalAttack1;
+		mAttackState[1] = mIsNormalAttack2;
+		mAttackState[2] = mIsNormalAttack3;
+		mAttackState[3] = mIsKickAttack;
+		mAttackState[4] = mIsRoundKickAttack;
+		mAttackState[5] = mIsBehindKickAttack;
+		mAttackState[6] = mIsWeaponNormalAttack;
+		mAttackState[7] = mIsWeaponDownAttack;
+		mAttackState[8] = mIsWeaponSideAttack;
+		mAttackState[9] = mIsWeaponStabAttack;
+		mAttackState[10] = mIsJumpDownAttack;
+		mAttackState[11] = mIsJumpSlideAttack;
+		mAttackState[12] = mIsRunJumpAttack;
+		mAttackState[13] = mIsRunWeaponAttack;
+		mAttackState[14] = mIsRunSlideAttack;
+		mAttackState[15] = mIsFireBall;
+		mAttackState[16] = mIsSuper;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

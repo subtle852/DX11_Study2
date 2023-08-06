@@ -8,6 +8,7 @@
 #include "yaResources.h"
 #include "yaPlayScene.h"
 #include "yaCollider2D.h"
+#include "yaRamonaScript.h"
 
 namespace ya
 {
@@ -76,8 +77,8 @@ namespace ya
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Attacked2", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_ATTACKED2.png");
-		at->Create(L"R_Attacked2", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
-		at->Create(L"L_Attacked2", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
+		at->Create(L"R_Attacked2", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4, Vector2::Zero, 0.15f);
+		at->Create(L"L_Attacked2", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4, Vector2::Zero, 0.15f);
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Attacked3", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_ATTACKED3.png");
@@ -96,8 +97,8 @@ namespace ya
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Dead", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_DEAD.png");
-		at->Create(L"R_Dead", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
-		at->Create(L"L_Dead", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
+		at->Create(L"R_Dead", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4, Vector2::Zero, 1.0f);
+		at->Create(L"L_Dead", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4, Vector2::Zero, 1.0f);
 
 		atlas
 			= Resources::Load<Texture>(L"Luke_Flying", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_FLYING.png");
@@ -117,17 +118,33 @@ namespace ya
 
 		at->CompleteEvent(L"L_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
 		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
+		at->CompleteEvent(L"L_Attacked2") = std::bind(&LukeScript::Attacked1Complete, this);
+		at->CompleteEvent(L"R_Attacked2") = std::bind(&LukeScript::Attacked1Complete, this);
+		//at->CompleteEvent(L"L_Attacked3") = std::bind(&LukeScript::Attacked1Complete, this);
+		//at->CompleteEvent(L"R_Attacked3") = std::bind(&LukeScript::Attacked1Complete, this);
+		at->CompleteEvent(L"L_Attacked4") = std::bind(&LukeScript::Attacked1Complete, this);
+		at->CompleteEvent(L"R_Attacked4") = std::bind(&LukeScript::Attacked1Complete, this);
 
 		at->CompleteEvent(L"L_ArmAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::CombatComplete, this);
+		at->CompleteEvent(L"R_ArmAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"L_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"R_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"L_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"R_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"L_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
 		at->CompleteEvent(L"R_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"L_Guard") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_Guard") = std::bind(&LukeScript::CombatComplete, this);
+
+		at->CompleteEvent(L"L_Guard") = std::bind(&LukeScript::GuardComplete, this);
+		at->CompleteEvent(L"R_Guard") = std::bind(&LukeScript::GuardComplete, this);
+
+		at->CompleteEvent(L"L_Attacked3") = std::bind(&LukeScript::Attacked3Complete, this);
+		at->CompleteEvent(L"R_Attacked3") = std::bind(&LukeScript::Attacked3Complete, this);
+
+		at->CompleteEvent(L"L_Dead") = std::bind(&LukeScript::DeadComplete, this);
+		at->CompleteEvent(L"R_Dead") = std::bind(&LukeScript::DeadComplete, this);
+
+		at->CompleteEvent(L"L_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
+		at->CompleteEvent(L"R_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 콜라이더
@@ -302,7 +319,7 @@ namespace ya
 
 		// 공격을 당하고 있을 때는 아래의 상태 변화가 있으면 안됨
 		// 추후 공격을 당하는 변수들 합쳐서 함수로 대체 예정
-		if (mIsAttacked1 == false && mBodyCd->GetState() == eColliderState::NotColliding)
+		if (mIsAttacked1 == false && mBodyCd->GetState() == eColliderState::NotColliding && mIsDowned == false)
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 탐지거리 내 플레이어 O
@@ -325,52 +342,76 @@ namespace ya
 						mDirection = eDirection::R;
 						ChangeState(eLukeState::R_Idle);
 					}
+
+					// 달려갈지 대기할지 랜덤 설정
+					if (mRandWaitOrRun == -100)
+					{
+						std::mt19937 mt(rd());
+						std::uniform_int_distribution<int> dist(0, 1);
+						mRandWaitOrRun = dist(mt);
+					}
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 전투거리 내 플레이어 O
+													// 탐지거리 내 플레이어 O 전투거리 내 플레이어 O
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				if (IsPlayerInCombatRange())
 				{
-					Combat();
+					if (mIsDowned == false)// Combat 조건
+					{
+						Combat();
+					}
 				}
 
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 전투거리 내 플레이어 X
+													// 탐지거리 내 플레이어 O 전투거리 내 플레이어 X
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				else
 				{
-					mDetected = false;// 플레이어 쪽 방향으로 설정 해주기 위해 처음 Detect 되는 상태로 전환
+					mDetected = true;// 플레이어 쪽 방향으로 설정 해주기 위해 처음 Detect 되는 상태로 전환
 					mCombated = false;
 
 					mCombatTimer = 0.0f;
 
-					if (mDirection == eDirection::L)
+					// 달려오는 경우
+					if (mRandWaitOrRun == 0)
 					{
-						if (mPlayerDir == eDirection::L)
+						// 추후, 해당 조건문 CanRun or CanChase(Chase로 한다면, Run 변수들 네이밍 Chase로 바꿔줘야 함)로 묶을 예정
+						// Combat에서 공격 스킬이 나가는 도중에
+						// 플레이어가 전투거리에서 나갈 때,
+						// 해당 스킬은 마저 실행하고 달려가야 하기 때문에 아래와 같은 조건문이 필요
+						if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
 						{
-							ChangeState(eLukeState::L_Walk);
+							ChangeState(eLukeState::L_Run);
 
-							float moveDistance = GetRandomMoveDistance();
 							mDirectionInt = -1;
 							Transform* tr = this->GetOwner()->GetComponent<Transform>();
 							Vector3 pos = tr->GetPosition();
-							pos.x += mDirectionInt * moveDistance * Time::DeltaTime();
+							pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
 							tr->SetPosition(pos);
 						}
-					}
-					else
-					{
-						if (mPlayerDir == eDirection::R)
+						else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
 						{
-							ChangeState(eLukeState::R_Walk);
+							ChangeState(eLukeState::R_Run);
 
-							float moveDistance = GetRandomMoveDistance();
 							mDirectionInt = +1;
 							Transform* tr = this->GetOwner()->GetComponent<Transform>();
 							Vector3 pos = tr->GetPosition();
-							pos.x += mDirectionInt * moveDistance * Time::DeltaTime();
+							pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
 							tr->SetPosition(pos);
+						}
+					}
+
+					// 대기하는 경우
+					else// (mRandWaitOrRun == 1)
+					{
+						if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
+						{	
+							ChangeState(eLukeState::L_Idle);
+						}
+						else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
+						{
+							ChangeState(eLukeState::R_Idle);
 						}
 					}
 
@@ -378,11 +419,12 @@ namespace ya
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 탐지거리 내 플레이어 X
+													// 탐지거리 내 플레이어 X && 전투거리 내 플레이어 X
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			else
 			{
 				mDetected = false;
+				mRandWaitOrRun = -100;
 
 				// 이동 타이머 감소
 				mMoveTimer -= Time::DeltaTime();
@@ -451,41 +493,21 @@ namespace ya
 		// 충돌이 처음일 때
 		if (mIsCollidingFirst == 1)
 		{
-			// 방어 스킬 사용할지 안할지 랜덤으로 실행
-			std::mt19937 mt(rd());
-			std::uniform_int_distribution<int> dist(0, 1);
-			int randGuard = dist(mt);
-
-			if ((bool)randGuard == true)
-			{
-				if (mPlayerPos.x < mPos.x)
-				{
-					mDirection = eDirection::L;
-					ChangeState(eLukeState::L_Guard);
-
-					mIsCollidingFirst = 2;
-				}
-				else
-				{
-					mDirection = eDirection::R;
-					ChangeState(eLukeState::R_Guard);
-
-					mIsCollidingFirst = 2;
-				}
-			}
-			else
-			{
-				mIsCollidingFirst = 2;
-			}
+			
 		}
 
 		// 충돌하지 않는 상태일 때
 		if (mBodyCd->GetState() == eColliderState::NotColliding)
 		{
 			mIsCollidingFirst = 0;
+			mPlayerPreState = ePlayerState::R_Idle;
+			mPlayerCurState = ePlayerState::R_Idle;
+			mIsNormalAttackComboInit = false;
 		}
 
-		if (mState == eLukeState::L_Guard || mState == eLukeState::R_Guard)
+		// mBodyCd 활성화 비활성화 조건
+		if (mState == eLukeState::L_Guard || mState == eLukeState::R_Guard
+			|| mIsArm || mIsKick || mIsSideKick || mIsUpper)
 		{
 			mBodyCd->SetActivation(eColliderActivation::InActive);
 		}
@@ -508,16 +530,24 @@ namespace ya
 
 	void LukeScript::Attacked1Complete()
 	{
-		mIsAttacked1 = true;// mIsAttacked1을 true로 하면 공격당하는 애니메이션을 무한 호출하게 됨
-		ChangeState(eLukeState::L_Idle);
+		mIsAttacked1 = false;
+		mIsAttacked2 = false;
+		//mIsAttacked3 = false;
+		mIsAttacked4 = false;
+
+		if (mPlayerPos.x < mPos.x)
+			ChangeState(eLukeState::L_Idle);
+		else
+			ChangeState(eLukeState::R_Idle);
 	}
 
 	void LukeScript::CombatComplete()
 	{
-		// 아래의 상태 변환 변수를 해당 애니메이션이나 해당 상태로 변환 시, 켜주고 
-		// 여기서, 꺼줘야 함
-		//if (mIsArm == true) mIsKickAttack mIsSideKick mIsUpper mIsGuard
-		//	mIsArm = false;
+		mIsArm = false;
+		mIsKick = false;
+		mIsSideKick = false;
+		mIsUpper = false;
+
 
 		if (mPlayerPos.x < mPos.x)
 			ChangeState(eLukeState::L_Idle);
@@ -530,46 +560,150 @@ namespace ya
 		mCombatInterval = (float)(dist(mt) + 1.5f);
 	}
 
+	void LukeScript::GuardComplete()
+	{
+		// 막으려 하는 해당 스킬의 duration이 다르기 때문에 duration 까지 가드를 유지하기 위한 부분 
+		ePlayerState playerState = PlayScene::GetPlayerState();
+		if (playerState == ePlayerState::L_Idle || playerState == ePlayerState::R_Idle || playerState == ePlayerState::L_Walk || playerState == ePlayerState::R_Walk || 
+			playerState == ePlayerState::L_Jump || playerState == ePlayerState::R_Jump || playerState == ePlayerState::L_Run || playerState == ePlayerState::R_Run)
+		{
+			if (mPlayerPos.x < mPos.x)
+				ChangeState(eLukeState::L_Idle);
+			else
+				ChangeState(eLukeState::R_Idle);
+		}
+		else
+		{
+			if (mPlayerPos.x < mPos.x)
+				ChangeState(eLukeState::L_Guard);
+			else
+				ChangeState(eLukeState::R_Guard);
+		}
+	}
+
+	void LukeScript::Attacked3Complete()
+	{
+		mIsAttacked3 = false;
+		mIsDowned = true;
+
+		if (mPlayerPos.x < mPos.x)
+			ChangeState(eLukeState::L_Dead);
+		else
+			ChangeState(eLukeState::R_Dead);
+	}
+
+	void LukeScript::DeadComplete()
+	{
+		mIsDowned = false;
+		mIsGetUp = true;
+
+		if (mPlayerPos.x < mPos.x)
+			ChangeState(eLukeState::L_GetUp);
+		else
+			ChangeState(eLukeState::R_GetUp);
+	}
+
+	void LukeScript::GetUpComplete()
+	{
+		mIsGetUp = false;
+
+		if (mPlayerPos.x < mPos.x)
+			ChangeState(eLukeState::L_Idle);
+		else
+			ChangeState(eLukeState::R_Idle);
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 충돌
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void LukeScript::OnCollisionEnter(Collider2D* other)
 	{
-		
+
 	}
 
 	void LukeScript::OnCollisionStay(Collider2D* other)
 	{
 		if (other->GetOwner()->GetName() == L"Ramona")
 		{
-
-			//if (GetState() == eLukeState::L_Guard || GetState() == eLukeState::R_Guard)
-			//{
-			//	// 가드 상태가 아니여야 충돌이 가능함
-			//	// 이 방식이 아니라면
-			//	// Update에서 가드 상태 변수 mIsGuard 만들어서, true 일때는 콜라이더를 InActive로 바꿔놓으면 될듯
-			//}
-
-			// 
-			if (mIsCollidingFirst == 0)
-				mIsCollidingFirst = 1;
-
-			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			if (mIsCollidingFirst == 0 && mIsDowned == false)// 처음 충돌
+				// + 충돌 조건(다운되어있는데 갑자기 공격을 받았다고 해서 Guard나 Idle로 바뀌지 않기 위한 조건)
+				// 추후 충돌 조건은 따로 정리할 예정
 			{
-				if (mIsAttacked1 == false)
+				//// 플레이어 현재 스킬 저장
+				//mPlayerPreState = PlayScene::GetPlayerState();
+
+				// 방어 스킬 사용할지 안할지 랜덤으로 실행
+				std::mt19937 mt(rd());
+				std::uniform_int_distribution<int> dist(0, 1);
+				int randGuard = dist(mt);
+
+				if ((bool)randGuard == true)
 				{
-					ChangeState(eLukeState::R_Attacked1);
-					mIsAttacked1 = true;
+					if (mPlayerPos.x < mPos.x)
+					{
+						mDirection = eDirection::L;
+						ChangeState(eLukeState::L_Guard);
+
+						//mIsCollidingFirst = 1;
+					}
+					else
+					{
+						mDirection = eDirection::R;
+						ChangeState(eLukeState::R_Guard);
+
+						//mIsCollidingFirst = 1;
+					}
+				}
+				else
+				{
+					mIsCollidingFirst = 1;
 				}
 			}
-			else// 플레이어 - 적
+
+			if (mIsCollidingFirst == 1)
 			{
-				if (mIsAttacked1 == false)
+				for (int i = 0; i < 17; i++)
 				{
-					ChangeState(eLukeState::L_Attacked1);
-					mIsAttacked1 = true;
+					mPlayerAttackState[i] = other->GetOwner()->GetComponent<RamonaScript>()->mAttackState[i];
 				}
+
+				SetAttackedState();
+
+				mIsCollidingFirst = 2;
+			}
+
+			// 오류 발생으로 인한 대기
+			//if (mIsCollidingFirst == 2)
+			//{
+			//	if (mIsAttacked1 == false)
+			//	{
+			//		mPlayerCurState = PlayScene::GetPlayerState();
+			//		if (mPlayerCurState == mPlayerPreState)
+			//		{
+			//			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			//			{
+			//				ChangeState(eLukeState::R_Idle);
+			//			}
+			//			else// 플레이어 - 적
+			//			{
+			//				ChangeState(eLukeState::L_Idle);
+			//			}
+			//		}
+			//		 //이렇게 해주는 이유는
+			//		 //공격 스킬에 따라 애니메이션의 duration이 달라서
+			//		 //공격 스킬을 진행하는 도중에 계속 Attacked 애니메이션이 반복되어 실행되면 안되기 때문이다
+			//		 //공격 스킬을 맞으면 단 한번 Attacked를 호출 시키기 위한 부분
+			//	}
+			//}
+
+			// 콤보 공격을 하는 경우 충돌 처리를 처음으로 돌려놓는 부분 
+			if (//mIsNormalAttackComboInit == false && 
+				(PlayScene::GetPlayerState() == ePlayerState::L_NormalAttack2 || PlayScene::GetPlayerState() == ePlayerState::R_NormalAttack2
+				|| PlayScene::GetPlayerState() == ePlayerState::R_NormalAttack3 || PlayScene::GetPlayerState() == ePlayerState::R_NormalAttack3))
+			{
+				mIsCollidingFirst = 1;
+				mIsNormalAttackComboInit = true;
 			}
 		}
 	}
@@ -605,6 +739,8 @@ namespace ya
 			switch (static_cast<eLukeCombatState>(randStateNum))
 			{
 			case eLukeCombatState::ArmAttack:
+				mIsArm = true;
+
 				if (mPlayerPos.x < mPos.x)
 					ChangeState(eLukeState::L_ArmAttack);
 				else
@@ -612,6 +748,8 @@ namespace ya
 				break;
 
 			case eLukeCombatState::KickAttack:
+				mIsKick = true;
+
 				if (mPlayerPos.x < mPos.x)
 					ChangeState(eLukeState::L_KickAttack);
 				else
@@ -619,6 +757,8 @@ namespace ya
 				break;
 
 			case eLukeCombatState::SideKickAttack:
+				mIsSideKick = true;
+
 				if (mPlayerPos.x < mPos.x)
 					ChangeState(eLukeState::L_SideKickAttack);
 				else
@@ -626,6 +766,8 @@ namespace ya
 				break;
 
 			case eLukeCombatState::UpperAttack:
+				mIsUpper = true;
+
 				if (mPlayerPos.x < mPos.x)
 					ChangeState(eLukeState::L_UpperAttack);
 				else
@@ -637,6 +779,118 @@ namespace ya
 			}
 
 			mCombatTimer = mCombatInterval;
+		}
+	}
+
+	void LukeScript::SetAttackedState()
+	{
+		// 플레이어 공격 스킬 확인
+		// 해당 함수 직전에 OnCollisionStay에서 업데이트
+
+		// 플레이어 공격 스킬에 맞는 Attacked 상태 설정
+		// Stun (Attacked1) : mIsNormalAttack1 mIsNormalAttack2 mIsNormalAttack3 mIsRoundKickAttack
+		// Valley (Attacked2) : mIsKickAttack mIsWeaponNormalAttack mIsWeaponSideAttack mIsWeaponStabAttack mIsRunJumpAttack mIsRunWeaponAttack
+		// KnockDown (Attacked3) : mIsJumpDownAttack mIsJumpSlideAttack mIsRunSlideAttack mIsFireBall mIsSuper
+		// Down (Attacked4) : mIsWeaponDownAttack (다운 상태에서만 공격 가능, 다운 상태는 KnockDown되어 GetUp 전의 상태를 의미)
+
+		#pragma region bool 변수 참고
+		// mAttackState[0] = mIsNormalAttack1;
+		// mAttackState[1] = mIsNormalAttack2;
+		// mAttackState[2] = mIsNormalAttack3;
+		// mAttackState[3] = mIsKickAttack;
+		// mAttackState[4] = mIsRoundKickAttack;
+		// mAttackState[5] = mIsBehindKickAttack;
+		// mAttackState[6] = mIsWeaponNormalAttack;
+		// mAttackState[7] = mIsWeaponDownAttack;
+		// mAttackState[8] = mIsWeaponSideAttack;
+		// mAttackState[9] = mIsWeaponStabAttack;
+		// mAttackState[10] = mIsJumpDownAttack;
+		// mAttackState[11] = mIsJumpSlideAttack;
+		// mAttackState[12] = mIsRunJumpAttack;
+		// mAttackState[13] = mIsRunWeaponAttack;
+		// mAttackState[14] = mIsRunSlideAttack;
+		// mAttackState[15] = mIsFireBall;
+		// mAttackState[16] = mIsSuper;
+		#pragma endregion
+
+		if (mPlayerAttackState[0] || mPlayerAttackState[1] || mPlayerAttackState[2] || mPlayerAttackState[4] || mPlayerAttackState[5])
+		{
+			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			{
+				if (mIsAttacked1 == false)
+				{
+					ChangeState(eLukeState::R_Attacked1);
+					mIsAttacked1 = true;
+				}
+			}
+			else// 플레이어 - 적
+			{
+				if (mIsAttacked1 == false)
+				{
+					ChangeState(eLukeState::L_Attacked1);
+					mIsAttacked1 = true;
+				}
+			}
+		}
+
+		else if (mPlayerAttackState[3] || mPlayerAttackState[6] || mPlayerAttackState[8] || mPlayerAttackState[9] || mPlayerAttackState[12] || mPlayerAttackState[13])
+		{
+			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			{
+				if (mIsAttacked2 == false)
+				{
+					ChangeState(eLukeState::R_Attacked2);
+					mIsAttacked2 = true;
+				}
+			}
+			else// 플레이어 - 적
+			{
+				if (mIsAttacked2 == false)
+				{
+					ChangeState(eLukeState::L_Attacked2);
+					mIsAttacked2 = true;
+				}
+			}
+		}
+
+		else if (mPlayerAttackState[10] || mPlayerAttackState[11] || mPlayerAttackState[14] || mPlayerAttackState[15] || mPlayerAttackState[16])
+		{
+			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			{
+				if (mIsAttacked3 == false)
+				{
+					ChangeState(eLukeState::R_Attacked3);
+					mIsAttacked3 = true;
+				}
+			}
+			else// 플레이어 - 적
+			{
+				if (mIsAttacked3 == false)
+				{
+					ChangeState(eLukeState::L_Attacked3);
+					mIsAttacked3 = true;
+				}
+			}
+		}
+
+		else if (mPlayerAttackState[7])
+		{
+			if (mPos.x < mPlayerPos.x)// 적 - 플레이어
+			{
+				if (mIsAttacked4 == false)
+				{
+					ChangeState(eLukeState::R_Attacked4);
+					mIsAttacked4 = true;
+				}
+			}
+			else// 플레이어 - 적
+			{
+				if (mIsAttacked4 == false)
+				{
+					ChangeState(eLukeState::L_Attacked4);
+					mIsAttacked4 = true;
+				}
+			}
 		}
 	}
 
