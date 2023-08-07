@@ -37,6 +37,11 @@ namespace ya
 		void FireBallComplete();
 		void SuperComplete();
 
+		void StunComplete();
+		void KnockDownComplete();
+		void DownedComplete();
+		void GetUpComplete();
+
 		// 충돌 함수
 		virtual void OnCollisionEnter(Collider2D* other) override;
 		virtual void OnCollisionStay(Collider2D* other) override;
@@ -60,6 +65,9 @@ namespace ya
 		// 콤보 스킬이나 연계 스킬(ex. D + down)은 이 조건을 사용해서는 안됨
 		// 기존 스킬이 true인 상태에서 연계 스킬이 진행 되기 때문
 		bool CanAttackCondition();
+
+		// State가 바뀌면 안되는 상태 ex. Stun, KnockDown,... 이런 상태 진행중에 다른 상태로 전환되면 안됨
+		bool CanChangeState();
 
 		//// State 함수
 		void L_idle();
@@ -130,6 +138,12 @@ namespace ya
 		void L_knockdown();
 		void R_knockdown();
 
+		void L_downed();
+		void R_downed();
+
+		void L_getup();
+		void R_getup();
+
 	private:
 		// 어빌리티
 		RamonaAbility mAbilty;
@@ -188,6 +202,12 @@ namespace ya
 		bool mIsFireBall = false;
 		bool mIsSuper = false;
 
+		bool mIsStun = false;
+		bool mIsKnockDown = false;
+		bool mIsDowned = false;
+		bool mIsGetUp = false;
+		bool mIsBackStun = false;
+
 		// 충돌체
 		Collider2D* mBodyCd = nullptr;
 		Collider2D* mUpperCd = nullptr;
@@ -198,5 +218,11 @@ namespace ya
 
 	public:
 		bool mAttackState[20] = { false, };
+
+		bool mIsBodyCollider = false;
+
+	private:
+		bool mEnemyAttackState[10] = { false, };
+		int mIsCollidingFirst = 0;
 	};
 }

@@ -157,6 +157,7 @@ namespace ya
 
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
+		mBodyCd->SetIsBody(true);
 
 		mSkillCd = this->GetOwner()->AddComponent<Collider2D>();
 		mSkillCd->SetSize(Vector2(0.2f, 0.3f));
@@ -411,6 +412,7 @@ namespace ya
 						// 해당 스킬은 마저 실행하고 달려가야 하기 때문에 아래와 같은 조건문이 필요
 						if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
 						{
+							mDirection = eDirection::L;
 							ChangeState(eLukeState::L_Run);
 
 							mDirectionInt = -1;
@@ -421,6 +423,7 @@ namespace ya
 						}
 						else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
 						{
+							mDirection = eDirection::R;
 							ChangeState(eLukeState::R_Run);
 
 							mDirectionInt = +1;
@@ -512,7 +515,6 @@ namespace ya
 			}
 		}
 
-
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 																// 충돌
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -583,7 +585,8 @@ namespace ya
 
 		// mBodyCd 활성화 비활성화 조건
 		if (mState == eLukeState::L_Guard || mState == eLukeState::R_Guard
-			|| mIsArm || mIsKick || mIsSideKick || mIsUpper)
+			|| mIsArm || mIsKick || mIsSideKick || mIsUpper
+			|| mIsAttacked1 || mIsAttacked2 || mIsAttacked3 || mIsAttacked4)
 			// 가드가 붙은 스킬아냐 아니냐로 구분을 해서 적용을 할지 고민중
 			// 가드를 하고 있다가 바로 스킬을 쓴다면, 계속 무적이고 플레이어의 공격상태와 겹치게 되면 상황이 애매해짐 
 		{
@@ -592,6 +595,12 @@ namespace ya
 		else
 		{
 			mBodyCd->SetActivation(eColliderActivation::Active);
+		}
+
+		// 오류 임시 해결
+		if (Input::GetKey(eKeyCode::Q))
+		{
+			mBodyCd->SetState(eColliderState::NotColliding);
 		}
 
 		// mSkillCd 활성화 비활성화 조건
@@ -704,6 +713,15 @@ namespace ya
 		{
 			mIsUpper = false;
 		}
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// 스킬 상태 Update
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		mAttackState[0] = mIsArm;
+		mAttackState[1] = mIsKick;
+		mAttackState[2] = mIsSideKick;
+		mAttackState[3] = mIsUpper;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -716,10 +734,10 @@ namespace ya
 
 	void LukeScript::Attacked1Complete()
 	{
-		mIsAttacked1 = false;
-		mIsAttacked2 = false;
-		//mIsAttacked3 = false;
-		mIsAttacked4 = false;
+		//mIsAttacked1 = false;
+		//mIsAttacked2 = false;
+		////mIsAttacked3 = false;
+		//mIsAttacked4 = false;
 
 		//mIsCollidingFirst = 0;
 

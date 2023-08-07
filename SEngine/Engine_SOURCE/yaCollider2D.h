@@ -32,6 +32,8 @@ namespace ya
 		void SetActivation(eColliderActivation activation) { mActivation = activation; }
 		eColliderState GetState() { return mState; }
 		void SetState(eColliderState state) { mState = state; }
+		bool GetIsBody() { return mIsBody; }
+		void SetIsBody(bool isBody) { mIsBody = isBody; }
 
 	private:
 		static UINT mColliderNumber;
@@ -45,5 +47,6 @@ namespace ya
 
 		eColliderActivation mActivation = eColliderActivation::Active;
 		eColliderState mState = eColliderState::NotColliding;
+		bool mIsBody = false;
 	};
 }

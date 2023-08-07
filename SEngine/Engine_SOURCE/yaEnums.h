@@ -154,5 +154,11 @@ namespace ya::enums
 		R_BackStun,
 		L_KnockDown,
 		R_KnockDown,
+
+		L_Downed,
+		R_Downed,
+
+		L_GetUp,
+		R_GetUp,
 	};
 }

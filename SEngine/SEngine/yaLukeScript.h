@@ -197,8 +197,6 @@ namespace ya
 		ePlayerState mPlayerPreState;
 		ePlayerState mPlayerCurState;
 
-		bool mPlayerAttackState[20] = { false, };
-
 		// 플레이어 인식 감지 (단순)
 		const float mDetectionRange = 1.5f;
 		bool mDetected = false;
@@ -261,5 +259,11 @@ namespace ya
 
 		bool mIsFlying = false;
 		bool mIsRaiding = false;
+
+	public:
+		bool mAttackState[10] = { false, };
+
+	private:
+		bool mPlayerAttackState[20] = { false, };
 	};
 }
