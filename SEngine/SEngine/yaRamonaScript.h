@@ -123,6 +123,13 @@ namespace ya
 		void L_super();
 		void R_super();
 
+		void L_stun();
+		void R_stun();
+		void L_backstun();
+		void R_backstun();
+		void L_knockdown();
+		void R_knockdown();
+
 	private:
 		// ¾îºô¸®Æ¼
 		RamonaAbility mAbilty;

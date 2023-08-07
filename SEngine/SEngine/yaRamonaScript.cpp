@@ -165,6 +165,21 @@ namespace ya
 			= Resources::Load<Texture>(L"FireBall", L"..\\Resources\\TEXTURE\\RAMONA\\FireBall.png");
 		at->Create(L"R_FireBall", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(1144.0f / 13.0f, 70.0f), 13);
 		at->Create(L"L_FireBall", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(1144.0f / 13.0f, 70.0f), 13);
+		
+		atlas
+			= Resources::Load<Texture>(L"Stun", L"..\\Resources\\TEXTURE\\RAMONA\\RunWeaponAttack.png");
+		at->Create(L"R_Stun", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(231.0f / 2.0f, 116.0f), 2, Vector2::Zero, 1.0f);
+		at->Create(L"L_Stun", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(231.0f / 2.0f, 116.0f), 2, Vector2::Zero, 1.0f);
+
+		atlas
+			= Resources::Load<Texture>(L"BackStun", L"..\\Resources\\TEXTURE\\RAMONA\\RunWeaponAttack.png");
+		at->Create(L"R_BackStun", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(231.0f / 2.0f, 116.0f), 2, Vector2::Zero, 1.0f);
+		at->Create(L"L_BackStun", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(231.0f / 2.0f, 116.0f), 2, Vector2::Zero, 1.0f);
+
+		atlas
+			= Resources::Load<Texture>(L"KnockDown", L"..\\Resources\\TEXTURE\\RAMONA\\KnockDown.png");
+		at->Create(L"R_KnockDown", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(988.0f / 13.0f, 88.0f), 13);
+		at->Create(L"L_KnockDown", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(988.0f / 13.0f, 88.0f), 13);
 
 		#pragma region Animation Path, Size
 		//std::shared_ptr<Texture> atlas
@@ -659,6 +674,25 @@ namespace ya
 				break;
 			case ePlayerState::L_Super:
 				L_super();
+				break;
+
+			case ePlayerState::R_Stun:
+				R_stun();
+				break;
+			case ePlayerState::L_Stun:
+				L_stun();
+				break;
+			case ePlayerState::R_BackStun:
+				R_backstun();
+				break;
+			case ePlayerState::L_BackStun:
+				L_backstun();
+				break;
+			case ePlayerState::R_KnockDown:
+				R_knockdown();
+				break;
+			case ePlayerState::L_KnockDown:
+				L_knockdown();
 				break;
 			}
 		}
@@ -1923,7 +1957,13 @@ namespace ya
 	}
 	void RamonaScript::OnCollisionStay(Collider2D* other)
 	{
-		int a = 0;
+		if (other->GetOwner()->GetName() == L"Luke")// 이 부분은 GameObject 상속받은 Enemy 만의 고유 이름이나 고유 상태를 확인 하거나 형변환으로 확인할 예정
+		{
+			if (mBodyCd->GetState() == eColliderState::IsColliding)
+			{
+				int a = 0;
+			}
+		}
 	}
 	void RamonaScript::OnCollisionExit(Collider2D* other)
 	{
@@ -2316,5 +2356,35 @@ namespace ya
 
 		Animator* at = this->GetOwner()->GetComponent<Animator>();
 		at->PlayAnimation(L"R_Super", true);
+	}
+	void RamonaScript::L_stun()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_Stun", true);
+	}
+	void RamonaScript::R_stun()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_Stun", true);
+	}
+	void RamonaScript::L_backstun()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_BackStun", true);
+	}
+	void RamonaScript::R_backstun()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_BackStun", true);
+	}
+	void RamonaScript::L_knockdown()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"L_KnockDown", true);
+	}
+	void RamonaScript::R_knockdown()
+	{
+		Animator* at = this->GetOwner()->GetComponent<Animator>();
+		at->PlayAnimation(L"R_KnockDown", true);
 	}
 }

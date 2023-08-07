@@ -147,5 +147,12 @@ namespace ya::enums
 		R_FireBall,
 		L_Super,
 		R_Super,
+
+		L_Stun,
+		R_Stun,
+		L_BackStun,
+		R_BackStun,
+		L_KnockDown,
+		R_KnockDown,
 	};
 }

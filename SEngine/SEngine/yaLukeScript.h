@@ -41,6 +41,9 @@ namespace ya
 			L_GetUp,
 			R_GetUp,
 
+			L_Downed,
+			R_Downed,
+
 			L_Dead,
 			R_Dead,
 
@@ -75,7 +78,7 @@ namespace ya
 		void CombatComplete();
 		void GuardComplete();
 		void Attacked3Complete();
-		void DeadComplete();
+		void DownedComplete();
 		void GetUpComplete();
 
 		// 충돌 함수
@@ -163,6 +166,9 @@ namespace ya
 		void L_getup();
 		void R_getup();
 
+		void L_downed();
+		void R_downed();
+
 		void L_dead();
 		void R_dead();
 
@@ -228,6 +234,7 @@ namespace ya
 
 		// 콜라이더
 		Collider2D* mBodyCd = nullptr;
+		Collider2D* mSkillCd = nullptr;
 
 		// State 변수
 		bool mIsIdle = false;
