@@ -20,6 +20,7 @@ namespace ya
 	}
 	void LukeScript::Initialize()
 	{
+		#pragma region 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +116,9 @@ namespace ya
 		at->Create(L"R_Raiding", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 		at->Create(L"L_Raiding", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 
+		#pragma endregion
+
+		#pragma region 이벤트
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 이벤트 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,20 +155,25 @@ namespace ya
 		at->CompleteEvent(L"L_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
 		at->CompleteEvent(L"R_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
 
+		#pragma endregion
+
+		#pragma region 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
 		mBodyCd->SetIsBody(true);
-
+		
 		mSkillCd = this->GetOwner()->AddComponent<Collider2D>();
 		mSkillCd->SetSize(Vector2(0.2f, 0.3f));
 		mSkillCd->SetCenter(Vector2(0.3f, 0.0f));
 		mSkillCd->SetActivation(eColliderActivation::InActive);
-	
+		
+		#pragma endregion
 
+		#pragma region 초기화
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 초기화 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -186,9 +195,14 @@ namespace ya
 		// 랜덤 함수를 위한 함수 실행
 		rd();// 반환 값 무시된 상태
 
+		#pragma endregion
 	}
 	void LukeScript::Update()
 	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+															// FSM
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		if (mPreviousState != mState)
 		{
 			switch (mState)
@@ -387,8 +401,24 @@ namespace ya
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				if (IsPlayerInCombatRange())
 				{
-					if (mIsAttacked1 == false && mIsAttacked2 == false && mIsAttacked3 == false && mIsAttacked4 == false && mIsDowned == false && mIsGetUp == false)// Combat 조건
+					if (mIsAttacked1 == false && mIsAttacked2 == false && mIsAttacked3 == false && mIsAttacked4 == false && mIsDowned == false && mIsGetUp == false && mIsGuard == false)// Combat 조건
 					{
+						// 처음 감지했을 때만 들어오는 조건문
+						if (mCombated == false)
+						{
+							if (mPlayerPos.x < mPos.x)
+							{
+								ChangeState(eLukeState::L_Idle);
+							}
+							else
+							{
+								ChangeState(eLukeState::R_Idle);
+							}
+
+							// Combat 관련 변수 초기화 
+							mCombatTimer = 2.0f;
+						}
+
 						Combat();
 					}
 				}
@@ -401,7 +431,7 @@ namespace ya
 					mDetected = true;// 플레이어 쪽 방향으로 설정 해주기 위해 처음 Detect 되는 상태로 전환
 					mCombated = false;
 
-					mCombatTimer = 0.0f;
+					//mCombatTimer = 0.0f;
 
 					// 달려오는 경우
 					if (mRandWaitOrRun == 0)
@@ -614,7 +644,7 @@ namespace ya
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-																// 상태 bool 변수 동기화
+														// 상태 bool 변수 동기화
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		// 가드 상태 변수 동기화
@@ -715,7 +745,7 @@ namespace ya
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 스킬 상태 Update
+														// 스킬 상태 Update
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		mAttackState[0] = mIsArm;
@@ -725,7 +755,7 @@ namespace ya
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 이벤트
+														// 이벤트
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void LukeScript::JumpStart()
@@ -734,10 +764,10 @@ namespace ya
 
 	void LukeScript::Attacked1Complete()
 	{
-		//mIsAttacked1 = false;
-		//mIsAttacked2 = false;
-		////mIsAttacked3 = false;
-		//mIsAttacked4 = false;
+		mIsAttacked1 = false;
+		mIsAttacked2 = false;
+		//mIsAttacked3 = false;
+		mIsAttacked4 = false;
 
 		//mIsCollidingFirst = 0;
 
@@ -792,7 +822,7 @@ namespace ya
 		mIsAttacked3 = false;
 		mIsDowned = true;
 
-		if (mPlayerPos.x < mPos.x)
+		if (mDirection == eDirection::L)
 			ChangeState(eLukeState::L_Downed);
 		else
 			ChangeState(eLukeState::R_Downed);
@@ -803,7 +833,7 @@ namespace ya
 		mIsDowned = false;
 		mIsGetUp = true;
 
-		if (mPlayerPos.x < mPos.x)
+		if (mDirection == eDirection::L)
 			ChangeState(eLukeState::L_GetUp);
 		else
 			ChangeState(eLukeState::R_GetUp);
@@ -813,7 +843,7 @@ namespace ya
 	{
 		mIsGetUp = false;
 
-		if (mPlayerPos.x < mPos.x)
+		if (mDirection == eDirection::L)
 			ChangeState(eLukeState::L_Idle);
 		else
 			ChangeState(eLukeState::R_Idle);
@@ -834,7 +864,8 @@ namespace ya
 		{
 			for (int i = 0; i < 17; i++)
 			{
-				mPlayerAttackState[i] = other->GetOwner()->GetComponent<RamonaScript>()->mAttackState[i];
+				//mPlayerAttackState[i] = other->GetOwner()->GetComponent<RamonaScript>()->mAttackState[i];
+				mPlayerAttackState[i] = (other->GetOwner()->GetComponent<RamonaScript>()->GetAttackState())[i];;
 			}
 
 			if (mSkillCd->GetState() == eColliderState::IsColliding)
@@ -860,7 +891,7 @@ namespace ya
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-															// 상태 애니메이션 함수
+														// 동작 내부 함수
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void LukeScript::Combat()
@@ -1034,6 +1065,10 @@ namespace ya
 			}
 		}
 	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+													// 상태 애니메이션 함수
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	void LukeScript::L_idle()
 	{

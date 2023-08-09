@@ -23,6 +23,7 @@ namespace ya
 
 	void RamonaScript::Initialize()
 	{
+		#pragma region 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -440,7 +441,10 @@ namespace ya
 		//at->Create(L"Super", atlas, Vector2(0.0f, 0.0f), Vector2(3913.0f / 31.0f, 126.0f), 31);
 		//at->PlayAnimation(L"Super", true);
 		#pragma endregion
+		
+		#pragma endregion
 
+		#pragma region 이벤트
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		                                                    // 이벤트
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -505,7 +509,9 @@ namespace ya
 		at->CompleteEvent(L"L_GetUp") = std::bind(&RamonaScript::GetUpComplete, this);
 		at->CompleteEvent(L"R_GetUp") = std::bind(&RamonaScript::GetUpComplete, this);
 
+		#pragma endregion
 
+		#pragma region 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -540,10 +546,15 @@ namespace ya
 		mAllCd->SetSize(Vector2(0.35f, 0.25f));
 		mAllCd->SetCenter(Vector2(0.0f, -0.0f));
 		mAllCd->SetActivation(eColliderActivation::InActive);
+#pragma endregion
 }
 
 	void RamonaScript::Update()
 	{
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																	// FSM
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		if (mPreviousState != mState)
 		{
 			Animator* at = this->GetOwner()->GetComponent<Animator>();
@@ -741,7 +752,8 @@ namespace ya
 			}
 		}
 
-		mPreviousState = mState;// 이전 상태 설정
+		mPreviousState = mState;
+		// 이전 상태 설정
 		// 여기 아래에서부터 상태 변화가 진행되어야
 		// 다음번 Update 부분으로 들어올 때, mState의 switch문 조건인
 		// 이전 상태와 현재 상태를 비교해서 다른 경우, case에 따라 작동하게 됨
@@ -768,16 +780,10 @@ namespace ya
 		}
 		else
 		{
-			//std::vector<Collider2D*> comps
-			//	= this->GetOwner()->GetComponents<Collider2D>();
-
-			//mUpperCd = comps[1];
 			mUpperCd->SetCenter(Vector2(0.2f, 0.08f));
 
-			//mLowerCd = comps[2];
 			mLowerCd->SetCenter(Vector2(0.2f, -0.2f));
 
-			//mBothCd = comps[3];
 			mBothCd->SetCenter(Vector2(0.3f, 0.0f));
 
 			mBackCd->SetCenter(Vector2(-0.3f, -0.2f));
@@ -790,12 +796,13 @@ namespace ya
 		Transform* tr = GetOwner()->GetComponent<Transform>();
 		Vector3 pos = tr->GetPosition();
 
-		if (CanChangeState())
+		if (CanChangeState())// 독립성이 부여되어야 하는 상태들은 여기서 걸러짐
 		{
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 																// 좌우 이동
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+			// 좌
 			if (Input::GetKey(eKeyCode::LEFT))// 좌표 지속 이동
 			{
 				mDirection = eDirection::L;
@@ -828,6 +835,7 @@ namespace ya
 					mState = ePlayerState::L_Idle;
 			}
 
+			// 우
 			if (Input::GetKey(eKeyCode::RIGHT))// 좌표 지속 이동
 			{
 				mDirection = eDirection::R;
@@ -858,11 +866,11 @@ namespace ya
 					mState = ePlayerState::R_Idle;
 			}
 
-
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 																// 상하 이동
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+			// 하
 			if (Input::GetKey(eKeyCode::DOWN))
 			{
 				if (NoneAnimationCondition())
@@ -915,6 +923,7 @@ namespace ya
 				}
 			}
 
+			// 상
 			if (Input::GetKey(eKeyCode::UP))
 			{
 				if (NoneAnimationCondition())
@@ -1080,7 +1089,10 @@ namespace ya
 
 				mJumpTime += Time::DeltaTime();// 점프 체공 시간
 
-				if (mJumpTime < mJumpHalfTime)// 좌표 상승 구간
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 점프 상승 구간
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				if (mJumpTime < mJumpHalfTime)
 				{
 					Transform* tr = GetOwner()->GetComponent<Transform>();
 					Vector3 pos = tr->GetPosition();
@@ -1089,7 +1101,7 @@ namespace ya
 
 					if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정 (상승 하는 경우)
 					{
-						mIsRun = true;
+						//mIsRun = true;
 
 						if (mDirection == eDirection::L)
 						{
@@ -1173,7 +1185,10 @@ namespace ya
 					}
 				}
 
-				else// 좌표 하락 구간
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 점프 하락 구간
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				else
 				{
 					Transform* tr = GetOwner()->GetComponent<Transform>();
 					Vector3 pos = tr->GetPosition();
@@ -1216,7 +1231,7 @@ namespace ya
 
 					if (Input::GetKey(eKeyCode::LSHIFT))// 달리기 키를 누른 상태에서 점프는 더 멀리 가도록 조정 (하락하는 경우)
 					{
-						mIsRun = true;
+						//mIsRun = true;
 
 						if (mDirection == eDirection::L)
 						{
@@ -1284,7 +1299,7 @@ namespace ya
 							mState = ePlayerState::R_JumpSlideAttack;
 						}
 					}
-					// JumpSlideAttack: 점프 중 + D
+					// RunJumpAttack: 점프 중 + D
 					if (Input::GetKey(eKeyCode::LSHIFT) && Input::GetKeyDown(eKeyCode::D) && mIsJumpSlideAttack == false && mIsJump == true && mIsDJump == true && CanAttackCondition())
 					{
 						mIsJumpSlideAttack = true;
@@ -1299,6 +1314,10 @@ namespace ya
 						}
 					}
 				}
+
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 더블 점프
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 				if (Input::GetKeyDown(eKeyCode::SPACE) && mJumpTime > 0.01f)// 점프 중 더블 점프가 발동되는 조건
 				{
@@ -1377,10 +1396,13 @@ namespace ya
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-																// 평타
+																	// 평타
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			// 첫번째 공격
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 첫번째 공격
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			if (Input::GetKeyDown(eKeyCode::W) && mIsNormalAttack3 == false && mIsJump == false && mIsDJump == false && CanAttackCondition())// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 			{
 				mIsNormalAttack1 = true;
@@ -1426,6 +1448,10 @@ namespace ya
 				mNormalAttack2Time = 0.0f;
 			}
 
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 두번째 공격 
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 			// 두번째 공격 조건
 			if (Input::GetKeyUp(eKeyCode::W) && mIsNormalAttack1 == true && mIsNormalAttack2 == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 			{
@@ -1448,6 +1474,10 @@ namespace ya
 				}
 
 			}
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+																// 세번째 공격 
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			// 세번째 공격 조건을 위한 시간 측정
 			if (mIsNormalAttack2)
@@ -1487,7 +1517,7 @@ namespace ya
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			// Kick: E
-			if (Input::GetKeyDown(eKeyCode::E) && mIsKickAttack == false && mIsRoundKickAttack == false && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false && CanAttackCondition())// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+			if (mIsRun == false && Input::GetKeyDown(eKeyCode::E) && mIsKickAttack == false && mIsRoundKickAttack == false && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false && CanAttackCondition())// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 			{
 				mIsKickAttack = true;
 
@@ -1507,7 +1537,7 @@ namespace ya
 			}
 
 			// Round Kick: UP + E
-			if (Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::E) && mIsRoundKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+			if (mIsRun == false && Input::GetKey(eKeyCode::UP) && Input::GetKeyDown(eKeyCode::E) && mIsRoundKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 			{
 				mIsKickAttack = false;
 				mIsRoundKickAttack = true;
@@ -1528,7 +1558,7 @@ namespace ya
 			}
 
 			// Behind Kick: DOWN + E
-			if (Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::E) && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
+			if (mIsRun == false && Input::GetKey(eKeyCode::DOWN) && Input::GetKeyDown(eKeyCode::E) && mIsBehindKickAttack == false && mIsJump == false && mIsDJump == false)// 점프와 더블점프 중 키입력은 다른 기술이 나가야 함
 			{
 				mIsKickAttack = false;
 				mIsBehindKickAttack = true;
@@ -1649,7 +1679,7 @@ namespace ya
 			// 점프 중 동작 내 부분에 구현됨
 
 			// RunJumpDownAttack: SHIFT(눌러졌던 상태에서) + 점프 중 + E 
-			// 구현 미정 예정
+			// 구현 미정
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 																// 달리기 중 공격
@@ -1771,6 +1801,7 @@ namespace ya
 			|| mIsWeaponNormalAttack || mIsWeaponDownAttack || mIsWeaponSideAttack || mIsWeaponStabAttack || mIsJumpDownAttack || mIsJumpSlideAttack || mIsRunJumpAttack 
 			|| mIsRunWeaponAttack || mIsRunSlideAttack
 			|| mIsFireBall || mIsSuper
+			|| mIsStun || mIsKnockDown || mIsDowned || mIsGetUp || mIsBackStun
 			)
 			// 가드가 붙은 스킬아냐 아니냐로 구분을 해서 적용을 할지 고민중
 			// 가드를 하고 있다가 바로 스킬을 쓴다면, 계속 무적이고 플레이어의 공격상태와 겹치게 되면 상황이 애매해짐 
@@ -1848,6 +1879,13 @@ namespace ya
 				// 추후 충돌 조건은 따로 정리할 예정
 				// 물론, Downed 상태에서 또 공격을 당했을 때, DownStun을 발동해야하는 경우 예외적으로 설정해주어야 함
 			{
+				// 적 공격 스킬 참고 
+				// mAttackState[0] = mIsArm;
+				// mAttackState[1] = mIsKick;
+				// mAttackState[2] = mIsSideKick;
+				// mAttackState[3] = mIsUpper;
+
+				// 적의 공격 스킬에 따라 해당하는 상태 전환 
 				if (mEnemyAttackState[3])
 				{
 					if (mDirection == eDirection::L)
@@ -1939,6 +1977,64 @@ namespace ya
 		else
 		{
 			mIsBackStun = false;
+		}
+
+		// 공격 변수들
+		//...
+		if (mState == ePlayerState::L_RunSlideAttack || mState == ePlayerState::R_RunSlideAttack)
+		{
+			mIsRunSlideAttack = true;
+		}
+		else
+		{
+			mIsRunSlideAttack = false;
+		}
+
+		if (mState == ePlayerState::L_NormalAttack1 || mState == ePlayerState::R_NormalAttack1)
+		{
+			mIsNormalAttack1 = true;
+		}
+		else
+		{
+			mIsNormalAttack1 = false;
+		}
+		if (mState == ePlayerState::L_NormalAttack2 || mState == ePlayerState::R_NormalAttack2)
+		{
+			mIsNormalAttack2 = true;
+		}
+		else
+		{
+			mIsNormalAttack2 = false;
+		}
+		if (mState == ePlayerState::L_NormalAttack3 || mState == ePlayerState::R_NormalAttack3)
+		{
+			mIsNormalAttack3 = true;
+		}
+		else
+		{
+			mIsNormalAttack3 = false;
+		}
+
+		// 공격 변수들 강제 초기화
+		if (mState == ePlayerState::L_Idle || mState == ePlayerState::R_Idle || mState == ePlayerState::L_Run|| mState == ePlayerState::R_Run)
+		{
+			mIsNormalAttack1 = false;
+			mIsNormalAttack2 = false;
+			mIsNormalAttack3 = false;
+			mIsKickAttack = false;
+			mIsRoundKickAttack = false;
+			mIsBehindKickAttack = false;
+			mIsWeaponNormalAttack = false;
+			mIsWeaponDownAttack = false;
+			mIsWeaponSideAttack = false;
+			mIsWeaponStabAttack = false;
+			mIsJumpDownAttack = false;
+			mIsJumpSlideAttack = false;
+			mIsRunJumpAttack = false;
+			mIsRunWeaponAttack = false;
+			mIsRunSlideAttack = false;
+			mIsFireBall = false;
+			mIsSuper = false;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2101,11 +2197,6 @@ namespace ya
 	{
 		mIsSuper = false;
 
-		//Transform* tr = this->GetOwner()->GetComponent<Transform>();
-		//Vector3 pos = tr->GetPosition();
-		//pos.y -= 1.0f;
-		//tr->SetPosition(pos);
-
 		if (mDirection == eDirection::L)
 		{
 			mState = ePlayerState::L_Idle;
@@ -2176,9 +2267,15 @@ namespace ya
 															// 충돌
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	void RamonaScript::OnCollisionEnter(Collider2D* other)
+	void RamonaScript::OnCollisionEnter(Collider2D* other)// Enter가 정상 작동하는지 재확인 요망
 	{
-		int a = 0;
+		if (other->GetOwner()->GetName() == L"Luke")
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				mEnemyAttackState[i] = (other->GetOwner()->GetComponent<LukeScript>()->GetAttackState())[i];
+			}
+		}
 	}
 	void RamonaScript::OnCollisionStay(Collider2D* other)
 	{
@@ -2186,7 +2283,7 @@ namespace ya
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				mEnemyAttackState[i] = other->GetOwner()->GetComponent<LukeScript>()->mAttackState[i];
+				mEnemyAttackState[i] = (other->GetOwner()->GetComponent<LukeScript>()->GetAttackState())[i];
 			}
 
 			if (mBodyCd->GetState() == eColliderState::IsColliding)

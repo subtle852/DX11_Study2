@@ -21,6 +21,7 @@ namespace ya
 		virtual void Initialize() override;
 		virtual void Update() override;
 
+		// private 변수관련 함수
 		eDirection GetDirection() { return mDirection; }
 		ePlayerState GetState() { return mState; }
 
@@ -155,14 +156,16 @@ namespace ya
 		eDirection mDirection = eDirection::R;
 
 		//// State 변수
-
+		
+		// Walk
 		float mWalkSpeed = 0.7f;
 
+		// Run
 		bool mIsRun = false;
 		float mRunSpeed1 = 0.4f;// 좌우 이동
 		float mRunSpeed2 = 0.3f;// 상하 이동
 
-		// 점프 관련 변수
+		// Jump
 		bool mIsJump = false;
 		float mJumpTime = 0.0f;// 점프 체공 시간 측정
 		float mJumpStartPosY = -100.0f;// 점프 시작 위치 (불가능한 -100.0f로 초기화)
@@ -171,11 +174,11 @@ namespace ya
 		float mJumpHeight = 1.8f;// 점프 높이
 		float mDJumpHeight = 2.3f;// 더블점프 높이
 
+		// Guard, Evade
 		bool mIsGuard = false;
-
 		bool mIsEvade = false;
 
-		// 콤보 공격 변수
+		// 콤보 공격
 		bool mIsNormalAttack1 = false;
 		bool mIsNormalAttack2 = false;
 		bool mIsNormalAttack3 = false;
@@ -183,6 +186,7 @@ namespace ya
 		bool mCanNormalAttack3 = false;
 		float mNormalAttack2Time = 0.0f;// NormalAttack2 실행 시간 측정
 
+		// 콤보 공격 제외한 나머지 공격
 		bool mIsKickAttack = false;
 		bool mIsRoundKickAttack = false;
 		bool mIsBehindKickAttack = false;
@@ -202,6 +206,7 @@ namespace ya
 		bool mIsFireBall = false;
 		bool mIsSuper = false;
 
+		// Under Attack
 		bool mIsStun = false;
 		bool mIsKnockDown = false;
 		bool mIsDowned = false;
@@ -216,13 +221,18 @@ namespace ya
 		Collider2D* mBackCd = nullptr;
 		Collider2D* mAllCd = nullptr;
 
-	public:
+		// 어떤 공격 스킬을 사용중인지 담고 있는 bool 배열
 		bool mAttackState[20] = { false, };
 
-		bool mIsBodyCollider = false;
+		// mAttackState 배열 시작 주소를 보내주는 함수
+	public:
+		const bool* GetAttackState() { return &mAttackState[0]; }
 
 	private:
+		// 적 공격 스킬 상태를 담고 있는 bool 배열
 		bool mEnemyAttackState[10] = { false, };
+
+		// 충돌이 처음인지 확인하는 변수
 		int mIsCollidingFirst = 0;
 	};
 }

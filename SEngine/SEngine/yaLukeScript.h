@@ -214,8 +214,8 @@ namespace ya
 		const float mMoveInterval = 2.0f; // 2초마다 랜덤으로 방향 변경
 
 		// AI 전투 변경을 위한 타이머 변수
-		float mCombatTimer = 0.0f;
-		float mCombatInterval = 3.0f;
+		float mCombatTimer = 2.0f;
+		float mCombatInterval = 4.0f;
 		
 		// AI 탐지 거리내에 플레이어 발견 시, 대기 or 달리기 관련 변수
 		int mRandWaitOrRun = -100;
@@ -260,10 +260,15 @@ namespace ya
 		bool mIsFlying = false;
 		bool mIsRaiding = false;
 
-	public:
+		// 어떤 공격 스킬을 사용중인지 담고 있는 bool 배열
 		bool mAttackState[10] = { false, };
 
+	public:
+		// mAttackState 배열 시작 주소를 보내주는 함수
+		const bool* GetAttackState() { return &mAttackState[0]; }
+
 	private:
+		// 플레이어 공격 스킬 상태를 담고 있는 bool 배열
 		bool mPlayerAttackState[20] = { false, };
 	};
 }
