@@ -51,5 +51,6 @@ namespace ya
 		static ePlayerState mRamonaState;
 
 		GameObject* mLuke = nullptr;
+		GameObject* mLuke2 = nullptr;
 	};
 }

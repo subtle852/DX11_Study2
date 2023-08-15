@@ -29,6 +29,12 @@ namespace ya
 	void Collider2D::Update()
 	{
 		// Collider가 붙은 오브젝트의 eLayerType이 UI인 경우 같이 이동하도록 만드는 것에대하여
+
+		// 충돌하지 않을 때, 충돌 대상의 OtherPosition 불가능한 값으로 초기화 
+		if (this->GetState() == eColliderState::NotColliding)
+		{
+			mOtherPosition = Vector3(9999.0f, 9999.0f, 9999.0f);
+		}
 	}
 
 	void Collider2D::LateUpdate()

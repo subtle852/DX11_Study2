@@ -34,6 +34,11 @@ namespace ya
 		void SetState(eColliderState state) { mState = state; }
 		bool GetIsBody() { return mIsBody; }
 		void SetIsBody(bool isBody) { mIsBody = isBody; }
+		bool GetCanGuard() { return mCanGuard; }
+		void SetCanGuard(bool canGuard) { mCanGuard = canGuard; }
+
+		Vector3 GetOtherPos() { return mOtherPosition; }
+		void SetOtherPos(Vector3 otherPos) { mOtherPosition = otherPos; }
 
 	private:
 		static UINT mColliderNumber;
@@ -48,5 +53,7 @@ namespace ya
 		eColliderActivation mActivation = eColliderActivation::Active;
 		eColliderState mState = eColliderState::NotColliding;
 		bool mIsBody = false;
+		bool mCanGuard = false;
+		Vector3 mOtherPosition = Vector3(9999.0f, 9999.0f, 9999.0f);
 	};
 }

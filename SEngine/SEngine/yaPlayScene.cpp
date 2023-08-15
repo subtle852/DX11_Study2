@@ -147,6 +147,52 @@ namespace ya
 			mLuke->AddComponent<LukeScript>();
 		}
 
+		//{
+		//	mLuke2
+		//		= object::Instantiate<GameObject>(Vector3(1.5f, 1.0f, 40.f)
+		//			, Vector3::One * 3
+		//			, eLayerType::Enemy);
+		//	mLuke2->SetName(L"Luke2");
+
+		//	//Collider2D* cd2 = mLuke->AddComponent<Collider2D>();
+		//	//cd2->SetSize(Vector2(0.15f, 0.15f));
+
+		//	MeshRenderer* mr = mLuke2->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
+
+		//	std::shared_ptr<Texture> atlas
+		//		= Resources::Load<Texture>(L"Basic_Luke_Idle2", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_IDLE.png");
+		//	Animator* at = mLuke2->AddComponent<Animator>();
+		//	at->Create(L"R_Basic_Luke_Idle2", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(923.0f / 8.0f, 116.0f), 8);
+		//	at->PlayAnimation(L"R_Basic_Luke_Idle2", true);
+
+		//	mLuke2->AddComponent<LukeScript>();
+		//}
+
+		//{
+		//	GameObject* mLuke3
+		//		= object::Instantiate<GameObject>(Vector3(1.7f, -0.5f, 40.f)
+		//			, Vector3::One * 3
+		//			, eLayerType::Enemy);
+		//	mLuke3->SetName(L"Luke2");
+
+		//	//Collider2D* cd2 = mLuke->AddComponent<Collider2D>();
+		//	//cd2->SetSize(Vector2(0.15f, 0.15f));
+
+		//	MeshRenderer* mr = mLuke3->AddComponent<MeshRenderer>();
+		//	mr->SetMesh(Resources::Find<Mesh>(L"RectMesh"));
+		//	mr->SetMaterial(Resources::Find<Material>(L"SpriteAnimationMaterial"));
+
+		//	std::shared_ptr<Texture> atlas
+		//		= Resources::Load<Texture>(L"Basic_Luke_Idle3", L"..\\Resources\\TEXTURE\\STAGE01\\ENEMY\\LUKE\\LUKE_IDLE.png");
+		//	Animator* at = mLuke3->AddComponent<Animator>();
+		//	at->Create(L"R_Basic_Luke_Idle3", atlas, enums::eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(923.0f / 8.0f, 116.0f), 8);
+		//	at->PlayAnimation(L"R_Basic_Luke_Idle3", true);
+
+		//	mLuke3->AddComponent<LukeScript>();
+		//}
+
 		// Light
 		{
 			GameObject* light = new GameObject();

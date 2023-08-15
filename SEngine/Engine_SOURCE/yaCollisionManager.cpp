@@ -147,22 +147,28 @@ namespace ya
 			if (iter->second == false)
 			{
 				//최초 충돌
-				left->OnCollisionEnter(right);
-				right->OnCollisionEnter(left);
-
 				left->SetState(eColliderState::IsColliding);
 				right->SetState(eColliderState::IsColliding);
+
+				left->SetOtherPos(right->GetPosition());
+				right->SetOtherPos(left->GetPosition());
+
+				left->OnCollisionEnter(right);
+				right->OnCollisionEnter(left);
 
 				iter->second = true;
 			}
 			else
 			{
 				// 충돌 중
-				left->OnCollisionStay(right);
-				right->OnCollisionStay(left);
-
 				left->SetState(eColliderState::IsColliding);
 				right->SetState(eColliderState::IsColliding);
+
+				left->SetOtherPos(right->GetPosition());
+				right->SetOtherPos(left->GetPosition());
+
+				left->OnCollisionStay(right);
+				right->OnCollisionStay(left);
 
 				iter->second = true;
 			}

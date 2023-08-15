@@ -1347,7 +1347,7 @@ namespace ya
 				if (mState == ePlayerState::L_Idle || mState == ePlayerState::R_Idle || mState == ePlayerState::L_Walk || mState == ePlayerState::R_Walk)
 				{
 					mIsGuard = true;
-					mBodyCd->SetActivation(eColliderActivation::InActive);
+					//mBodyCd->SetActivation(eColliderActivation::InActive);
 
 					if (mDirection == eDirection::L)
 					{
@@ -1795,22 +1795,34 @@ namespace ya
 		//	mIsRunWeaponAttack B || mIsRunSlideAttack L ||
 		//	mIsFireBall B || mIsSuper A
 
-		// mBodyCd 활성화 비활성화 조건
-		if (mState == ePlayerState::L_Guard || mState == ePlayerState::R_Guard
-			|| mIsEvade || mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3 || mIsKickAttack || mIsRoundKickAttack || mIsBehindKickAttack
-			|| mIsWeaponNormalAttack || mIsWeaponDownAttack || mIsWeaponSideAttack || mIsWeaponStabAttack || mIsJumpDownAttack || mIsJumpSlideAttack || mIsRunJumpAttack 
-			|| mIsRunWeaponAttack || mIsRunSlideAttack
-			|| mIsFireBall || mIsSuper
-			|| mIsStun || mIsKnockDown || mIsDowned || mIsGetUp || mIsBackStun
-			)
-			// 가드가 붙은 스킬아냐 아니냐로 구분을 해서 적용을 할지 고민중
-			// 가드를 하고 있다가 바로 스킬을 쓴다면, 계속 무적이고 플레이어의 공격상태와 겹치게 되면 상황이 애매해짐 
+		//// mBodyCd 활성화 비활성화 조건
+		//if (//mState == ePlayerState::L_Guard || mState == ePlayerState::R_Guard
+		//	 mIsEvade || mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3 || mIsKickAttack || mIsRoundKickAttack || mIsBehindKickAttack
+		//	|| mIsWeaponNormalAttack || mIsWeaponDownAttack || mIsWeaponSideAttack || mIsWeaponStabAttack || mIsJumpDownAttack || mIsJumpSlideAttack || mIsRunJumpAttack 
+		//	|| mIsRunWeaponAttack || mIsRunSlideAttack
+		//	|| mIsFireBall || mIsSuper
+		//	|| mIsStun || mIsKnockDown || mIsDowned || mIsGetUp || mIsBackStun
+		//	)
+		//	// 가드가 붙은 스킬아냐 아니냐로 구분을 해서 적용을 할지 고민중
+		//	// 가드를 하고 있다가 바로 스킬을 쓴다면, 계속 무적이고 플레이어의 공격상태와 겹치게 되면 상황이 애매해짐 
+		//{
+		//	mBodyCd->SetActivation(eColliderActivation::InActive);
+		//}
+		//else if//mState == ePlayerState::L_Guard || mState == ePlayerState::R_Guard
+		//	(! (mIsEvade || mIsNormalAttack1 || mIsNormalAttack2 || mIsNormalAttack3 || mIsKickAttack || mIsRoundKickAttack || mIsBehindKickAttack
+		//	|| mIsWeaponNormalAttack || mIsWeaponDownAttack || mIsWeaponSideAttack || mIsWeaponStabAttack || mIsJumpDownAttack || mIsJumpSlideAttack || mIsRunJumpAttack
+		//	|| mIsRunWeaponAttack || mIsRunSlideAttack
+		//	|| mIsFireBall || mIsSuper
+		//	|| mIsStun || mIsKnockDown || mIsDowned || mIsGetUp || mIsBackStun
+		//	))
+		//{
+		//	mBodyCd->SetActivation(eColliderActivation::Active);
+		//}
+
+		
+		if(! (mState == ePlayerState::L_Guard || mState == ePlayerState::R_Guard))// 가드를 사용하지 않는 상태는 false로 초기화
 		{
-			mBodyCd->SetActivation(eColliderActivation::InActive);
-		}
-		else
-		{
-			mBodyCd->SetActivation(eColliderActivation::Active);
+			mBodyCd->SetCanGuard(false);
 		}
 
 		// Upper
@@ -1870,55 +1882,11 @@ namespace ya
 															// 충돌
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		if (mBodyCd->GetState() == eColliderState::IsColliding)
-		{
-			if (mIsCollidingFirst == 0
-				&& mIsStun == false && mIsKnockDown == false && mIsDowned == false && mIsGetUp == false && mIsBackStun == false)
-				// 처음 충돌
-				// + 충돌 조건(다운되어있는데 갑자기 공격을 받았다고 해서 Guard나 Idle로 바뀌지 않기 위한 조건)
-				// 추후 충돌 조건은 따로 정리할 예정
-				// 물론, Downed 상태에서 또 공격을 당했을 때, DownStun을 발동해야하는 경우 예외적으로 설정해주어야 함
-			{
-				// 적 공격 스킬 참고 
-				// mAttackState[0] = mIsArm;
-				// mAttackState[1] = mIsKick;
-				// mAttackState[2] = mIsSideKick;
-				// mAttackState[3] = mIsUpper;
-
-				// 적의 공격 스킬에 따라 해당하는 상태 전환 
-				if (mEnemyAttackState[3])
-				{
-					if (mDirection == eDirection::L)
-					{
-						mState = ePlayerState::L_KnockDown;
-					}
-					else
-					{
-						mState = ePlayerState::R_KnockDown;
-					}
-				}
-				else
-				{
-					if (mDirection == eDirection::L)
-					{
-						mState = ePlayerState::L_Stun;
-					}
-					else
-					{
-						mState = ePlayerState::R_Stun;
-					}
-				}
-
-				mIsCollidingFirst == 1;
-			}
-		}
-
-		// 충돌하지 않는 상태일 때
-		if (mBodyCd->GetState() == eColliderState::NotColliding)
+		
+		if (mState == ePlayerState::L_Idle || mState == ePlayerState::R_Idle || mState == ePlayerState::L_Run || mState == ePlayerState::R_Run)
 		{
 			mIsCollidingFirst = 0;
 		}
-
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 																// 상태 bool 변수 동기화
@@ -2269,7 +2237,7 @@ namespace ya
 
 	void RamonaScript::OnCollisionEnter(Collider2D* other)// Enter가 정상 작동하는지 재확인 요망
 	{
-		if (other->GetOwner()->GetName() == L"Luke")
+		if (other->GetOwner()->GetName() == L"Luke" || other->GetOwner()->GetName() == L"Luke2")
 		{
 			for (int i = 0; i < 4; i++)
 			{
@@ -2279,14 +2247,100 @@ namespace ya
 	}
 	void RamonaScript::OnCollisionStay(Collider2D* other)
 	{
-		if (other->GetOwner()->GetName() == L"Luke")// 이 부분은 GameObject 상속받은 Enemy 만의 고유 이름이나 고유 상태를 확인 하거나 형변환으로 확인할 예정
+		if (other->GetOwner()->GetName() == L"Luke" || other->GetOwner()->GetName() == L"Luke2")// 이 부분은 GameObject 상속받은 Enemy 만의 고유 이름이나 고유 상태를 확인 하거나 형변환으로 확인할 예정
 		{
-			for (int i = 0; i < 4; i++)
+			if (mBodyCd->GetState() == eColliderState::IsColliding)
 			{
-				mEnemyAttackState[i] = (other->GetOwner()->GetComponent<LukeScript>()->GetAttackState())[i];
+				// 공격 당하는 스킬이 무엇인지에 대한 업데이트
+				for (int i = 0; i < 4; i++)
+				{
+					mEnemyAttackState[i] = (other->GetOwner()->GetComponent<LukeScript>()->GetAttackState())[i];
+				}
+
+				// 가드 상태
+				if (mState == ePlayerState::L_Guard || mState == ePlayerState::R_Guard)
+				{
+					// Guard 상태일 때, InActive로 바꾸는 것이 아니라
+					// Guard 상태도 상시 Active 상태로 바꾸고
+					// mCanGuard로 판단해서 
+					// mCanGuard가 true이면 맞는 동작, 상태, 애니를 실행 안하도록 아래 충돌 부분에 구현하면 됨
+					mBodyCd->SetActivation(eColliderActivation::Active);
+
+					// 충돌을 한 경우
+					if (mBodyCd->GetPosition().x < mBodyCd->GetOtherPos().x)// 바디 - 상대스킬
+					{
+						if (mDirection == eDirection::R)// 막을 수 있음
+						{
+							mBodyCd->SetCanGuard(true);
+						}
+						else// 막을 수 없음
+						{
+							mBodyCd->SetCanGuard(false);
+						}
+					}
+					else// 상대 스킬 - 바디
+					{
+						if (mDirection == eDirection::R)// 막을 수 없음
+						{
+							mBodyCd->SetCanGuard(false);
+						}
+						else// 막을 수 있음
+						{
+							mBodyCd->SetCanGuard(true);
+						}
+					}
+				}
+				else// 가드 상태가 아니면 false로 (이 부분은 Update에서도 해주고 있음)
+				{
+					mBodyCd->SetCanGuard(false);
+				}
+
+				// 공격 당하는 모션
+				if (mBodyCd->GetCanGuard() == false)// 가드로 스킬을 막는 경우가 아니라면, 공격 당하는 상태로 전환
+				{
+					if (mIsCollidingFirst == 0
+						&& mIsStun == false && mIsKnockDown == false && mIsDowned == false && mIsGetUp == false && mIsBackStun == false)
+						// 처음 충돌
+						// + 충돌 조건(다운되어있는데 갑자기 공격을 받았다고 해서 Guard나 Idle로 바뀌지 않기 위한 조건)
+						// 추후 충돌 조건은 따로 정리할 예정
+						// 물론, Downed 상태에서 또 공격을 당했을 때, DownStun을 발동해야하는 경우 예외적으로 설정해주어야 함
+					{
+						// 적 공격 스킬 참고 
+						// mAttackState[0] = mIsArm;
+						// mAttackState[1] = mIsKick;
+						// mAttackState[2] = mIsSideKick;
+						// mAttackState[3] = mIsUpper;
+
+						// 적의 공격 스킬에 따라 해당하는 상태 전환 
+						if (mEnemyAttackState[3])
+						{
+							if (mDirection == eDirection::L)
+							{
+								mState = ePlayerState::L_KnockDown;
+							}
+							else
+							{
+								mState = ePlayerState::R_KnockDown;
+							}
+						}
+						else
+						{
+							if (mDirection == eDirection::L)
+							{
+								mState = ePlayerState::L_Stun;
+							}
+							else
+							{
+								mState = ePlayerState::R_Stun;
+							}
+						}
+
+						mIsCollidingFirst == 1;
+					}
+				}
 			}
 
-			if (mBodyCd->GetState() == eColliderState::IsColliding)
+			if (mUpperCd->GetState() == eColliderState::IsColliding)
 			{
 				int a = 0;
 			}

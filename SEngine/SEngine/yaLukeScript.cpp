@@ -440,28 +440,40 @@ namespace ya
 						// Combat에서 공격 스킬이 나가는 도중에
 						// 플레이어가 전투거리에서 나갈 때,
 						// 해당 스킬은 마저 실행하고 달려가야 하기 때문에 아래와 같은 조건문이 필요
-						if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
-						{
-							mDirection = eDirection::L;
-							ChangeState(eLukeState::L_Run);
 
-							mDirectionInt = -1;
-							Transform* tr = this->GetOwner()->GetComponent<Transform>();
-							Vector3 pos = tr->GetPosition();
-							pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
-							tr->SetPosition(pos);
-						}
-						else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
+						if (fabs(mPlayerPos.x - mPos.x) < 0.05f)
 						{
-							mDirection = eDirection::R;
-							ChangeState(eLukeState::R_Run);
-
-							mDirectionInt = +1;
-							Transform* tr = this->GetOwner()->GetComponent<Transform>();
-							Vector3 pos = tr->GetPosition();
-							pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
-							tr->SetPosition(pos);
+							if (mDirection == eDirection::L)
+								ChangeState(eLukeState::L_Idle);
+							else
+								ChangeState(eLukeState::R_Idle);
 						}
+						else
+						{
+							if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
+							{
+								mDirection = eDirection::L;
+								ChangeState(eLukeState::L_Run);
+
+								mDirectionInt = -1;
+								Transform* tr = this->GetOwner()->GetComponent<Transform>();
+								Vector3 pos = tr->GetPosition();
+								pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
+								tr->SetPosition(pos);
+							}
+							else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
+							{
+								mDirection = eDirection::R;
+								ChangeState(eLukeState::R_Run);
+
+								mDirectionInt = +1;
+								Transform* tr = this->GetOwner()->GetComponent<Transform>();
+								Vector3 pos = tr->GetPosition();
+								pos.x += mDirectionInt * mRunSpeed * Time::DeltaTime();
+								tr->SetPosition(pos);
+							}
+						}
+
 					}
 
 					// 대기하는 경우
