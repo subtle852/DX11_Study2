@@ -221,6 +221,8 @@ namespace ya
 		Collider2D* mBackCd = nullptr;
 		Collider2D* mAllCd = nullptr;
 
+		GameObject* mgb = nullptr;
+
 		// 어떤 공격 스킬을 사용중인지 담고 있는 bool 배열
 		bool mAttackState[20] = { false, };
 

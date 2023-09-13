@@ -57,6 +57,9 @@
     <ClCompile Include="yaTitle02Scene.cpp">
       <Filter>Contents\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="yaBoss01Script.cpp">
+      <Filter>Contents\Script\BOSS\STAGE01</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -117,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="yaTitle02Scene.h">
       <Filter>Contents\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="yaBoss01Script.h">
+      <Filter>Contents\Script\BOSS\STAGE01</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +191,9 @@
     </Filter>
     <Filter Include="Contents\Script\ENEMY\STAGE01">
       <UniqueIdentifier>{ea0899f5-542c-4d09-868c-1af60bd39691}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Script\BOSS\STAGE01">
+      <UniqueIdentifier>{41a8e3d9-a700-4630-9644-ba96a86c9599}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

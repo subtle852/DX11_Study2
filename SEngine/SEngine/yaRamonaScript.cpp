@@ -872,7 +872,7 @@ namespace ya
 
 			// 하
 			if (Input::GetKey(eKeyCode::DOWN))
-			{
+			{z
 				if (NoneAnimationCondition())
 				{
 					if (mDirection == eDirection::L)
@@ -2247,7 +2247,7 @@ namespace ya
 	}
 	void RamonaScript::OnCollisionStay(Collider2D* other)
 	{
-		if (other->GetOwner()->GetName() == L"Luke" || other->GetOwner()->GetName() == L"Luke2")// 이 부분은 GameObject 상속받은 Enemy 만의 고유 이름이나 고유 상태를 확인 하거나 형변환으로 확인할 예정
+		if (other->GetOwner()->GetName() == L"Luke" || other->GetOwner()->GetName() == L"Luke2" || other->GetOwner()->GetName() == L"Luke3")// 이 부분은 GameObject 상속받은 Enemy 만의 고유 이름이나 고유 상태를 확인 하거나 형변환으로 확인할 예정
 		{
 			if (mBodyCd->GetState() == eColliderState::IsColliding)
 			{
@@ -2382,6 +2382,7 @@ namespace ya
 				|| mIsKickAttack == true || mIsRoundKickAttack == true || mIsBehindKickAttack == true
 				|| mIsWeaponNormalAttack == true || mIsWeaponDownAttack == true || mIsWeaponSideAttack == true || mIsWeaponStabAttack == true
 				|| mIsFireBall == true
+				|| mIsStun || mIsKnockDown || mIsDowned || mIsGetUp || mIsBackStun
 			)
 		{
 			return false;

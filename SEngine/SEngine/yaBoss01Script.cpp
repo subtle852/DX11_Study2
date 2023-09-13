@@ -1,4 +1,4 @@
-#include "yaLukeScript.h"
+#include "yaBoss01Script.h"
 #include "yaCameraScript.h"
 #include "yaTransform.h"
 #include "yaGameObject.h"
@@ -12,15 +12,15 @@
 
 namespace ya
 {
-	LukeScript::LukeScript()
+	Boss01Script::Boss01Script()
 	{
 	}
-	LukeScript::~LukeScript()
+	Boss01Script::~Boss01Script()
 	{
 	}
-	void LukeScript::Initialize()
+	void Boss01Script::Initialize()
 	{
-		#pragma region 애니메이션
+#pragma region 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 애니메이션
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,88 +116,47 @@ namespace ya
 		at->Create(L"R_Raiding", atlas, eAnimationType::Front, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 		at->Create(L"L_Raiding", atlas, eAnimationType::Back, Vector2(0.0f, 0.0f), Vector2(462.0f / 4.0f, 116.0f), 4);
 
-		#pragma endregion
+#pragma endregion
 
-		#pragma region 이벤트
+#pragma region 이벤트
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 이벤트 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		at = GetOwner()->GetComponent<Animator>();
 
-		at->CompleteEvent(L"L_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
-		at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
-		at->CompleteEvent(L"L_Attacked2") = std::bind(&LukeScript::Attacked1Complete, this);
-		at->CompleteEvent(L"R_Attacked2") = std::bind(&LukeScript::Attacked1Complete, this);
-		//at->CompleteEvent(L"L_Attacked3") = std::bind(&LukeScript::Attacked1Complete, this);
-		//at->CompleteEvent(L"R_Attacked3") = std::bind(&LukeScript::Attacked1Complete, this);
-		at->CompleteEvent(L"L_Attacked4") = std::bind(&LukeScript::Attacked1Complete, this);
-		at->CompleteEvent(L"R_Attacked4") = std::bind(&LukeScript::Attacked1Complete, this);
+		//at->CompleteEvent(L"L_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
+		//at->CompleteEvent(L"R_Attacked1") = std::bind(&LukeScript::Attacked1Complete, this);
 
-		at->CompleteEvent(L"L_ArmAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_ArmAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"L_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_KickAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"L_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_SideKickAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"L_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
-		at->CompleteEvent(L"R_UpperAttack") = std::bind(&LukeScript::CombatComplete, this);
+#pragma endregion
 
-		at->CompleteEvent(L"L_Guard") = std::bind(&LukeScript::GuardComplete, this);
-		at->CompleteEvent(L"R_Guard") = std::bind(&LukeScript::GuardComplete, this);
-
-		at->CompleteEvent(L"L_Attacked3") = std::bind(&LukeScript::Attacked3Complete, this);
-		at->CompleteEvent(L"R_Attacked3") = std::bind(&LukeScript::Attacked3Complete, this);
-
-		at->CompleteEvent(L"L_Downed") = std::bind(&LukeScript::DownedComplete, this);
-		at->CompleteEvent(L"R_Downed") = std::bind(&LukeScript::DownedComplete, this);
-
-		at->CompleteEvent(L"L_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
-		at->CompleteEvent(L"R_GetUp") = std::bind(&LukeScript::GetUpComplete, this);
-
-		#pragma endregion
-
-		#pragma region 콜라이더
+#pragma region 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 콜라이더
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
+
 		mBodyCd = this->GetOwner()->AddComponent<Collider2D>();
 		mBodyCd->SetSize(Vector2(0.15f, 0.15f));
 		mBodyCd->SetIsBody(true);
-		
+
 		mSkillCd = this->GetOwner()->AddComponent<Collider2D>();
 		mSkillCd->SetSize(Vector2(0.2f, 0.3f));
 		mSkillCd->SetCenter(Vector2(0.3f, 0.0f));
 		mSkillCd->SetActivation(eColliderActivation::InActive);
-		
-		#pragma endregion
 
-		#pragma region 초기화
+#pragma endregion
+
+#pragma region 초기화
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// 초기화 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		mMoveTimer = 0.0f;
-
-		// 처음 시작하는 방향 랜덤
-		if (rand() % 2 == 0)
-		{
-			mDirection = eDirection::L;
-			mDirectionInt = -1;
-		}
-		else
-		{
-			mDirection = eDirection::R;
-			mDirectionInt = +1;
-		}
-
 		// 랜덤 함수를 위한 함수 실행
 		rd();// 반환 값 무시된 상태
 
-		#pragma endregion
+#pragma endregion
 	}
-	void LukeScript::Update()
+	void Boss01Script::Update()
 	{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 															// FSM
@@ -207,123 +166,179 @@ namespace ya
 		{
 			switch (mState)
 			{
-			case eLukeState::L_Idle:
+			case Boss01Script::L_Idle:
 				L_idle();
 				break;
-			case eLukeState::R_Idle:
+			case Boss01Script::R_Idle:
 				R_idle();
 				break;
 
-			case eLukeState::L_Angry:
-				L_angry();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Angry:
-				R_angry();
-				break;
-
-			case eLukeState::L_Walk:
-				L_walk();
-				break;
-			case eLukeState::R_Walk:
-				R_walk();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
-			case eLukeState::L_Run:
-				L_run();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Run:
-				R_run();
-				break;
-
-			case eLukeState::L_ArmAttack:
-				L_armattack();
-				break;
-			case eLukeState::R_ArmAttack:
-				R_armattack();
-				break;
-			case eLukeState::L_KickAttack:
-				L_kickattack();
-				break;
-			case eLukeState::R_KickAttack:
-				R_kickattack();
-				break;
-			case eLukeState::L_SideKickAttack:
-				L_sidekickattack();
-				break;
-			case eLukeState::R_SideKickAttack:
-				R_sidekickattack();
-				break;
-			case eLukeState::L_UpperAttack:
-				L_upperattack();
-				break;
-			case eLukeState::R_UpperAttack:
-				R_upperattack();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
-			case eLukeState::L_Guard:
-				L_guard();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Guard:
-				R_guard();
-				break;
-
-			case eLukeState::L_Attacked1:
-				L_attacked1();
-				break;
-			case eLukeState::R_Attacked1:
-				R_attacked1();
-				break;
-			case eLukeState::L_Attacked2:
-				L_attacked2();
-				break;
-			case eLukeState::R_Attacked2:
-				R_attacked2();
-				break;
-			case eLukeState::L_Attacked3:
-				L_attacked3();
-				break;
-			case eLukeState::R_Attacked3:
-				R_attacked3();
-				break;
-			case eLukeState::L_Attacked4:
-				L_attacked4();
-				break;
-			case eLukeState::R_Attacked4:
-				R_attacked4();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
-			case eLukeState::L_GetUp:
-				L_getup();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_GetUp:
-				R_getup();
-				break;
-
-			case eLukeState::L_Downed:
-				L_downed();
-				break;
-			case eLukeState::R_Downed:
-				R_downed();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
-			case eLukeState::L_Dead:
-				L_dead();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Dead:
-				R_dead();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
-			case eLukeState::L_Flying:
-				L_flying();
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Flying:
-				R_flying();
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
-			case eLukeState::L_Raiding:
-				L_raiding();
+
+			case Boss01Script::L_Idle:
+				L_idle();
 				break;
-			case eLukeState::R_Raiding:
-				R_raiding();
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
+				break;
+
+			case Boss01Script::L_Idle:
+				L_idle();
+				break;
+			case Boss01Script::R_Idle:
+				R_idle();
 				break;
 
 			default:
@@ -480,7 +495,7 @@ namespace ya
 					else// (mRandWaitOrRun == 1)
 					{
 						if (mPlayerPos.x < mPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
-						{	
+						{
 							ChangeState(eLukeState::L_Idle);
 						}
 						else if (mPos.x < mPlayerPos.x && (mState == eLukeState::L_Idle || mState == eLukeState::R_Idle || mState == eLukeState::L_Run || mState == eLukeState::R_Run))
@@ -563,7 +578,7 @@ namespace ya
 
 		if (mBodyCd->GetState() == eColliderState::IsColliding)
 		{
-			if (mIsCollidingFirst == 0 
+			if (mIsCollidingFirst == 0
 				&& mIsAttacked1 == false && mIsAttacked2 == false && mIsAttacked3 == false && mIsAttacked4 == false && mIsDowned == false && mIsGetUp == false)// 처음 충돌
 				// + 충돌 조건(다운되어있는데 갑자기 공격을 받았다고 해서 Guard나 Idle로 바뀌지 않기 위한 조건)
 				// 추후 충돌 조건은 따로 정리할 예정
@@ -703,7 +718,7 @@ namespace ya
 			mIsAttacked4 = false;
 		}
 
-		if (mState == eLukeState::L_Downed|| mState == eLukeState::R_Downed)
+		if (mState == eLukeState::L_Downed || mState == eLukeState::R_Downed)
 		{
 			mIsDowned = true;
 		}
@@ -812,7 +827,7 @@ namespace ya
 	{
 		// 막으려 하는 해당 스킬의 duration이 다르기 때문에 duration 까지 가드를 유지하기 위한 부분 
 		ePlayerState playerState = PlayScene::GetPlayerState();
-		if (playerState == ePlayerState::L_Idle || playerState == ePlayerState::R_Idle || playerState == ePlayerState::L_Walk || playerState == ePlayerState::R_Walk || 
+		if (playerState == ePlayerState::L_Idle || playerState == ePlayerState::R_Idle || playerState == ePlayerState::L_Walk || playerState == ePlayerState::R_Walk ||
 			playerState == ePlayerState::L_Jump || playerState == ePlayerState::R_Jump || playerState == ePlayerState::L_Run || playerState == ePlayerState::R_Run)
 		{
 			if (mPlayerPos.x < mPos.x)
@@ -977,25 +992,25 @@ namespace ya
 		// KnockDown (Attacked3) : mIsJumpDownAttack mIsJumpSlideAttack mIsRunSlideAttack mIsFireBall mIsSuper
 		// Down (Attacked4) : mIsWeaponDownAttack (다운 상태에서만 공격 가능, 다운 상태는 KnockDown되어 GetUp 전의 상태를 의미)
 
-		#pragma region bool 변수 참고
-		// mAttackState[0] = mIsNormalAttack1;
-		// mAttackState[1] = mIsNormalAttack2;
-		// mAttackState[2] = mIsNormalAttack3;
-		// mAttackState[3] = mIsKickAttack;
-		// mAttackState[4] = mIsRoundKickAttack;
-		// mAttackState[5] = mIsBehindKickAttack;
-		// mAttackState[6] = mIsWeaponNormalAttack;
-		// mAttackState[7] = mIsWeaponDownAttack;
-		// mAttackState[8] = mIsWeaponSideAttack;
-		// mAttackState[9] = mIsWeaponStabAttack;
-		// mAttackState[10] = mIsJumpDownAttack;
-		// mAttackState[11] = mIsJumpSlideAttack;
-		// mAttackState[12] = mIsRunJumpAttack;
-		// mAttackState[13] = mIsRunWeaponAttack;
-		// mAttackState[14] = mIsRunSlideAttack;
-		// mAttackState[15] = mIsFireBall;
-		// mAttackState[16] = mIsSuper;
-		#pragma endregion
+#pragma region bool 변수 참고
+// mAttackState[0] = mIsNormalAttack1;
+// mAttackState[1] = mIsNormalAttack2;
+// mAttackState[2] = mIsNormalAttack3;
+// mAttackState[3] = mIsKickAttack;
+// mAttackState[4] = mIsRoundKickAttack;
+// mAttackState[5] = mIsBehindKickAttack;
+// mAttackState[6] = mIsWeaponNormalAttack;
+// mAttackState[7] = mIsWeaponDownAttack;
+// mAttackState[8] = mIsWeaponSideAttack;
+// mAttackState[9] = mIsWeaponStabAttack;
+// mAttackState[10] = mIsJumpDownAttack;
+// mAttackState[11] = mIsJumpSlideAttack;
+// mAttackState[12] = mIsRunJumpAttack;
+// mAttackState[13] = mIsRunWeaponAttack;
+// mAttackState[14] = mIsRunSlideAttack;
+// mAttackState[15] = mIsFireBall;
+// mAttackState[16] = mIsSuper;
+#pragma endregion
 
 		if (mPlayerAttackState[0] || mPlayerAttackState[1] || mPlayerAttackState[2] || mPlayerAttackState[4] || mPlayerAttackState[5])
 		{
